@@ -271,18 +271,29 @@ export default function App(){
   const logout=()=>{localStorage.clear();setUser(null);setView('login');};
   const cw=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente'||(user.role==='COLABORADOR'&&user.permissions==='Leitura + Escrita'));
   const ia=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente');
-  const nav=user?[
-    {k:'dashboard',i:'home',l:'Dashboard'},
-    ...(user.tipo==='admin_cliente'?[{k:'admin-dash',i:'chart',l:'Meu Painel'}]:[]),
-    {k:'records',i:'list',l:'Avaliações'},
-    ...(cw()?[{k:'form',i:'plus',l:'Nova'}]:[]),
-    {k:'cadastros',i:'list',l:'Cadastros'},
-    {k:'reports',i:'chart',l:'Relatórios'},
-    ...(ia()?[{k:'users',i:'users',l:'Usuários'}]:[]),
-    ...(user.role==='SYSTEM'?[{k:'clientes',i:'users',l:'Clientes'},{k:'gestao-licencas',i:'shield',l:'Gestão Lic.'}]:[]),
-    ...(user.tipo==='admin_cliente'?[{k:'licencas',i:'shield',l:'Licenças'}]:[]),
-    ...(ia()?[{k:'audit',i:'list',l:'Auditoria'}]:[]),
-  ]:[];
+  const nav=user?(
+    user.role==='SYSTEM'?[
+      {k:'dashboard',i:'home',l:'Dashboard'},
+      {k:'users',i:'users',l:'Usuários'},
+      {k:'clientes',i:'users',l:'Clientes'},
+      {k:'gestao-licencas',i:'shield',l:'Gestão Lic.'},
+      {k:'audit',i:'list',l:'Auditoria'},
+    ]:user.tipo==='admin_cliente'?[
+      {k:'admin-dash',i:'chart',l:'Meu Painel'},
+      {k:'records',i:'list',l:'Avaliações'},
+      ...(cw()?[{k:'form',i:'plus',l:'Nova'}]:[]),
+      {k:'cadastros',i:'list',l:'Cadastros'},
+      {k:'reports',i:'chart',l:'Relatórios'},
+      {k:'users',i:'users',l:'Usuários'},
+      {k:'licencas',i:'shield',l:'Licenças'},
+    ]:[
+      {k:'dashboard',i:'home',l:'Dashboard'},
+      {k:'records',i:'list',l:'Avaliações'},
+      ...(cw()?[{k:'form',i:'plus',l:'Nova'}]:[]),
+      {k:'cadastros',i:'list',l:'Cadastros'},
+      {k:'reports',i:'chart',l:'Relatórios'},
+    ]
+  ):[];
   if(!user)return(<><style>{CSS}</style><Login onLogin={(u,t)=>{setUser(u);localStorage.setItem('user',JSON.stringify(u));localStorage.setItem('token',t);setView('dashboard');}}/></>);
   return(<>
     <style>{CSS}</style>
