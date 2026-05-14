@@ -14,7 +14,11 @@ const ROLES={SYSTEM:{label:'SYSTEM',bg:'rgba(139,92,246,.15)',color:'#A78BFA'},A
 
 function api(path,opts={}){
   const token=typeof window!=='undefined'?localStorage.getItem('token'):null;
-  return fetch('/api/'+path,{headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})}, ...opts}).then(r=>r.json());
+  return fetch('/api/'+path,{headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})}, ...opts})
+    .then(r=>r.json());
+}
+function safeApi(path,opts={}){
+  return api(path,opts).catch(()=>null);
 }
 
 const CSS=`
@@ -199,6 +203,7 @@ const ICON = {
   up:<svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>,
   check:<svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" d="M20 6 9 17l-5-5"/></svg>,
   uplus:<svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14" strokeLinecap="round"/><line x1="22" y1="11" x2="16" y2="11" strokeLinecap="round"/></svg>,
+  reload:<svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
 };
 
 export default function App(){
@@ -246,6 +251,7 @@ export default function App(){
     ...(ia()?[{k:'users',i:'users',l:'Usuários'}]:[]),
     ...(user.role==='SYSTEM'?[{k:'clientes',i:'users',l:'Clientes'}]:[]),
     ...(user.tipo==='admin_cliente'?[{k:'licencas',i:'shield',l:'Licenças'}]:[]),
+    ...(ia()?[{k:'audit',i:'list',l:'Auditoria'}]:[]),
   ]:[];
   if(!user)return(<><style>{CSS}</style><Login onLogin={(u,t)=>{setUser(u);localStorage.setItem('user',JSON.stringify(u));localStorage.setItem('token',t);setView('dashboard');}}/></>);
   return(<>
@@ -307,6 +313,7 @@ export default function App(){
         {view==='users'&&ia()&&<Users user={user} toast_={toast_}/>}
         {view==='clientes'&&user.role==='SYSTEM'&&<Clientes user={user} toast_={toast_}/>}
         {view==='licencas'&&user.tipo==='admin_cliente'&&<Licencas user={user} toast_={toast_}/>}
+        {view==='audit'&&ia()&&<AuditLog toast_={toast_}/>}
         </div>
       </main>
       {mobile&&<nav className="bottom-nav">{nav.map(x=><div key={x.k} className={`bn-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)}>{ICON[x.i]}<span>{x.l}</span></div>)}</nav>}
@@ -358,15 +365,23 @@ function Login({onLogin}){
 
 function Skeleton({h=14,w='100%',r=6,m='0 0 10px 0'}){return <div style={{height:h,width:w,borderRadius:r,background:'linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite',margin:m}}/>}
 function EmptyState({icon,title,desc}){return <div style={{textAlign:'center',padding:'3rem 1rem',color:'var(--text3)'}}><div style={{fontSize:40,marginBottom:12,opacity:.3}}>{icon||ICON.list}</div><p style={{fontSize:15,fontWeight:600,color:'var(--text2)',marginBottom:4}}>{title||'Nenhum dado'}</p><p style={{fontSize:13}}>{desc||'Nenhum registro encontrado'}</p></div>}
+function ErrorState({onRetry,msg}){return <div style={{textAlign:'center',padding:'3rem 1rem',color:'var(--text3)'}}>
+  <div style={{fontSize:40,marginBottom:12,opacity:.3}}><svg width="40" height="40" fill="none" stroke="#DC2626" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path strokeLinecap="round" d="M12 8v4M12 16h.01"/></svg></div>
+  <p style={{fontSize:15,fontWeight:600,color:'var(--danger-text)',marginBottom:4}}>Erro ao carregar</p>
+  <p style={{fontSize:13,marginBottom:12}}>{msg||'Não foi possível carregar os dados. Verifique sua conexão.'}</p>
+  {onRetry&&<button className="btn primary sm" onClick={onRetry}>{ICON.reload||'↻'} Tentar novamente</button>}
+</div>}
 
 function Dash({mobile,user}){
-  const [data,setData]=useState([]);const [loading,setLoading]=useState(true);
-  useEffect(()=>{api('records').then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});},[]);
+  const [data,setData]=useState([]);const [loading,setLoading]=useState(true);const [error,setError]=useState(null);
+  const load=()=>{setLoading(true);setError(null);api('records').then(r=>{if(Array.isArray(r))setData(r);else setError('Erro ao carregar');setLoading(false);}).catch(()=>{setError('Erro de conexão');setLoading(false);});};
+  useEffect(()=>{load();},[]);
   const total=data.length,aprov=data.filter(r=>r.resultadoFinal==='APROVADO'||r.resultadoFinal==='APROVADO 2').length,reprov=data.filter(r=>r.resultadoFinal==='REPROVADO').length,pend=total-aprov-reprov,tx=total?Math.round(aprov/total*100):0;
   const byBase={};data.forEach(r=>{if(r.base)byBase[r.base]=(byBase[r.base]||0)+1;});
   const topB=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,6),maxB=topB[0]?.[1]||1;
   const rec=[...data].reverse().slice(0,5);
   const stats=[{n:total,l:'Total',c:'#4F46E5',bg:'linear-gradient(135deg,#4F46E5,#6366F1)',sh:'rgba(99,102,241,.3)'},{n:aprov,l:'Aprovados',c:'#059669',bg:'linear-gradient(135deg,#059669,#10B981)',sh:'rgba(5,150,105,.3)'},{n:reprov,l:'Reprovados',c:'#DC2626',bg:'linear-gradient(135deg,#DC2626,#EF4444)',sh:'rgba(220,38,38,.3)'},{n:pend,l:'Pendentes',c:'#D97706',bg:'linear-gradient(135deg,#D97706,#F59E0B)',sh:'rgba(217,119,6,.3)'}];
+  if(error)return <div><div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Dashboard</h1></div><div className="fu1"><ErrorState msg={error} onRetry={load}/></div></div>;
   return(<div>
     <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Dashboard</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>Visão geral das avaliações</p></div>
     {loading?<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
@@ -436,15 +451,16 @@ function ConfirmModal({show,title,msg,onConfirm,onCancel}){
 }
 
 function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
-  const [data,setData]=useState([]);const [loading,setLoading]=useState(true);
+  const [data,setData]=useState([]);const [loading,setLoading]=useState(true);const [error,setError]=useState(null);
   const [q,setQ]=useState('');const [base,setBase]=useState('');const [res,setRes]=useState('');const [page,setPage]=useState(0);
   const [confirmDel,setConfirmDel]=useState(null);
   const PER=20;const fileRef=useRef(null);
-  const load=useCallback(()=>{setLoading(true);api('records?'+new URLSearchParams({q,base,resultado:res})).then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});},[q,base,res]);
+  const load=useCallback(()=>{setLoading(true);setError(null);api('records?'+new URLSearchParams({q,base,resultado:res})).then(r=>{if(Array.isArray(r))setData(r);else setError('Erro ao carregar');setLoading(false);}).catch(()=>{setError('Erro de conexão');setLoading(false);});},[q,base,res]);
   useEffect(()=>{load();},[load]);
   const del=async id=>{await api('records/'+id,{method:'DELETE'});toast_('Registro excluído');setConfirmDel(null);load();};
   const imp=async f=>{const t=await f.text();const a=JSON.parse(t);const r=await api('records',{method:'POST',body:JSON.stringify(Array.isArray(a)?a:[a])});toast_(`${r.imported||0} registros importados!`);load();};
   const pages=Math.ceil(data.length/PER),paged=data.slice(page*PER,(page+1)*PER);
+  if(error)return <div className="fu"><ErrorState msg={error} onRetry={load}/></div>;
   if(mobile)return(<div>
     <div className="fu" style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
       <div><h1 style={{fontSize:20,fontWeight:700}}>Avaliações</h1><p style={{fontSize:13,color:'var(--text3)'}}>{data.length} registros</p></div>
@@ -477,69 +493,32 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
       <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(p=>p+1)}>Prox ›</button>
     </div>}
   </div>);
+}
+
+function AuditLog({toast_}){
+  const [log,setLog]=useState([]);const [loading,setLoading]=useState(true);const [error,setError]=useState(null);
+  const load=()=>{setLoading(true);setError(null);api('audit').then(r=>{if(Array.isArray(r))setLog(r);else setError('Erro ao carregar');setLoading(false);}).catch(()=>{setError('Erro de conexão');setLoading(false);});};
+  useEffect(()=>{load();},[]);
+  if(error)return <div className="fu"><ErrorState msg={error} onRetry={load}/></div>;
   return(<div>
-    <div className="fu" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:24}}>
-      <div><h1 style={{fontSize:24,fontWeight:700}}>Avaliações</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>{data.length} registros</p></div>
-      <div style={{display:'flex',gap:8}}>
-        <button className="btn" onClick={()=>window.location.href='/api/export?'+new URLSearchParams({q,base,resultado:res}).toString()}>{ICON.down}CSV</button>
-        <button className="btn success" onClick={()=>window.location.href='/api/export-excel?'+new URLSearchParams({q,base,resultado:res}).toString()}>{ICON.down}Excel</button>
-        {cw&&<><input ref={fileRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])imp(e.target.files[0]);e.target.value='';}}/>
-        <button className="btn amber-btn" onClick={()=>fileRef.current.click()}>{ICON.up}Importar JSON</button>
-        <button className="btn primary" onClick={onNew}>{ICON.plus}Nova Avaliação</button></>}
-      </div>
-    </div>
-    <div className="card fu1" style={{padding:'1rem 1.25rem',marginBottom:16,display:'flex',gap:12,flexWrap:'wrap',alignItems:'center'}}>
-      <div style={{position:'relative',flex:2,minWidth:200}}>
-        <div style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'var(--text3)',pointerEvents:'none'}}>{ICON.search}</div>
-        <input className="field" style={{paddingLeft:36}} placeholder="Buscar nome, empresa, CPF, turma..." value={q} onChange={e=>{setQ(e.target.value);setPage(0);}}/>
-      </div>
-      <select className="field" style={{flex:1,minWidth:140}} value={base} onChange={e=>{setBase(e.target.value);setPage(0);}}>
-        <option value="">Todas as Bases</option>{BASES.map(b=><option key={b}>{b}</option>)}
-      </select>
-      <select className="field" style={{flex:1,minWidth:140}} value={res} onChange={e=>{setRes(e.target.value);setPage(0);}}>
-        <option value="">Todos Resultados</option>
-        {['APROVADO','APROVADO 2','REPROVADO','AUSENTE','PENDENTE'].map(r=><option key={r}>{r}</option>)}
-      </select>
-      {(q||base||res)&&<button className="btn ghost sm" onClick={()=>{setQ('');setBase('');setRes('');setPage(0);}}>Limpar</button>}
-    </div>
-    <div className="card fu2" style={{padding:0,overflow:'hidden'}}>
+    <div className="fu"><h1 style={{fontSize:22,fontWeight:700}}>Auditoria</h1><p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>Histórico de ações no sistema</p></div>
+    <div className="card fu1" style={{padding:0,overflow:'hidden'}}>
       <div style={{overflowX:'auto'}}>
-        <table style={{width:'100%',borderCollapse:'collapse',minWidth:750}}>
+        <table style={{width:'100%',borderCollapse:'collapse',minWidth:600}}>
           <thead><tr>
-            <th className="th" style={{width:50}}></th>
-            <th className="th">Nome</th><th className="th hide-tab">Empresa</th><th className="th hide-mob">Base</th>
-            <th className="th hide-tab">Processo</th><th className="th hide-mob">Data</th><th className="th">Resultado</th>
-            {cw&&<th className="th" style={{textAlign:'right'}}>Ações</th>}
+            <th className="th">Data/Hora</th><th className="th">Usuário</th><th className="th">Ação</th><th className="th">Detalhe</th>
           </tr></thead>
           <tbody>
-            {paged.map(r=><tr key={r.id}>
-              <td className="td">{r.fotoCandidato?<img src={r.fotoCandidato} style={{width:32,height:32,borderRadius:'50%',objectFit:'cover'}}/>:<Avatar name={r.nomes} size={32}/>}</td>
-              <td className="td" style={{fontWeight:600}}>{r.nomes||'—'}</td>
-              <td className="td hide-tab" style={{fontSize:13,color:'var(--text2)'}}>{r.empresa||'—'}</td>
-              <td className="td hide-mob">{r.base?<span className="badge blue">{r.base}</span>:'—'}</td>
-              <td className="td hide-tab" style={{fontSize:12,color:'var(--text3)',maxWidth:150,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{(r.processo||'—').replace(/_/g,' ')}</td>
-              <td className="td hide-mob" style={{fontSize:12,fontFamily:'var(--mono)'}}>{r.dataRealizacao||'—'}</td>
-              <td className="td"><Badge v={r.resultadoFinal}/></td>
-              {cw&&<td className="td" style={{textAlign:'right'}}>
-                <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
-                  <button className="btn sm icon" onClick={()=>onEdit(r)}>{ICON.edit}</button>
-                  {ia&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(r)}>{ICON.trash}</button>}
-                </div>
-              </td>}
+            {loading?[1,2,3].map(i=><tr key={i}>{[1,2,3,4].map(j=><td key={j} className="td"><Skeleton h={14} w={j===0?'140px':j===1?'100px':j===2?'80px':'200px'} r="4" m="0"/></td>)}</tr>):log.map((e,i)=><tr key={e.id||i}>
+              <td className="td" style={{fontFamily:'var(--mono)',fontSize:11.5}}>{new Date(e.ts||e.createdAt).toLocaleString('pt-BR')}</td>
+              <td className="td" style={{fontWeight:600}}>{e.username||e.createdBy||'—'}</td>
+              <td className="td"><span className="badge" style={{background:'rgba(99,102,241,.1)',color:'#4F46E5'}}>{e.action||'—'}</span></td>
+              <td className="td" style={{fontSize:13,color:'var(--text2)'}}>{e.detail||e.id||''}</td>
             </tr>)}
-            {loading?[1,2,3,4,5].map(i=><tr key={i}>{[0,1,2,3,4,5,6,7].slice(0,cw?8:7).map(j=><td key={j} className="td"><Skeleton h={14} w={j===0?'32px':j===2?'100px':j===4?'120px':j===6?'70px':'140px'} r="4" m="0"/></td>)}</tr>):!paged.length&&<tr><td colSpan={cw?8:7} style={{textAlign:'center',padding:'3rem',color:'var(--text3)'}}>
-            <EmptyState title="Nenhum registro" desc="Importe dados via JSON ou crie uma nova avaliação."/>
-          </td></tr>}
           </tbody>
         </table>
       </div>
     </div>
-    {pages>1&&<div className="fu3" style={{display:'flex',justifyContent:'center',alignItems:'center',gap:10,marginTop:16}}>
-      <button className="btn sm" disabled={page===0} onClick={()=>setPage(p=>p-1)}>‹ Anterior</button>
-      <span style={{fontSize:13,color:'var(--text3)',fontFamily:'var(--mono)'}}>Página {page+1} de {pages}</span>
-      <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(p=>p+1)}>Próxima ›</button>
-    </div>}
-    <ConfirmModal show={confirmDel} title="Excluir Avaliação" msg={`Excluir permanentemente a avaliação de "${confirmDel?.nomes||'?'}"? Esta ação não pode ser desfeita.`} onConfirm={()=>del(confirmDel.id)} onCancel={()=>setConfirmDel(null)}/>
   </div>);
 }
 
