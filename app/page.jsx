@@ -35,6 +35,20 @@ const CSS=`
   --ease:cubic-bezier(.4,0,.2,1); --t:all .2s cubic-bezier(.4,0,.2,1);
   --sw:240px;
 }
+[data-theme="dark"]{
+  --bg:#0B1120; --surface:#1E293B; --surface2:#0F172A; --border:rgba(255,255,255,.06);
+  --sidebar:#020617;
+  --success-bg:rgba(5,150,105,.15); --success-text:#34D399;
+  --danger-bg:rgba(220,38,38,.15); --danger-text:#FCA5A5;
+  --warning-bg:rgba(217,119,6,.15); --warning-text:#FBBF24;
+  --text:#F1F5F9; --text2:#94A3B8; --text3:#64748B;
+  --sh-sm:0 1px 3px rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.2);
+  --sh:0 4px 16px rgba(0,0,0,.4),0 1px 4px rgba(0,0,0,.2);
+  --sh-lg:0 10px 40px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.25);
+  --surface2:rgba(255,255,255,.03);
+  --primary-glow:rgba(99,102,241,.4);
+}
+
 html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 ::selection{background:var(--primary);color:#fff}
 ::-webkit-scrollbar{width:5px;height:5px}
@@ -154,6 +168,8 @@ function Badge({v}){
 
 function Spin(){return <span style={{width:15,height:15,border:'2px solid rgba(255,255,255,.3)',borderTopColor:'#fff',borderRadius:'50%',display:'inline-block',animation:'spin .7s linear infinite'}}/>}
 
+const LABELS={dashboard:'Dashboard','admin-dash':'Meu Painel',records:'Avaliações',form:'Nova Avaliação',cadastros:'Cadastros',reports:'Relatórios',users:'Usuários',clientes:'Clientes',licencas:'Licenças'};
+
 const ICON = {
   home:<svg width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>,
   list:<svg width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>,
@@ -181,8 +197,31 @@ export default function App(){
   const [editRec,setEditRec]=useState(null);
   const [toast,setToast]=useState(null);
   const [mobile,setMobile]=useState(false);
+  const [theme,setTheme]=useState('light');
+  const [sidebarOpen,setSidebarOpen]=useState(true);
   useEffect(()=>{const c=()=>setMobile(window.innerWidth<768);c();window.addEventListener('resize',c);return()=>window.removeEventListener('resize',c);},[]);
+  useEffect(()=>{
+    const saved=localStorage.getItem('theme');
+    const prefers=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+    const t=saved||prefers;
+    setTheme(t);document.documentElement.setAttribute('data-theme',t);
+  },[]);
+  useEffect(()=>{if(user){document.documentElement.setAttribute('data-theme',theme);localStorage.setItem('theme',theme);}},[theme]);
   useEffect(()=>{const u=localStorage.getItem('user'),t=localStorage.getItem('token');if(u&&t){setUser(JSON.parse(u));setView('dashboard');}},[]);
+  useEffect(()=>{
+    if(!user)return;
+    const h=e=>{
+      if(e.ctrlKey&&e.key==='n'&&cw()){e.preventDefault();setEditRec(null);setView('form');}
+      if(e.key==='g'&&e.ctrlKey)return;
+      if(!e.ctrlKey&&!e.metaKey)return;
+      const k=e.key.toLowerCase();
+      const map={'d':'dashboard','a':'records','c':'cadastros','r':'reports','u':'users','l':'clientes'};
+      if(map[k]){e.preventDefault();setView(map[k]);}
+    };
+    window.addEventListener('keydown',h);
+    return()=>window.removeEventListener('keydown',h);
+  },[user]);
+  const toggleTheme=()=>setTheme(p=>p==='light'?'dark':'light');
   const toast_=( msg,type='success')=>{setToast({msg,type});setTimeout(()=>setToast(null),3500);};
   const logout=()=>{localStorage.clear();setUser(null);setView('login');};
   const cw=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente'||(user.role==='COLABORADOR'&&user.permissions==='Leitura + Escrita'));
@@ -204,7 +243,7 @@ export default function App(){
     {toast&&<div className="toast-in" style={{position:'fixed',top:20,right:20,zIndex:9999,background:toast.type==='error'?'#FEF2F2':'#ECFDF5',color:toast.type==='error'?'#991B1B':'#065F46',border:`1px solid ${toast.type==='error'?'#FECACA':'#A7F3D0'}`,padding:'11px 18px',borderRadius:12,fontSize:13.5,fontWeight:500,maxWidth:340,boxShadow:'0 8px 24px rgba(0,0,0,.12)',display:'flex',alignItems:'center',gap:8}}>
       {toast.type==='error'?ICON.x:ICON.check}{toast.msg}</div>}
     <div style={{display:'flex',minHeight:'100vh'}}>
-      {!mobile&&<nav style={{width:'var(--sw)',background:'var(--sidebar)',position:'fixed',top:0,bottom:0,left:0,zIndex:100,display:'flex',flexDirection:'column',overflowY:'auto'}}>
+      {!mobile&&<nav style={{width:sidebarOpen?'var(--sw)':0,background:'var(--sidebar)',position:'fixed',top:0,bottom:0,left:0,zIndex:100,display:'flex',flexDirection:'column',overflow:'hidden',transition:'width .25s cubic-bezier(.4,0,.2,1)',borderRight:sidebarOpen?'1px solid rgba(255,255,255,.06)':'none'}}>
         <div style={{padding:'1.5rem 1.25rem 1rem',borderBottom:'1px solid rgba(255,255,255,.06)'}}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
             <div style={{width:38,height:38,background:'linear-gradient(135deg,#4F46E5,#7C3AED)',borderRadius:11,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 14px rgba(99,102,241,.45)'}}>
@@ -230,11 +269,17 @@ export default function App(){
               <p style={{fontSize:13,fontWeight:600,color:'rgba(255,255,255,.9)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{user.nome}</p>
               <p style={{fontSize:11,color:'rgba(255,255,255,.3)'}}>{ROLES[user.role]?.label}</p>
             </div>
+            <button className="btn ghost icon" style={{color:'rgba(255,255,255,.3)',padding:5,borderRadius:8}} onClick={toggleTheme} title={theme==='light'?'Modo escuro':'Modo claro'}>{theme==='light'?<svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>:<svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path strokeLinecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>}</button>
             <button className="btn ghost icon" style={{color:'rgba(255,255,255,.3)',padding:5,borderRadius:8}} onClick={logout} title="Sair">{ICON.logout}</button>
           </div>
         </div>
       </nav>}
-      <main style={{flex:1,marginLeft:mobile?0:'var(--sw)',padding:mobile?'1rem 1rem 90px':'2rem 2rem 2.5rem',minHeight:'100vh'}}>
+      <main style={{flex:1,marginLeft:mobile||!sidebarOpen?0:'var(--sw)',padding:mobile?'1rem 1rem 90px':'2rem 2rem 2.5rem',minHeight:'100vh'}}>
+        {!mobile&&user&&<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:16,fontSize:12.5,color:'var(--text3)'}}>
+          <span style={{cursor:'pointer',transition:'var(--t)',padding:'4px 6px',borderRadius:6}} onClick={()=>setSidebarOpen(!sidebarOpen)} title="Toggle sidebar">{ICON.list}</span>
+          <span style={{color:'var(--text3)',opacity:.4}}>/</span>
+          {['dashboard','admin-dash','records','cadastros','reports','users','clientes','licencas'].includes(view)?<span style={{fontWeight:500,color:'var(--text2)'}}>{LABELS[view]||view}</span>:<><span style={{cursor:'pointer',color:'var(--primary)'}} onClick={()=>setView('records')}>{LABELS.records}</span><span style={{color:'var(--text3)',opacity:.4}}>/</span><span style={{fontWeight:500,color:'var(--text2)'}}>{view==='form'?(editRec?'Editar':'Nova')+' Avaliação':view}</span></>}
+        </div>}
         {mobile&&<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
           <div style={{display:'flex',alignItems:'center',gap:9}}>
             <div style={{width:32,height:32,background:'linear-gradient(135deg,#4F46E5,#7C3AED)',borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center'}}>{ICON.bolt}</div>
@@ -242,6 +287,7 @@ export default function App(){
           </div>
           <Avatar name={user.nome} size={34}/>
         </div>}
+        <div key={view} className="si" style={{animation:'scaleIn .2s cubic-bezier(.4,0,.2,1) both'}}>
         {view==='dashboard'&&<Dash mobile={mobile} user={user}/>}
         {view==='admin-dash'&&<AdminDash mobile={mobile} user={user} toast_={toast_}/>}
         {view==='records'&&<RecList cw={cw()} ia={ia()} mobile={mobile} user={user} onEdit={r=>{setEditRec(r);setView('form');}} onNew={()=>{setEditRec(null);setView('form');}} toast_={toast_}/>}
@@ -251,6 +297,7 @@ export default function App(){
         {view==='users'&&ia()&&<Users user={user} toast_={toast_}/>}
         {view==='clientes'&&user.role==='SYSTEM'&&<Clientes user={user} toast_={toast_}/>}
         {view==='licencas'&&user.tipo==='admin_cliente'&&<Licencas user={user} toast_={toast_}/>}
+        </div>
       </main>
       {mobile&&<nav className="bottom-nav">{nav.map(x=><div key={x.k} className={`bn-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)}>{ICON[x.i]}<span>{x.l}</span></div>)}</nav>}
     </div>
@@ -424,7 +471,7 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_}){
     <div className="fu" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:24}}>
       <div><h1 style={{fontSize:24,fontWeight:700}}>Avaliações</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>{data.length} registros</p></div>
       <div style={{display:'flex',gap:8}}>
-        <button className="btn" onClick={()=>window.location.href='/api/export'}>{ICON.down}CSV</button>
+        <button className="btn" onClick={()=>window.location.href='/api/export?'+new URLSearchParams({q,base,resultado:res}).toString()}>{ICON.down}CSV</button>
         {cw&&<><input ref={fileRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])imp(e.target.files[0]);e.target.value='';}}/>
         <button className="btn amber-btn" onClick={()=>fileRef.current.click()}>{ICON.up}Importar JSON</button>
         <button className="btn primary" onClick={onNew}>{ICON.plus}Nova Avaliação</button></>}
