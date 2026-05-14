@@ -182,7 +182,7 @@ function Badge({v}){
 
 function Spin(){return <span style={{width:15,height:15,border:'2px solid rgba(255,255,255,.3)',borderTopColor:'#fff',borderRadius:'50%',display:'inline-block',animation:'spin .7s linear infinite'}}/>}
 
-const LABELS={dashboard:'Dashboard','admin-dash':'Meu Painel',records:'Avaliações',form:'Nova Avaliação',cadastros:'Cadastros',reports:'Relatórios',users:'Usuários',clientes:'Clientes',licencas:'Licenças'};
+const LABELS={dashboard:'Dashboard','admin-dash':'Meu Painel',records:'Avaliações',form:'Nova Avaliação',cadastros:'Cadastros',reports:'Relatórios',users:'Usuários',clientes:'Clientes',licencas:'Licenças','gestao-licencas':'Gestão Licenças'};
 
 const ICON = {
   home:<svg width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>,
@@ -256,7 +256,7 @@ export default function App(){
     {k:'cadastros',i:'list',l:'Cadastros'},
     {k:'reports',i:'chart',l:'Relatórios'},
     ...(ia()?[{k:'users',i:'users',l:'Usuários'}]:[]),
-    ...(user.role==='SYSTEM'?[{k:'clientes',i:'users',l:'Clientes'}]:[]),
+    ...(user.role==='SYSTEM'?[{k:'clientes',i:'users',l:'Clientes'},{k:'gestao-licencas',i:'shield',l:'Gestão Lic.'}]:[]),
     ...(user.tipo==='admin_cliente'?[{k:'licencas',i:'shield',l:'Licenças'}]:[]),
     ...(ia()?[{k:'audit',i:'list',l:'Auditoria'}]:[]),
   ]:[];
@@ -321,6 +321,7 @@ export default function App(){
         {view==='clientes'&&user.role==='SYSTEM'&&<Clientes user={user} toast_={toast_}/>}
         {view==='licencas'&&user.tipo==='admin_cliente'&&<Licencas user={user} toast_={toast_}/>}
         {view==='audit'&&ia()&&<AuditLog toast_={toast_}/>}
+        {view==='gestao-licencas'&&user.role==='SYSTEM'&&<GestaoLicencas user={user} toast_={toast_}/>}
         </div>
       </main>
       {mobile&&<nav className="bottom-nav">{nav.map(x=><div key={x.k} className={`bn-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)}>{ICON[x.i]}<span>{x.l}</span></div>)}</nav>}
@@ -1391,6 +1392,70 @@ function Licencas({user,toast_}){
           </div>
         </div>
       </div>
+    </div>}
+  </div>);
+}
+
+function GestaoLicencas({user,toast_}){
+  const [requests,setRequests]=useState([]);const [loading,setLoading]=useState(true);
+  const [actionId,setActionId]=useState(null);
+  const load=()=>{setLoading(true);api('licencas').then(r=>{if(Array.isArray(r))setRequests(r);setLoading(false);});};
+  useEffect(()=>{load();},[]);
+  const aprovar=async id=>{
+    setActionId(id);
+    const r=await api('licencas',{method:'PUT',body:JSON.stringify({id,status:'APROVADO',observacao:'Aprovado por '+user.nome})});
+    setActionId(null);
+    if(r.error)return toast_(r.error,'error');
+    toast_('Solicitação aprovada!');load();
+  };
+  const negar=async id=>{
+    const obs=prompt('Motivo da recusa:');
+    if(!obs)return;
+    setActionId(id);
+    const r=await api('licencas',{method:'PUT',body:JSON.stringify({id,status:'NEGADO',observacao:obs})});
+    setActionId(null);
+    if(r.error)return toast_(r.error,'error');
+    toast_('Solicitação negada.');load();
+  };
+  if(loading)return <div className="fu"><Skeleton h={14} w="200px" m="0 0 12px 0"/>{[1,2,3].map(i=><Skeleton key={i} h={50} w="100%" r="8" m="0 0 8px 0"/>)}</div>;
+  const pendentes=requests.filter(r=>r.status==='PENDENTE');
+  const historico=requests.filter(r=>r.status!=='PENDENTE');
+  return(<div>
+    <div className="fu"><h1 style={{fontSize:22,fontWeight:700}}>Gestão de Licenças</h1><p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>{pendentes.length} solicitações pendentes</p></div>
+    {pendentes.length>0&&<div className="card fu1" style={{padding:0,overflow:'hidden',marginBottom:20}}>
+      <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0,color:'var(--warning)'}}>Pendentes</p></div>
+      {pendentes.map(r=><div key={r.id} style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:12}}>
+          <div style={{flex:1}}>
+            <p style={{fontSize:14,fontWeight:600}}>{r.clienteNome||'—'}</p>
+            <p style={{fontSize:13,color:'var(--text2)',marginTop:4}}>
+              <strong>+{r.quantidade}</strong> licenças solicitadas
+              {r.motivo?` · Motivo: ${r.motivo}`:''}
+            </p>
+            <p style={{fontSize:11.5,color:'var(--text3)',marginTop:4}}>
+              Solicitante: {r.solicitadoPor||'—'} ({r.solicitadoPorEmail||'—'}) · {new Date(r.createdAt).toLocaleString('pt-BR')}
+            </p>
+          </div>
+          <div style={{display:'flex',gap:6,flexShrink:0}}>
+            <button className="btn success sm" onClick={()=>aprovar(r.id)} disabled={actionId===r.id}>
+              {actionId===r.id?<Spin/>:ICON.check}Aprovar
+            </button>
+            <button className="btn danger sm" onClick={()=>negar(r.id)} disabled={actionId===r.id}>
+              {ICON.x}Negar
+            </button>
+          </div>
+        </div>
+      </div>)}
+    </div>}
+    {historico.length>0&&<div className="card fu2" style={{padding:0,overflow:'hidden'}}>
+      <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0}}>Histórico</p></div>
+      {historico.slice(0,20).map(r=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 1.25rem',borderBottom:'1px solid var(--border)'}}>
+        <div style={{flex:1}}>
+          <p style={{fontSize:13.5,fontWeight:600}}>{r.clienteNome||'—'} · +{r.quantidade} licenças</p>
+          <p style={{fontSize:12,color:'var(--text3)'}}>{new Date(r.createdAt).toLocaleDateString('pt-BR')} · {r.observacao||r.analisadoPor||''}</p>
+        </div>
+        <span className={`badge dot ${r.status==='APROVADO'?'green':r.status==='NEGADO'?'red':'amber'}`}>{r.status}</span>
+      </div>)}
     </div>}
   </div>);
 }
