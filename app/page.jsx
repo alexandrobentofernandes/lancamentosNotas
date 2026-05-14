@@ -265,6 +265,16 @@ export default function App(){
     window.addEventListener('keydown',h);
     return()=>window.removeEventListener('keydown',h);
   },[user]);
+  useEffect(()=>{
+    const h=e=>{
+      if(e.key==='Escape'){
+        const overlays=document.querySelectorAll('.overlay');
+        if(overlays.length)overlays[overlays.length-1].click();
+      }
+    };
+    window.addEventListener('keydown',h);
+    return()=>window.removeEventListener('keydown',h);
+  },[]);
   const toggleTheme=()=>setTheme(p=>p==='light'?'dark':'light');
   const [navBadges,setNavBadges]=useState({});
   useEffect(()=>{
@@ -320,10 +330,13 @@ export default function App(){
         </div>
         <div style={{padding:'1rem .75rem',flex:1,display:'flex',flexDirection:'column',gap:3}}>
           <p style={{fontSize:10,fontWeight:700,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',padding:'0 10px',marginBottom:6}}>Menu</p>
-          {nav.map(x=><div key={x.k} className={`nav-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)} style={{position:'relative'}}>
+          {nav.map(x=>{
+            const atalhos={dashboard:'Ctrl+D',records:'Ctrl+A',form:'Ctrl+N',cadastros:'Ctrl+C',reports:'Ctrl+R'};
+            return <div key={x.k} className={`nav-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)} style={{position:'relative'}} title={atalhos[x.k]?`${x.l} (${atalhos[x.k]})`:x.l}>
             {ICON[x.i]}<span>{x.l}</span>
-            {navBadges[x.k]?<span className="badge dot red" style={{marginLeft:'auto',fontSize:10,padding:'1px 6px'}}>{navBadges[x.k]}</span>:view===x.k?<div style={{marginLeft:'auto',width:6,height:6,borderRadius:'50%',background:'#5930E2'}}/>:null}
-          </div>)}
+            {atalhos[x.k]&&<span style={{marginLeft:'auto',fontSize:9,color:'var(--text3)',opacity:.4,fontFamily:'var(--mono)'}}>{atalhos[x.k]}</span>}
+            {navBadges[x.k]?<span className="badge dot red" style={{marginLeft:4,fontSize:10,padding:'1px 6px'}}>{navBadges[x.k]}</span>:null}
+          </div>;})}
         </div>
           <div style={{padding:'1rem',borderTop:'1px solid var(--border)'}}>
             <div style={{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',borderRadius:10,background:'var(--surface2)'}}>
@@ -591,6 +604,7 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
   const [data,setData]=useState([]);const [loading,setLoading]=useState(true);const [error,setError]=useState(null);
   const [q,setQ]=useState('');const [base,setBase]=useState('');const [res,setRes]=useState('');const [page,setPage]=useState(0);
   const [confirmDel,setConfirmDel]=useState(null);
+  const [sortKey,setSortKey]=useState(null);const [sortDir,setSortDir]=useState('asc');
   const PER=20;const fileRef=useRef(null);const searchTimer=useRef(null);
   const load=useCallback(()=>{setLoading(true);setError(null);api('records?'+new URLSearchParams({q,base,resultado:res})).then(r=>{if(Array.isArray(r))setData(r);else setError('Erro ao carregar');setLoading(false);}).catch(()=>{setError('Erro de conexão');setLoading(false);});},[q,base,res]);
   const setQDebounced=v=>{
@@ -601,10 +615,14 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
       api('records?'+new URLSearchParams({q:v,base,resultado:res})).then(r=>{if(Array.isArray(r))setData(r);setLoading(false);}).catch(()=>setLoading(false));
     },300);
   };
-  useEffect(()=>{load();},[load]);
-  const del=async id=>{await api('records/'+id,{method:'DELETE'});toast_('Registro excluído');setConfirmDel(null);load();};
-  const imp=async f=>{const t=await f.text();const a=JSON.parse(t);const r=await api('records',{method:'POST',body:JSON.stringify(Array.isArray(a)?a:[a])});toast_(`${r.imported||0} registros importados!`);load();};
-  const pages=Math.ceil(data.length/PER),paged=data.slice(page*PER,(page+1)*PER);
+  const toggleSort=k=>{if(sortKey===k){setSortDir(d=>d==='asc'?'desc':'asc');}else{setSortKey(k);setSortDir('asc');}};
+  const sorted=[...data].sort((a,b)=>{
+    if(!sortKey)return 0;
+    const va=(a[sortKey]||'').toString().toLowerCase(),vb=(b[sortKey]||'').toString().toLowerCase();
+    return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
+  });
+  const pages=Math.ceil(sorted.length/PER),paged=sorted.slice(page*PER,(page+1)*PER);
+  const SortIcon=({k})=><span style={{fontSize:10,marginLeft:4,opacity:sortKey===k?1:.2}}>{sortKey===k?(sortDir==='asc'?'▲':'▼'):'▼'}</span>;
   if(error)return <div className="fu"><ErrorState msg={error} onRetry={load}/></div>;
   if(mobile)return(<div
     onTouchStart={e=>{const start=e.touches[0].clientY;const handler=e2=>{const diff=e2.changedTouches[0].clientY-start;if(diff>100){load();document.removeEventListener('touchend',handler);}};document.addEventListener('touchend',handler,{once:true});}}
@@ -1337,10 +1355,14 @@ function Clientes({user,toast_}){
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:700}}>
           <thead><tr>
-            <th className="th">Cliente</th><th className="th">Documento</th><th className="th">Contato</th>
-            <th className="th" style={{textAlign:'center'}}>Slots</th><th className="th" style={{textAlign:'center'}}>Usados</th>
-            <th className="th" style={{textAlign:'right'}}>Valor/Slot</th><th className="th" style={{textAlign:'right'}}>Receita</th>
-            <th className="th" style={{textAlign:'center'}}>Status</th><th className="th" style={{textAlign:'right',width:80}}>Ações</th>
+            <th className="th" style={{width:50}}></th>
+            <th className="th" style={{cursor:'pointer'}} onClick={()=>toggleSort('nomes')}>Nome<SortIcon k="nomes"/></th>
+            <th className="th hide-tab" style={{cursor:'pointer'}} onClick={()=>toggleSort('empresa')}>Empresa<SortIcon k="empresa"/></th>
+            <th className="th hide-mob">Base</th>
+            <th className="th hide-tab">Processo</th>
+            <th className="th hide-mob" style={{cursor:'pointer'}} onClick={()=>toggleSort('dataRealizacao')}>Data<SortIcon k="dataRealizacao"/></th>
+            <th className="th" style={{cursor:'pointer'}} onClick={()=>toggleSort('resultadoFinal')}>Resultado<SortIcon k="resultadoFinal"/></th>
+            {cw&&<th className="th" style={{textAlign:'right'}}>Ações</th>}
           </tr></thead>
           <tbody>
             {loading?[1,2,3].map(i=><tr key={i}>{[1,2,3,4,5,6,7,8,9].map(j=><td key={j} className="td"><Skeleton h={14} w={j===3||j===4?'40px':j>=5?'70px':'120px'} r="4" m="0"/></td>)}</tr>):data.map(c=><tr key={c.id}>
