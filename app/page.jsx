@@ -57,17 +57,17 @@ const CSS=`
 [data-theme="dark"] .field:focus{background:rgba(255,255,255,.08);border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
 [data-theme="dark"] .field.auto{background:rgba(255,255,255,.03);color:#64748B;border-style:dashed}
 [data-theme="dark"] .field option{background:#1E293B;color:#F1F5F9}
-[data-theme="dark"] select.field{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394A3B8' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;appearance:none;padding-right:30px}
+[data-theme="dark"] select.field{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239CA0AA' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;appearance:none;padding-right:30px}
 [data-theme="dark"] .bn-item{color:rgba(255,255,255,.4)}
 [data-theme="dark"] .bn-item.active{color:var(--primary)}
-[data-theme="dark"] .th{background:rgba(255,255,255,.03);color:#64748B}
+[data-theme="dark"] .th{background:rgba(255,255,255,.03);color:#6B6F7A}
 [data-theme="dark"] tr:hover .td{background:rgba(255,255,255,.03)}
 [data-theme="dark"] .td{border-color:rgba(255,255,255,.06)}
 [data-theme="dark"] .card,[data-theme="dark"] .card-lg{border-color:rgba(255,255,255,.08)}
 [data-theme="dark"] .tab-bar{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
 [data-theme="dark"] .tab.active{background:var(--surface);border-color:rgba(255,255,255,.1)}
-[data-theme="dark"] .badge.gray{background:rgba(255,255,255,.06);color:#94A3B8}
-[data-theme="dark"] .badge.blue{background:rgba(59,130,246,.15);color:#60A5FA}
+[data-theme="dark"] .badge.gray{background:rgba(255,255,255,.06);color:#9CA0AA}
+[data-theme="dark"] .badge.blue{background:rgba(89,48,226,.15);color:#7C5CFF}
 [data-theme="dark"] .badge.violet{background:rgba(139,92,246,.15);color:#A78BFA}
 [data-theme="dark"] .progress{background:rgba(255,255,255,.08)}
 [data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1)}
@@ -193,7 +193,7 @@ const emptyForm=()=>({statusColaborador:'CANDIDATO',pedido:'',turma:'',dataReali
 
 function Avatar({name,size=34}){
   const init=(name||'?').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
-  const c=['#4F46E5','#0891B2','#059669','#D97706','#DC2626','#7C3AED'][((name||'?').charCodeAt(0)||0)%6];
+  const c=['#5930E2','#0891B2','#059669','#D97706','#DC2626','#7C3AED'][((name||'?').charCodeAt(0)||0)%6];
   return <div style={{width:size,height:size,borderRadius:'50%',background:c,display:'flex',alignItems:'center',justifyContent:'center',fontSize:size*.35,fontWeight:700,color:'#fff',flexShrink:0}}>{init}</div>;
 }
 
@@ -305,7 +305,7 @@ export default function App(){
       {!mobile&&<nav style={{width:sidebarOpen?'var(--sw)':0,background:'var(--sidebar)',position:'fixed',top:0,bottom:0,left:0,zIndex:100,display:'flex',flexDirection:'column',overflow:'hidden',transition:'width .25s cubic-bezier(.4,0,.2,1)',borderRight:sidebarOpen?'1px solid rgba(255,255,255,.06)':'none'}}>
         <div style={{padding:'1.5rem 1.25rem 1rem',borderBottom:'1px solid rgba(255,255,255,.06)'}}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <div style={{width:38,height:38,background:'linear-gradient(135deg,#4F46E5,#7C3AED)',borderRadius:11,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 14px rgba(99,102,241,.45)'}}>
+            <div style={{width:38,height:38,background:'linear-gradient(135deg,#5930E2,#7C3AED)',borderRadius:11,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 14px rgba(89,48,226,.45)'}}>
               {ICON.bolt}
             </div>
             <div>
@@ -318,7 +318,7 @@ export default function App(){
           <p style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.2)',textTransform:'uppercase',letterSpacing:'.8px',padding:'0 10px',marginBottom:6}}>Menu</p>
           {nav.map(x=><div key={x.k} className={`nav-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)} style={{position:'relative'}}>
             {ICON[x.i]}<span>{x.l}</span>
-            {navBadges[x.k]?<span className="badge dot red" style={{marginLeft:'auto',fontSize:10,padding:'1px 6px'}}>{navBadges[x.k]}</span>:view===x.k?<div style={{marginLeft:'auto',width:6,height:6,borderRadius:'50%',background:'#818CF8'}}/>:null}
+            {navBadges[x.k]?<span className="badge dot red" style={{marginLeft:'auto',fontSize:10,padding:'1px 6px'}}>{navBadges[x.k]}</span>:view===x.k?<div style={{marginLeft:'auto',width:6,height:6,borderRadius:'50%',background:'#9B7FFF'}}/>:null}
           </div>)}
         </div>
         <div style={{padding:'1rem',borderTop:'1px solid rgba(255,255,255,.06)'}}>
@@ -341,7 +341,7 @@ export default function App(){
         </div>}
         {mobile&&<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
           <div style={{display:'flex',alignItems:'center',gap:9}}>
-            <div style={{width:32,height:32,background:'linear-gradient(135deg,#4F46E5,#7C3AED)',borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center'}}>{ICON.bolt}</div>
+            <div style={{width:32,height:32,background:'linear-gradient(135deg,#5930E2,#7C3AED)',borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center'}}>{ICON.bolt}</div>
             <div><p style={{fontSize:14,fontWeight:700}}>Lançamentos Notas</p><p style={{fontSize:11,color:'var(--text3)'}}>CEO Cabo Frio 2026</p></div>
           </div>
           <Avatar name={user.nome} size={34}/>
@@ -380,13 +380,13 @@ function Login({onLogin}){
   };
   return(<div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'var(--sidebar)',padding:16,position:'relative',overflow:'hidden'}}>
     <div style={{position:'absolute',inset:0,overflow:'hidden',pointerEvents:'none'}}>
-      <div style={{position:'absolute',top:'-15%',right:'-10%',width:500,height:500,background:'radial-gradient(circle,rgba(99,102,241,.15) 0%,transparent 70%)',borderRadius:'50%'}}/>
+      <div style={{position:'absolute',top:'-15%',right:'-10%',width:500,height:500,background:'radial-gradient(circle,rgba(89,48,226,.15) 0%,transparent 70%)',borderRadius:'50%'}}/>
       <div style={{position:'absolute',bottom:'-15%',left:'-10%',width:400,height:400,background:'radial-gradient(circle,rgba(124,58,237,.1) 0%,transparent 70%)',borderRadius:'50%'}}/>
       <div style={{position:'absolute',inset:0,backgroundImage:'radial-gradient(rgba(255,255,255,.025) 1px,transparent 1px)',backgroundSize:'30px 30px'}}/>
     </div>
     <div className="fu" style={{width:'100%',maxWidth:420,position:'relative',zIndex:1}}>
       <div style={{textAlign:'center',marginBottom:'2.5rem'}}>
-        <div style={{width:68,height:68,background:'linear-gradient(135deg,#4F46E5,#7C3AED)',borderRadius:22,display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px',boxShadow:'0 10px 36px rgba(99,102,241,.55)'}}>{ICON.bolt}</div>
+        <div style={{width:68,height:68,background:'linear-gradient(135deg,#5930E2,#7C3AED)',borderRadius:22,display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px',boxShadow:'0 10px 36px rgba(89,48,226,.55)'}}>{ICON.bolt}</div>
         <h1 style={{fontSize:27,fontWeight:700,color:'#fff',marginBottom:6}}>Lançamentos Notas</h1>
         <p style={{fontSize:14,color:'rgba(255,255,255,.38)',fontWeight:400}}>CEO Cabo Frio · Sistema de Avaliações 2026</p>
       </div>
@@ -441,7 +441,7 @@ function Dash({mobile,user}){
   const byBase={};data.forEach(r=>{if(r.base)byBase[r.base]=(byBase[r.base]||0)+1;});
   const topB=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,6),maxB=topB[0]?.[1]||1;
   const rec=[...data].reverse().slice(0,5);
-  const stats=[{n:total,l:'Total',c:'#4F46E5',bg:'linear-gradient(135deg,#4F46E5,#6366F1)',sh:'rgba(99,102,241,.3)'},{n:aprov,l:'Aprovados',c:'#059669',bg:'linear-gradient(135deg,#059669,#10B981)',sh:'rgba(5,150,105,.3)'},{n:reprov,l:'Reprovados',c:'#DC2626',bg:'linear-gradient(135deg,#DC2626,#EF4444)',sh:'rgba(220,38,38,.3)'},{n:pend,l:'Pendentes',c:'#D97706',bg:'linear-gradient(135deg,#D97706,#F59E0B)',sh:'rgba(217,119,6,.3)'}];
+  const stats=[{n:total,l:'Total',c:'#5930E2',bg:'linear-gradient(135deg,#5930E2,#7C5CFF)',sh:'rgba(89,48,226,.3)'},{n:aprov,l:'Aprovados',c:'#059669',bg:'linear-gradient(135deg,#059669,#2EAA5C)',sh:'rgba(5,150,105,.3)'},{n:reprov,l:'Reprovados',c:'#DC2626',bg:'linear-gradient(135deg,#DC2626,#EF4444)',sh:'rgba(220,38,38,.3)'},{n:pend,l:'Pendentes',c:'#D97706',bg:'linear-gradient(135deg,#D97706,#F59E0B)',sh:'rgba(217,119,6,.3)'}];
   if(error)return <div><div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Dashboard</h1></div><div className="fu1"><ErrorState msg={error} onRetry={load}/></div></div>;
 
   // SYSTEM Dashboard com overview financeiro
@@ -454,12 +454,12 @@ function Dash({mobile,user}){
       {loading?<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
         {[1,2,3,4].map(i=><div key={i} style={{background:'var(--surface)',borderRadius:'var(--r)',padding:'1.25rem',border:'1px solid var(--border)'}}><Skeleton h={36} w="60px" m="0 0 8px 0"/><Skeleton h={14} w="80px" m="0"/></div>)}
       </div>:<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
-        <div style={{background:'linear-gradient(135deg,#4F46E5,#6366F1)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(99,102,241,.3)',position:'relative',overflow:'hidden'}}>
+        <div style={{background:'linear-gradient(135deg,#5930E2,#7C5CFF)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(89,48,226,.3)',position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
           <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{clientes.length}</div>
           <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>Clientes</div>
         </div>
-        <div style={{background:'linear-gradient(135deg,#059669,#10B981)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)',position:'relative',overflow:'hidden'}}>
+        <div style={{background:'linear-gradient(135deg,#059669,#2EAA5C)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)',position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
           <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>R$ {receitaTotal.toFixed(2)}</div>
           <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>Receita Total</div>
@@ -492,7 +492,7 @@ function Dash({mobile,user}){
             const maxR=Math.max(...clientes.map(x=>(x.slotsTotal||0)*(x.valorSlot||0)),1);
             return <div key={c.id} className="chart-row">
               <span className="chart-lbl" style={{minWidth:100}}>{c.nome?.length>18?c.nome.slice(0,18)+'…':c.nome}</span>
-              <div className="chart-track"><div className="chart-bar" style={{width:Math.round(((c.slotsTotal||0)*(c.valorSlot||0))/maxR*100)+'%',background:'linear-gradient(90deg,#4F46E5,#818CF8)'}}/></div>
+              <div className="chart-track"><div className="chart-bar" style={{width:Math.round(((c.slotsTotal||0)*(c.valorSlot||0))/maxR*100)+'%',background:'linear-gradient(90deg,#5930E2,#9B7FFF)'}}/></div>
               <span className="chart-val">R$ {((c.slotsTotal||0)*(c.valorSlot||0)).toFixed(0)}</span>
             </div>;
           })}
@@ -546,7 +546,7 @@ function Dash({mobile,user}){
         <p className="sec-h">Por Base</p>
         {topB.map(([b,n])=><div key={b} className="chart-row">
           <span className="chart-lbl">{b}</span>
-          <div className="chart-track"><div className="chart-bar" style={{width:Math.round(n/maxB*100)+'%',background:'linear-gradient(90deg,#4F46E5,#818CF8)'}}/></div>
+          <div className="chart-track"><div className="chart-bar" style={{width:Math.round(n/maxB*100)+'%',background:'linear-gradient(90deg,#5930E2,#9B7FFF)'}}/></div>
           <span className="chart-val">{n}</span>
         </div>)}
         {!topB.length&&<p style={{fontSize:13,color:'var(--text3)'}}>{loading?'Carregando...':'Importe os registros históricos.'}</p>}
@@ -654,7 +654,7 @@ function AuditLog({toast_}){
             {loading?[1,2,3].map(i=><tr key={i}>{[1,2,3,4].map(j=><td key={j} className="td"><Skeleton h={14} w={j===0?'140px':j===1?'100px':j===2?'80px':'200px'} r="4" m="0"/></td>)}</tr>):!log.length?<tr><td colSpan={4} style={{textAlign:'center',padding:'3rem'}}><EmptyState title="Nenhum registro" desc="Nenhuma ação registrada ainda."/></td></tr>:log.map((e,i)=><tr key={e.id||i}>
               <td className="td" style={{fontFamily:'var(--mono)',fontSize:11.5}}>{new Date(e.ts||e.createdAt).toLocaleString('pt-BR')}</td>
               <td className="td" style={{fontWeight:600}}>{e.username||e.createdBy||'—'}</td>
-              <td className="td"><span className="badge" style={{background:'rgba(99,102,241,.1)',color:'#4F46E5'}}>{e.action||'—'}</span></td>
+              <td className="td"><span className="badge" style={{background:'rgba(89,48,226,.1)',color:'#5930E2'}}>{e.action||'—'}</span></td>
               <td className="td" style={{fontSize:13,color:'var(--text2)'}}>{e.detail||e.id||''}</td>
             </tr>)}
           </tbody>
@@ -761,7 +761,7 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
         <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
           <div style={{textAlign:'center',flexShrink:0}}>
             {form.fotoCandidato?<img src={form.fotoCandidato} style={{width:80,height:80,borderRadius:'50%',objectFit:'cover',border:'3px solid var(--primary)',boxShadow:'0 0 0 4px var(--primary-glow)'}}/>
-            :<div style={{width:80,height:80,borderRadius:'50%',background:'linear-gradient(135deg,#4F46E5,#7C3AED)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:30,color:'#fff',boxShadow:'0 4px 16px rgba(99,102,241,.3)'}}>{(form.nomes||'?')[0]?.toUpperCase()||'👤'}</div>}
+            :<div style={{width:80,height:80,borderRadius:'50%',background:'linear-gradient(135deg,#5930E2,#7C3AED)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:30,color:'#fff',boxShadow:'0 4px 16px rgba(89,48,226,.3)'}}>{(form.nomes||'?')[0]?.toUpperCase()||'👤'}</div>}
             <button className="btn ghost sm" style={{marginTop:8,fontSize:12}} onClick={()=>photoRef.current.click()}>{ICON.cam}Foto</button>
             {form.fotoCandidato&&<button className="btn ghost sm" style={{marginTop:4,color:'var(--danger)',fontSize:11,display:'block',width:'100%'}} onClick={()=>upd('fotoCandidato','')}>Remover</button>}
             <input ref={photoRef} type="file" accept="image/*" style={{display:'none'}} onChange={photo}/>
@@ -856,7 +856,7 @@ function Reports({mobile}){
       </div>
     </div>
     <div className="fu2" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
-      {[{n:total,l:'No Período',c:'#4F46E5',bg:'linear-gradient(135deg,#4F46E5,#6366F1)'},{n:aprov,l:'Aprovados',c:'#059669',bg:'linear-gradient(135deg,#059669,#10B981)'},{n:reprov,l:'Reprovados',c:'#DC2626',bg:'linear-gradient(135deg,#DC2626,#EF4444)'},{n:ausente,l:'Ausentes',c:'#D97706',bg:'linear-gradient(135deg,#D97706,#F59E0B)'}].map((s,i)=><div key={i} style={{background:s.bg,borderRadius:'var(--r)',padding:'1.25rem',boxShadow:`0 5px 18px ${s.c}33`,position:'relative',overflow:'hidden'}}>
+      {[{n:total,l:'No Período',c:'#5930E2',bg:'linear-gradient(135deg,#5930E2,#7C5CFF)'},{n:aprov,l:'Aprovados',c:'#059669',bg:'linear-gradient(135deg,#059669,#2EAA5C)'},{n:reprov,l:'Reprovados',c:'#DC2626',bg:'linear-gradient(135deg,#DC2626,#EF4444)'},{n:ausente,l:'Ausentes',c:'#D97706',bg:'linear-gradient(135deg,#D97706,#F59E0B)'}].map((s,i)=><div key={i} style={{background:s.bg,borderRadius:'var(--r)',padding:'1.25rem',boxShadow:`0 5px 18px ${s.c}33`,position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',right:-8,top:-8,width:58,height:58,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
         <div style={{fontSize:30,fontWeight:800,color:'#fff'}}>{s.n}</div>
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',fontWeight:500}}>{s.l}</div>
@@ -875,7 +875,7 @@ function Reports({mobile}){
               <XAxis type="number" hide/>
               <YAxis type="category" dataKey="name" tick={{fontSize:11,fill:'var(--text2)'}} width={80}/>
               <Tooltip contentStyle={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:8,fontSize:12}}/>
-              <Bar dataKey="total" fill="#4F46E5" radius={[0,4,4,0]} maxBarSize={16}/>
+              <Bar dataKey="total" fill="#5930E2" radius={[0,4,4,0]} maxBarSize={16}/>
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -1212,12 +1212,12 @@ function AdminDash({mobile,user,toast_}){
     {loading?<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
       {[1,2,3,4].map(i=><div key={i} style={{background:'var(--surface)',borderRadius:'var(--r)',padding:'1.25rem',border:'1px solid var(--border)'}}><Skeleton h={32} w="50px" m="0 0 6px 0"/><Skeleton h={14} w="80px" m="0"/></div>)}
     </div>:<><div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
-      <div style={{background:'linear-gradient(135deg,#059669,#10B981)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)',position:'relative',overflow:'hidden'}}>
+      <div style={{background:'linear-gradient(135deg,#059669,#2EAA5C)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
         <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{cliente?.slotsUsados||0}<span style={{fontSize:16}}>/{cliente?.slotsTotal||0}</span></div>
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:3,fontWeight:500}}>Slots Utilizados</div>
       </div>
-      <div style={{background:baixaLicenca?'linear-gradient(135deg,#D97706,#F59E0B)':'linear-gradient(135deg,#4F46E5,#6366F1)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:baixaLicenca?'0 6px 20px rgba(217,119,6,.3)':'0 6px 20px rgba(99,102,241,.3)',position:'relative',overflow:'hidden'}}>
+      <div style={{background:baixaLicenca?'linear-gradient(135deg,#D97706,#F59E0B)':'linear-gradient(135deg,#5930E2,#7C5CFF)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:baixaLicenca?'0 6px 20px rgba(217,119,6,.3)':'0 6px 20px rgba(89,48,226,.3)',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
         <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{slotsLivres}</div>
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:3,fontWeight:500}}>Slots Disponíveis</div>
@@ -1346,7 +1346,7 @@ function Clientes({user,toast_}){
               <td className="td" style={{textAlign:'center'}}>
                 <span style={{color:c.slotsUsados>=(c.slotsTotal||1)*0.9?'var(--danger)':'var(--text2)',fontWeight:600}}>{c.slotsUsados||0}</span>
                 {c.slotsTotal>0&&<div className="progress" style={{marginTop:4,height:5,maxWidth:80,marginLeft:'auto',marginRight:'auto'}}>
-                  <div className="progress-fill" style={{width:Math.min(100,((c.slotsUsados||0)/(c.slotsTotal||1)*100))+'%',background:((c.slotsUsados||0)>=c.slotsTotal)?'#DC2626':'linear-gradient(90deg,#4F46E5,#818CF8)'}}/>
+                  <div className="progress-fill" style={{width:Math.min(100,((c.slotsUsados||0)/(c.slotsTotal||1)*100))+'%',background:((c.slotsUsados||0)>=c.slotsTotal)?'#DC2626':'linear-gradient(90deg,#5930E2,#9B7FFF)'}}/>
                 </div>}
               </td>
               <td className="td" style={{textAlign:'right',fontSize:13}}>R$ {parseFloat(c.valorSlot||0).toFixed(2)}</td>
@@ -1411,15 +1411,15 @@ function Licencas({user,toast_}){
   return(<div>
     <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Licenças</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>Gerencie suas licenças e solicitações</p></div>
     <div className="fu1" style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:13,marginBottom:20}}>
-      <div style={{background:'linear-gradient(135deg,#4F46E5,#6366F1)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(99,102,241,.3)'}}>
+      <div style={{background:'linear-gradient(135deg,#5930E2,#7C5CFF)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(89,48,226,.3)'}}>
         <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{cliente?.slotsTotal||0}</div>
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)'}}>Total de Licenças</div>
       </div>
-      <div style={{background:'linear-gradient(135deg,#059669,#10B981)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)'}}>
+      <div style={{background:'linear-gradient(135deg,#059669,#2EAA5C)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)'}}>
         <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{cliente?.slotsUsados||0}</div>
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)'}}>Em Uso</div>
       </div>
-      <div style={{background:slotsLivres<=3?'linear-gradient(135deg,#D97706,#F59E0B)':'linear-gradient(135deg,#059669,#10B981)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(217,119,6,.3)'}}>
+      <div style={{background:slotsLivres<=3?'linear-gradient(135deg,#D97706,#F59E0B)':'linear-gradient(135deg,#059669,#2EAA5C)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(217,119,6,.3)'}}>
         <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{slotsLivres}</div>
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)'}}>Disponíveis</div>
       </div>
