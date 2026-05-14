@@ -1,5 +1,6 @@
 'use client';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { applyBusinessRules, calcISBN, getBaremo, getCargo, getIT, getEmpresaData, calcStatusProvaOnline, calcStatusProvaTeorica, calcStatusParcial, calcResultadoFinal, BASE_UO_REGIAO, PROCESSOS_MAP } from '../lib/business';
 
 const BASES=["ANGRA DOS REIS","ARARUAMA","CABO FRIO","CAMPOS","CANTAGALO","ENEL RIO","ITAMBI","ITAPERUNA","MACAÉ","MAGÉ","NITERÓI","PÁDUA","PETRÓPOLIS","RESENDE","SÃO GONÇALO","SÃO PEDRO DA ALDEIA","TANGUÁ","TERESÓPOLIS"];
 const PEDIDOS=["RENOVAÇÃO DA HAR","1ª AVALIAÇÃO","1ª REAVALIAÇÃO","2ª REAVALIAÇÃO","HI PO","NO SHOW","2ª VIA DE HAR"];
@@ -45,6 +46,7 @@ input,select,textarea,button{font-family:var(--font)}
 @keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
 @keyframes toastIn{from{opacity:0;transform:translateX(110%)}to{opacity:1;transform:translateX(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{0%{background-position:200% 0}to{background-position:-200% 0}}
 
 .fu{animation:fadeUp .4s var(--ease) both}
 .fu1{animation:fadeUp .4s .06s var(--ease) both}
@@ -283,6 +285,9 @@ function Login({onLogin}){
   </div>);
 }
 
+function Skeleton({h=14,w='100%',r=6,m='0 0 10px 0'}){return <div style={{height:h,width:w,borderRadius:r,background:'linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite',margin:m}}/>}
+function EmptyState({icon,title,desc}){return <div style={{textAlign:'center',padding:'3rem 1rem',color:'var(--text3)'}}><div style={{fontSize:40,marginBottom:12,opacity:.3}}>{icon||ICON.list}</div><p style={{fontSize:15,fontWeight:600,color:'var(--text2)',marginBottom:4}}>{title||'Nenhum dado'}</p><p style={{fontSize:13}}>{desc||'Nenhum registro encontrado'}</p></div>}
+
 function Dash({mobile}){
   const [data,setData]=useState([]);const [loading,setLoading]=useState(true);
   useEffect(()=>{api('records').then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});},[]);
@@ -293,13 +298,15 @@ function Dash({mobile}){
   const stats=[{n:total,l:'Total',c:'#4F46E5',bg:'linear-gradient(135deg,#4F46E5,#6366F1)',sh:'rgba(99,102,241,.3)'},{n:aprov,l:'Aprovados',c:'#059669',bg:'linear-gradient(135deg,#059669,#10B981)',sh:'rgba(5,150,105,.3)'},{n:reprov,l:'Reprovados',c:'#DC2626',bg:'linear-gradient(135deg,#DC2626,#EF4444)',sh:'rgba(220,38,38,.3)'},{n:pend,l:'Pendentes',c:'#D97706',bg:'linear-gradient(135deg,#D97706,#F59E0B)',sh:'rgba(217,119,6,.3)'}];
   return(<div>
     <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Dashboard</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>Visão geral das avaliações</p></div>
-    <div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
+    {loading?<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
+      {[1,2,3,4].map(i=><div key={i} style={{background:'var(--surface)',borderRadius:'var(--r)',padding:'1.25rem',border:'1px solid var(--border)'}}><Skeleton h={36} w="60px" m="0 0 8px 0"/><Skeleton h={14} w="80px" m="0"/></div>)}
+    </div>:<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
       {stats.map((s,i)=><div key={i} style={{background:s.bg,borderRadius:'var(--r)',padding:'1.25rem',boxShadow:`0 6px 20px ${s.sh}`,position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
         <div style={{fontSize:32,fontWeight:800,color:'#fff',lineHeight:1}}>{s.n}</div>
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>{s.l}</div>
       </div>)}
-    </div>
+    </div>}
     <div className="fu2" style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:16,marginBottom:16}}>
       <div className="card" style={{padding:'1.25rem'}}>
         <p className="sec-h">Taxa de Aprovação</p>
@@ -329,25 +336,42 @@ function Dash({mobile}){
     </div>
     <div className="card fu3">
       <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0}}>Últimas Avaliações</p></div>
-      {rec.map((r,i)=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 1.25rem',borderBottom:i<rec.length-1?'1px solid var(--border)':'none'}}>
+      {loading?[1,2,3].map(i=><div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 1.25rem',borderBottom:i<3?'1px solid var(--border)':'none'}}>
+        <Skeleton h={34} w="34px" r="50%" m="0"/><div style={{flex:1}}><Skeleton h={14} w="140px" m="0 0 6px 0"/><Skeleton h={12} w="200px" m="0"/></div>
+      </div>):rec.map((r,i)=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 1.25rem',borderBottom:i<rec.length-1?'1px solid var(--border)':'none'}}>
         <div style={{display:'flex',alignItems:'center',gap:12}}>
           <Avatar name={r.nomes} size={34}/>
           <div><p style={{fontSize:14,fontWeight:600}}>{r.nomes||'—'}</p><p style={{fontSize:12,color:'var(--text3)'}}>{r.empresa||'—'} · {r.dataRealizacao||''}</p></div>
         </div>
         <Badge v={r.resultadoFinal}/>
       </div>)}
-      {!rec.length&&<p style={{fontSize:13,color:'var(--text3)',padding:'1.5rem 1.25rem',textAlign:'center'}}>{loading?'Carregando...':'Nenhum registro ainda.'}</p>}
+      {!loading&&!rec.length&&<EmptyState title="Nenhum registro" desc="Nenhuma avaliação cadastrada ainda."/>}
     </div>
   </div>);
+}
+
+function ConfirmModal({show,title,msg,onConfirm,onCancel}){
+  if(!show)return null;
+  return <div className="overlay" onClick={onCancel}>
+    <div className="modal" style={{maxWidth:400}} onClick={e=>e.stopPropagation()}>
+      <div className="modal-hd"><h3 style={{fontSize:16,fontWeight:700}}>{title||'Confirmação'}</h3><button className="btn ghost icon" onClick={onCancel}>{ICON.x}</button></div>
+      <div className="modal-bd"><p style={{fontSize:14,color:'var(--text2)',lineHeight:1.5}}>{msg||'Tem certeza?'}</p>
+      <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:8}}>
+        <button className="btn" onClick={onCancel}>Cancelar</button>
+        <button className="btn danger" onClick={onConfirm}>{ICON.trash}Excluir</button>
+      </div></div>
+    </div>
+  </div>;
 }
 
 function RecList({cw,ia,mobile,onEdit,onNew,toast_}){
   const [data,setData]=useState([]);const [loading,setLoading]=useState(true);
   const [q,setQ]=useState('');const [base,setBase]=useState('');const [res,setRes]=useState('');const [page,setPage]=useState(0);
+  const [confirmDel,setConfirmDel]=useState(null);
   const PER=20;const fileRef=useRef(null);
   const load=useCallback(()=>{setLoading(true);api('records?'+new URLSearchParams({q,base,resultado:res})).then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});},[q,base,res]);
   useEffect(()=>{load();},[load]);
-  const del=async id=>{if(!confirm('Excluir este registro permanentemente?'))return;await api('records/'+id,{method:'DELETE'});toast_('Registro excluído');load();};
+  const del=async id=>{await api('records/'+id,{method:'DELETE'});toast_('Registro excluído');setConfirmDel(null);load();};
   const imp=async f=>{const t=await f.text();const a=JSON.parse(t);const r=await api('records',{method:'POST',body:JSON.stringify(Array.isArray(a)?a:[a])});toast_(`${r.imported||0} registros importados!`);load();};
   const pages=Math.ceil(data.length/PER),paged=data.slice(page*PER,(page+1)*PER);
   if(mobile)return(<div>
@@ -359,7 +383,10 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_}){
       <div style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'var(--text3)',pointerEvents:'none'}}>{ICON.search}</div>
       <input className="field" style={{paddingLeft:36}} placeholder="Buscar nome, empresa, CPF..." value={q} onChange={e=>{setQ(e.target.value);setPage(0);}}/>
     </div>
-    {paged.map(r=><div key={r.id} className="card fu" style={{padding:14,marginBottom:10,cursor:'pointer'}} onClick={()=>cw&&onEdit(r)}>
+    {loading?[1,2,3].map(i=><div key={i} className="card fu" style={{padding:14,marginBottom:10}}>
+      <div style={{display:'flex',gap:10,alignItems:'center',marginBottom:8}}><Skeleton h={40} w="40px" r="50%" m="0"/><div style={{flex:1}}><Skeleton h={14} w="140px" m="0 0 6px 0"/><Skeleton h={12} w="100px" m="0"/></div></div>
+      <Skeleton h={12} w="80px" m="0"/>
+    </div>):paged.map(r=><div key={r.id} className="card fu" style={{padding:14,marginBottom:10,cursor:'pointer'}} onClick={()=>cw&&onEdit(r)}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
         <div style={{display:'flex',gap:10,alignItems:'center'}}>
           {r.fotoCandidato?<img src={r.fotoCandidato} style={{width:40,height:40,borderRadius:'50%',objectFit:'cover'}}/>:<Avatar name={r.nomes} size={40}/>}
@@ -372,7 +399,7 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_}){
         {r.dataRealizacao&&<span className="badge gray">{r.dataRealizacao}</span>}
       </div>
     </div>)}
-    {!paged.length&&!loading&&<div style={{textAlign:'center',padding:'3rem 0',color:'var(--text3)'}}>Nenhum registro encontrado</div>}
+    {!loading&&!paged.length&&<EmptyState title="Nenhum registro" desc="Nenhuma avaliação encontrada com esses filtros."/>}
     {pages>1&&<div style={{display:'flex',justifyContent:'center',gap:8,marginTop:16,alignItems:'center'}}>
       <button className="btn sm" disabled={page===0} onClick={()=>setPage(p=>p-1)}>‹ Ant</button>
       <span style={{fontSize:13,color:'var(--text3)'}}>{page+1}/{pages}</span>
@@ -424,11 +451,13 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_}){
               {cw&&<td className="td" style={{textAlign:'right'}}>
                 <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
                   <button className="btn sm icon" onClick={()=>onEdit(r)}>{ICON.edit}</button>
-                  {ia&&<button className="btn sm icon danger" onClick={()=>del(r.id)}>{ICON.trash}</button>}
+                  {ia&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(r)}>{ICON.trash}</button>}
                 </div>
               </td>}
             </tr>)}
-            {!paged.length&&<tr><td colSpan="8" style={{textAlign:'center',padding:'3rem',color:'var(--text3)'}}>{loading?'Carregando...':'Nenhum registro. Importe dados ou crie uma nova avaliação.'}</td></tr>}
+            {loading?[1,2,3,4,5].map(i=><tr key={i}>{[0,1,2,3,4,5,6,7].slice(0,cw?8:7).map(j=><td key={j} className="td"><Skeleton h={14} w={j===0?'32px':j===2?'100px':j===4?'120px':j===6?'70px':'140px'} r="4" m="0"/></td>)}</tr>):!paged.length&&<tr><td colSpan={cw?8:7} style={{textAlign:'center',padding:'3rem',color:'var(--text3)'}}>
+            <EmptyState title="Nenhum registro" desc="Importe dados via JSON ou crie uma nova avaliação."/>
+          </td></tr>}
           </tbody>
         </table>
       </div>
@@ -438,6 +467,7 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_}){
       <span style={{fontSize:13,color:'var(--text3)',fontFamily:'var(--mono)'}}>Página {page+1} de {pages}</span>
       <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(p=>p+1)}>Próxima ›</button>
     </div>}
+    <ConfirmModal show={confirmDel} title="Excluir Avaliação" msg={`Excluir permanentemente a avaliação de "${confirmDel?.nomes||'?'}"? Esta ação não pode ser desfeita.`} onConfirm={()=>del(confirmDel.id)} onCancel={()=>setConfirmDel(null)}/>
   </div>);
 }
 
@@ -445,7 +475,21 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
   const [form,setForm]=useState(()=>rec?{...emptyForm(),...rec}:emptyForm());
   const [tab,setTab]=useState(0);const [errors,setErrors]=useState({});const [saving,setSaving]=useState(false);
   const photoRef=useRef(null);
-  const upd=(f,v)=>setForm(p=>{const n={...p,[f]:v};if(f==='cpf')n.isbn=v.replace(/\D/g,'').length===11?'721449704000116'+v.replace(/\D/g,''):'';return n;});
+  const upd=(f,v)=>setForm(p=>{
+    const n={...p,[f]:v};
+    if(f==='cpf')n.isbn=calcISBN(v);
+    if(f==='empresa'){const ed=getEmpresaData(v);if(ed){n.emailEmpresa=ed.email;n.dataInicioAssinatura=ed.dataInicio;n.dataFimAssinatura=ed.dataFim;n.associadoSindistal=ed.associado?'SIM':'NÃO';n.docContratual=ed.docContratual;n.nRenovacao=String(ed.valor);}n.estado='RJ';}
+    if(f==='base'){const m=BASE_UO_REGIAO[v];if(m){n.unidadeOperacional=m.UO;n.regiao=m.REGIAO;}}
+    if(f==='processo'){n.cargosProcessos=getCargo(v);['1','2','3','4','5','6'].forEach(x=>{n['it'+x]=getIT(v);});['1','2','3','4','5','6'].forEach(x=>{if(n['avaliacao'+x])n['baremo'+x]=getBaremo(v,n['avaliacao'+x]);});}
+    if(f.startsWith('avaliacao')&&f.length===10){const idx=f.slice(-1);n['baremo'+idx]=getBaremo(n.processo,v);}
+    if(f==='avaliacaoOnline')n.statusProvaOnline=calcStatusProvaOnline(v);
+    if(f==='notaProva')n.statusProvaTeorica=calcStatusProvaTeorica(v);
+    ['1','2','3','4','5','6'].forEach(x=>{if(f==='statusProva'+x)n.statusParcial=calcStatusParcial(n);});
+    if(f==='statusProvaTeorica'||f==='pedido'){n.statusParcial=calcStatusParcial(n);n.resultadoFinal=calcResultadoFinal(n);}
+    if(n.statusParcial&&f!=='pedido'&&f!=='statusProvaTeorica')n.resultadoFinal=calcResultadoFinal(n);
+    return n;
+  });
+  useEffect(()=>{if(!errors)return;const e={...errors};let changed=false;['nomes','pedido','empresa','base','processo'].forEach(k=>{if(e[k]&&form[k]){delete e[k];changed=true;}});if(changed)setErrors(e);},[form.nomes,form.pedido,form.empresa,form.base,form.processo]);
   const save=async()=>{
     const e={};if(!form.nomes)e.nomes='Obrigatório';if(!form.pedido)e.pedido='Obrigatório';if(!form.empresa)e.empresa='Obrigatório';if(!form.base)e.base='Obrigatório';if(!form.processo)e.processo='Obrigatório';
     setErrors(e);if(Object.keys(e).length){toast_('Preencha os campos obrigatórios','error');return;}
@@ -455,17 +499,22 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
     if(r.error)toast_(r.error,'error');else onSave();
   };
   const photo=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>upd('fotoCandidato',ev.target.result);r.readAsDataURL(f);};
+  const errStyle=field=>errors[field]?{borderColor:'var(--danger)',background:'var(--danger-bg)'}:{};
   const F=({label,field,type='text',opts,auto,req,ph})=>(<div>
     <label className="label">{label}{req&&<span className="req">*</span>}</label>
-    {opts?<select className={`field${auto?' auto':''}`} value={form[field]||''} onChange={e=>upd(field,e.target.value)} disabled={auto}>
+    {opts?<select className={`field${auto?' auto':''}`} style={errStyle(field)} value={form[field]||''} onChange={e=>upd(field,e.target.value)} disabled={auto}>
       <option value="">Selecionar...</option>{opts.map(o=><option key={o} value={o}>{typeof o==='string'?o.replace(/_/g,' '):o}</option>)}
-    </select>:<input className={`field${auto?' auto':''}`} type={type} value={form[field]||''} onChange={e=>upd(field,e.target.value)} readOnly={auto} placeholder={ph}/>}
+    </select>:<input className={`field${auto?' auto':''}`} style={errStyle(field)} type={type} value={form[field]||''} onChange={e=>upd(field,e.target.value)} readOnly={auto} placeholder={ph}/>}
     {errors[field]&&<p className="err-msg">{errors[field]}</p>}
   </div>);
+  const ativOpts=useMemo(()=>{
+    const p=PROCESSOS_MAP[form.processo];
+    return p?p.atividades.map(a=>({label:a.a.replace(/_/g,' '),value:a.a})):[];
+  },[form.processo]);
   const PB=({n})=>(<div className="ph-block">
     <div className="ph-title">Avaliação Prática {n}</div>
     <div style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr 1fr',gap:12,marginBottom:10}}>
-      <div><label className="label">Atividade {n}</label><select className="field" value={form['avaliacao'+n]||''} onChange={e=>upd('avaliacao'+n,e.target.value)}><option value="">Selecionar...</option></select></div>
+      <div><label className="label">Atividade {n}</label><select className="field" value={form['avaliacao'+n]||''} onChange={e=>upd('avaliacao'+n,e.target.value)}><option value="">Selecionar...</option>{ativOpts.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></div>
       <F label="Baremo K" field={`baremo${n}`} auto/>
       <div><label className="label">Status {n}</label><select className="field" value={form['statusProva'+n]||''} onChange={e=>upd('statusProva'+n,e.target.value)}><option value="">—</option>{STATUS_PRATICA.map(s=><option key={s}>{s}</option>)}</select></div>
     </div>
@@ -562,8 +611,8 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
 }
 
 function Reports({mobile}){
-  const [data,setData]=useState([]);const [dtIni,setDtIni]=useState('');const [dtFim,setDtFim]=useState('');const [fb,setFb]=useState('');
-  useEffect(()=>{api('records?'+new URLSearchParams({dtIni,dtFim,base:fb})).then(r=>{if(Array.isArray(r))setData(r);});},[dtIni,dtFim,fb]);
+  const [data,setData]=useState([]);const [loading,setLoading]=useState(false);const [dtIni,setDtIni]=useState('');const [dtFim,setDtFim]=useState('');const [fb,setFb]=useState('');
+  useEffect(()=>{setLoading(true);api('records?'+new URLSearchParams({dtIni,dtFim,base:fb})).then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});},[dtIni,dtFim,fb]);
   const total=data.length,aprov=data.filter(r=>r.resultadoFinal==='APROVADO'||r.resultadoFinal==='APROVADO 2').length,reprov=data.filter(r=>r.resultadoFinal==='REPROVADO').length,ausente=data.filter(r=>r.resultadoFinal==='AUSENTE').length,pend=total-aprov-reprov-ausente,tx=total?Math.round(aprov/total*100):0;
   const byBase={};data.forEach(r=>{if(r.base)byBase[r.base]=(byBase[r.base]||0)+1;});
   const topB=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,7),maxB=topB[0]?.[1]||1;
@@ -587,16 +636,18 @@ function Reports({mobile}){
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',fontWeight:500}}>{s.l}</div>
       </div>)}
     </div>
-    <div className="fu3" style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:16}}>
+    {loading?<div className="fu3" style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:16}}>
+      {[1,2].map(i=><div key={i} className="card" style={{padding:'1.25rem'}}><Skeleton h={14} w="100px" m="0 0 16px 0"/>{[1,2,3,4,5].map(j=><div key={j} className="chart-row"><Skeleton h={9} w="100%" r="6" m="0"/></div>)}</div>)}
+      <div className="card" style={{padding:'1.25rem'}}><Skeleton h={14} w="140px" m="0 0 16px 0"/>{[1,2,3,4].map(j=><div key={j} className="chart-row"><Skeleton h={9} w="100%" r="6" m="0"/></div>)}</div>
+      <div className="card" style={{padding:'1.25rem',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}><Skeleton h={64} w="100px" r="8" m="0 0 16px 0"/><Skeleton h={14} w="160px" m="0"/></div>
+    </div>:<div className="fu3" style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:16}}>
       <div className="card" style={{padding:'1.25rem'}}>
         <p className="sec-h">Por Base</p>
-        {topB.map(([b,n])=><div key={b} className="chart-row"><span className="chart-lbl">{b}</span><div className="chart-track"><div className="chart-bar" style={{width:Math.round(n/maxB*100)+'%',background:'linear-gradient(90deg,#4F46E5,#818CF8)'}}/></div><span className="chart-val">{n}</span></div>)}
-        {!topB.length&&<p style={{fontSize:13,color:'var(--text3)'}}>Sem dados</p>}
+        {topB.length?topB.map(([b,n])=><div key={b} className="chart-row"><span className="chart-lbl">{b}</span><div className="chart-track"><div className="chart-bar" style={{width:Math.round(n/maxB*100)+'%',background:'linear-gradient(90deg,#4F46E5,#818CF8)'}}/></div><span className="chart-val">{n}</span></div>):<p style={{fontSize:13,color:'var(--text3)'}}>Sem dados</p>}
       </div>
       <div className="card" style={{padding:'1.25rem'}}>
         <p className="sec-h">Top Processos</p>
-        {topP.map(([p,n])=><div key={p} className="chart-row"><span className="chart-lbl">{p}</span><div className="chart-track"><div className="chart-bar" style={{width:Math.round(n/maxP*100)+'%',background:'linear-gradient(90deg,#059669,#34D399)'}}/></div><span className="chart-val">{n}</span></div>)}
-        {!topP.length&&<p style={{fontSize:13,color:'var(--text3)'}}>Sem dados</p>}
+        {topP.length?topP.map(([p,n])=><div key={p} className="chart-row"><span className="chart-lbl">{p}</span><div className="chart-track"><div className="chart-bar" style={{width:Math.round(n/maxP*100)+'%',background:'linear-gradient(90deg,#059669,#34D399)'}}/></div><span className="chart-val">{n}</span></div>):<p style={{fontSize:13,color:'var(--text3)'}}>Sem dados</p>}
       </div>
       <div className="card" style={{padding:'1.25rem'}}>
         <p className="sec-h">Distribuição de Resultados</p>
@@ -617,14 +668,14 @@ function Reports({mobile}){
           <p style={{fontSize:13,color:'var(--text3)'}}>{aprov} aprovados de {total}</p>
         </div>
       </div>
-    </div>
+    </div>}
   </div>);
 }
 
 function Users({user,toast_}){
-  const [users,setUsers]=useState([]);const [show,setShow]=useState(false);const [editU,setEditU]=useState(null);
+  const [users,setUsers]=useState([]);const [loading,setLoading]=useState(true);const [show,setShow]=useState(false);const [editU,setEditU]=useState(null);
   const [form,setForm]=useState({username:'',password:'',nome:'',role:'COLABORADOR',permissions:'Somente Leitura'});const [err,setErr]=useState('');
-  useEffect(()=>{api('users').then(r=>{if(Array.isArray(r))setUsers(r);});},[]);
+  useEffect(()=>{api('users').then(r=>{if(Array.isArray(r))setUsers(r);setLoading(false);});},[]);
   const open=u=>{setForm(u?{...u,password:''}:{username:'',password:'',nome:'',role:'COLABORADOR',permissions:'Somente Leitura'});setEditU(u||null);setErr('');setShow(true);};
   const save=async()=>{
     if(!form.username||!form.nome)return setErr('Usuário e nome obrigatórios');
@@ -644,7 +695,7 @@ function Users({user,toast_}){
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:600}}>
           <thead><tr><th className="th" style={{width:48}}></th><th className="th">Nome</th><th className="th">Usuário</th><th className="th">Perfil</th><th className="th">Permissão</th><th className="th">Status</th><th className="th" style={{textAlign:'right'}}>Ações</th></tr></thead>
-          <tbody>{users.map(u=><tr key={u.id}>
+          <tbody>{loading?[1,2,3].map(i=><tr key={i}>{[0,1,2,3,4,5,6].map(j=><td key={j} className="td"><Skeleton h={14} w={j===0?'32px':j===6?'80px':'120px'} r="4" m="0"/></td>)}</tr>):users.length?users.map(u=><tr key={u.id}>
             <td className="td"><Avatar name={u.nome} size={32}/></td>
             <td className="td" style={{fontWeight:600}}>{u.nome}</td>
             <td className="td" style={{fontFamily:'var(--mono)',fontSize:12.5,color:'var(--text2)'}}>{u.username}</td>
@@ -657,7 +708,7 @@ function Users({user,toast_}){
                 {u.id!==user.id&&u.role!=='SYSTEM'&&<button className={`btn sm ${u.active?'danger':'success'}`} style={{fontSize:12,padding:'4px 10px'}} onClick={()=>toggle(u)}>{u.active?'Inativar':'Ativar'}</button>}
               </div>
             </td>
-          </tr>)}</tbody>
+          </tr>):<tr><td colSpan={7} style={{textAlign:'center',padding:'3rem',color:'var(--text3)'}}><EmptyState title="Nenhum usuário" desc="Nenhum usuário cadastrado ainda."/></td></tr>}</tbody>
         </table>
       </div>
     </div>

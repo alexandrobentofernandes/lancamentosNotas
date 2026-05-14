@@ -32,7 +32,7 @@ export async function POST(req) {
   // Bulk import
   if (Array.isArray(body)) {
     const count = await bulkImportRecords(body);
-    await addAudit(user.username, 'BULK_IMPORT', null, `${count} registros importados`);
+    await addAudit(user.username, 'BULK_IMPORT', `${count} registros importados`);
     return NextResponse.json({ imported: count });
   }
 

@@ -1,8 +1,9 @@
 export const metadata = {
   title: 'CEO Cabo Frio — Sistema de Avaliações',
   description: 'Sistema de Avaliações HAR — CEO Cabo Frio 2026',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
 }
+
+export const viewport = 'width=device-width, initial-scale=1, maximum-scale=1'
 
 export default function RootLayout({ children }) {
   return (
