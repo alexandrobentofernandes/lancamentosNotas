@@ -523,9 +523,28 @@ function AuditLog({toast_}){
 }
 
 function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
-  const [form,setForm]=useState(()=>rec?{...emptyForm(),...rec}:emptyForm());
+  const draftKey=rec?.id?'draft_'+rec.id:'draft_new';
+  const [form,setForm]=useState(()=>{
+    if(rec)return{...emptyForm(),...rec};
+    try{const d=localStorage.getItem(draftKey);if(d){const p=JSON.parse(d);if(p&&p.nomes)return{...emptyForm(),...p};}}catch{}
+    return emptyForm();
+  });
   const [tab,setTab]=useState(0);const [errors,setErrors]=useState({});const [saving,setSaving]=useState(false);
+  const [draftSaved,setDraftSaved]=useState(false);
   const photoRef=useRef(null);
+  const draftTimer=useRef(null);
+  useEffect(()=>{
+    if(rec||form===emptyForm())return;
+    if(draftTimer.current)clearTimeout(draftTimer.current);
+    draftTimer.current=setTimeout(()=>{
+      const s={};Object.keys(emptyForm()).forEach(k=>{if(k!=='fotoCandidato'&&form[k])s[k]=form[k];});
+      localStorage.setItem(draftKey,JSON.stringify(s));
+      setDraftSaved(true);
+      setTimeout(()=>setDraftSaved(false),2000);
+    },2000);
+    return()=>{if(draftTimer.current)clearTimeout(draftTimer.current);};
+  },[form,rec]);
+  const limparDraft=()=>{localStorage.removeItem(draftKey);toast_('Rascunho descartado');};
   const upd=(f,v)=>setForm(p=>{
     const n={...p,[f]:v};
     if(f==='cpf')n.isbn=calcISBN(v);
@@ -547,7 +566,7 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
     setSaving(true);
     const r=rec?.id?await api('records/'+rec.id,{method:'PUT',body:JSON.stringify({...form,updatedBy:user.nome})}):await api('records',{method:'POST',body:JSON.stringify({...form,createdBy:user.nome})});
     setSaving(false);
-    if(r.error)toast_(r.error,'error');else onSave();
+    if(r.error)toast_(r.error,'error');else{localStorage.removeItem(draftKey);onSave();}
   };
   const photo=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>upd('fotoCandidato',ev.target.result);r.readAsDataURL(f);};
   const errStyle=field=>errors[field]?{borderColor:'var(--danger)',background:'var(--danger-bg)'}:{};
@@ -580,9 +599,15 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
   const tabs=['Identificação','Avaliação','Práticas 1–3','Práticas 4–6','Resultado'];
   return(<div>
     <div className="fu" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:20,flexWrap:'wrap',gap:12}}>
-      <div><h1 style={{fontSize:22,fontWeight:700}}>{rec?'Editar':'Nova'} Avaliação</h1>{rec&&<p style={{fontSize:11,color:'var(--text3)',marginTop:3,fontFamily:'var(--mono)'}}>ID: {rec.id}</p>}</div>
+      <div><h1 style={{fontSize:22,fontWeight:700}}>{rec?'Editar':'Nova'} Avaliação</h1>
+        <div style={{display:'flex',alignItems:'center',gap:8,marginTop:2}}>
+          {rec&&<p style={{fontSize:11,color:'var(--text3)',fontFamily:'var(--mono)'}}>ID: {rec.id}</p>}
+          {draftSaved&&<span className="badge green" style={{fontSize:10}}>Rascunho salvo</span>}
+          {!rec&&!draftSaved&&localStorage.getItem(draftKey)&&<button className="btn ghost sm" style={{fontSize:10,color:'var(--text3)',padding:'2px 8px'}} onClick={limparDraft}>{ICON.x}Descartar rascunho</button>}
+        </div>
+      </div>
       <div style={{display:'flex',gap:8}}>
-        <button className="btn" onClick={onCancel}>Cancelar</button>
+        <button className="btn" onClick={()=>{localStorage.removeItem(draftKey);onCancel();}}>Cancelar</button>
         {cw&&<button className="btn primary" onClick={save} disabled={saving}>{saving?<><Spin/>Salvando...</>:<>{ICON.save}Salvar Avaliação</>}</button>}
       </div>
     </div>
@@ -854,7 +879,22 @@ function Cadastros({mobile,toast_}){
   const [showModal,setShowModal]=useState(false);
   const [editItem,setEditItem]=useState(null);
   const [confirmDel,setConfirmDel]=useState(null);
+  const importRef=useRef(null);
   const tipos=Object.keys(CAD_ICON);
+  const importCad=async f=>{
+    try{
+      const txt=await f.text();
+      const arr=JSON.parse(txt);
+      if(!Array.isArray(arr))return toast_('Arquivo deve conter uma lista','error');
+      let ok=0;
+      for(const item of arr){
+        const r=await api('cadastros',{method:'POST',body:JSON.stringify({tipo,...item})});
+        if(!r.error)ok++;
+      }
+      toast_(`${ok} registros importados!`);
+      load(tipo);
+    }catch(e){toast_('Erro ao importar: '+e,'error');}
+  };
   const tipo=tipos[tab];
 
   const load=useCallback(async t=>{
@@ -924,7 +964,11 @@ function Cadastros({mobile,toast_}){
           {CAD_ICON[tipo]} {tipo.charAt(0).toUpperCase()+tipo.slice(1)}
           <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{data[tipo]?.length||0} registros</span>
         </p>
-        <button className="btn primary sm" onClick={()=>openForm(null)}>{ICON.plus}Adicionar</button>
+        <div style={{display:'flex',gap:6}}>
+          <input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
+          <button className="btn sm amber-btn" onClick={()=>importRef.current?.click()}>{ICON.up}Importar</button>
+          <button className="btn primary sm" onClick={()=>openForm(null)}>{ICON.plus}Adicionar</button>
+        </div>
       </div>
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:500}}>
