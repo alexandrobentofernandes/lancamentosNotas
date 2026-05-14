@@ -159,7 +159,7 @@ tr:hover .td{background:rgba(89,48,226,.03)}
 .progress-fill{height:100%;border-radius:10px;transition:width .6s var(--ease)}
 
 .overlay{position:fixed;inset:0;background:rgba(26,26,46,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .2s both;overflow-y:auto}
-.modal{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:480px;box-shadow:var(--sh-lg);border:1px solid var(--border);overflow:hidden;animation:scaleIn .22s var(--ease) both;margin:auto}
+.modal{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:520px;box-shadow:var(--sh-lg);border:1px solid var(--border);overflow-y:auto;animation:scaleIn .22s var(--ease) both;margin:auto;max-height:calc(100vh - 48px)}
 .modal-hd{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
 .modal-bd{padding:1.5rem;display:flex;flex-direction:column;gap:16px}
 
