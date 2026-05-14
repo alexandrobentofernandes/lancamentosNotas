@@ -146,9 +146,12 @@ tr:hover .td{background:#F8FAFF}
 .ph-title{font-size:11.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .ph-title::before{content:'';width:3px;height:14px;background:var(--primary);border-radius:3px}
 
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:200}
-.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 4px 8px;gap:3px;cursor:pointer;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.3px;transition:var(--t)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom,0)}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 4px 6px;gap:2px;cursor:pointer;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.3px;transition:var(--t);position:relative}
 .bn-item.active{color:var(--primary)}
+.bn-item.active::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:3px;background:var(--primary);border-radius:0 0 4px 4px}
+.bn-item svg{transition:var(--t)}
+.bn-item.active svg{transform:scale(1.15)}
 
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}
@@ -324,7 +327,11 @@ export default function App(){
         {view==='gestao-licencas'&&user.role==='SYSTEM'&&<GestaoLicencas user={user} toast_={toast_}/>}
         </div>
       </main>
-      {mobile&&<nav className="bottom-nav">{nav.map(x=><div key={x.k} className={`bn-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)}>{ICON[x.i]}<span>{x.l}</span></div>)}</nav>}
+      {mobile&&<nav className="bottom-nav">{nav.slice(0,5).map(x=><div key={x.k} className={`bn-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)} style={{position:'relative'}}>
+        {ICON[x.i]}
+        {navBadges[x.k]?<span className="badge dot red" style={{position:'absolute',top:2,right:'50%',marginRight:-18,fontSize:9,padding:'1px 4px',minWidth:16,textAlign:'center'}}>{navBadges[x.k]}</span>:null}
+        <span>{x.l}</span>
+      </div>)}</nav>}
     </div>
   </>);
 }
@@ -603,7 +610,7 @@ function AuditLog({toast_}){
             <th className="th">Data/Hora</th><th className="th">Usuário</th><th className="th">Ação</th><th className="th">Detalhe</th>
           </tr></thead>
           <tbody>
-            {loading?[1,2,3].map(i=><tr key={i}>{[1,2,3,4].map(j=><td key={j} className="td"><Skeleton h={14} w={j===0?'140px':j===1?'100px':j===2?'80px':'200px'} r="4" m="0"/></td>)}</tr>):log.map((e,i)=><tr key={e.id||i}>
+            {loading?[1,2,3].map(i=><tr key={i}>{[1,2,3,4].map(j=><td key={j} className="td"><Skeleton h={14} w={j===0?'140px':j===1?'100px':j===2?'80px':'200px'} r="4" m="0"/></td>)}</tr>):!log.length?<tr><td colSpan={4} style={{textAlign:'center',padding:'3rem'}}><EmptyState title="Nenhum registro" desc="Nenhuma ação registrada ainda."/></td></tr>:log.map((e,i)=><tr key={e.id||i}>
               <td className="td" style={{fontFamily:'var(--mono)',fontSize:11.5}}>{new Date(e.ts||e.createdAt).toLocaleString('pt-BR')}</td>
               <td className="td" style={{fontWeight:600}}>{e.username||e.createdBy||'—'}</td>
               <td className="td"><span className="badge" style={{background:'rgba(99,102,241,.1)',color:'#4F46E5'}}>{e.action||'—'}</span></td>
