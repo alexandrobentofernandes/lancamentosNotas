@@ -187,7 +187,7 @@ export default function App(){
   const logout=()=>{localStorage.clear();setUser(null);setView('login');};
   const cw=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||(user.role==='COLABORADOR'&&user.permissions==='Leitura + Escrita'));
   const ia=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN');
-  const nav=[{k:'dashboard',i:'home',l:'Dashboard'},{k:'records',i:'list',l:'Avaliações'},...(cw()?[{k:'form',i:'plus',l:'Nova'}]:[]),{k:'reports',i:'chart',l:'Relatórios'},...(ia()?[{k:'users',i:'users',l:'Usuários'}]:[])];
+  const nav=[{k:'dashboard',i:'home',l:'Dashboard'},{k:'records',i:'list',l:'Avaliações'},...(cw()?[{k:'form',i:'plus',l:'Nova'}]:[]),{k:'cadastros',i:'list',l:'Cadastros'},{k:'reports',i:'chart',l:'Relatórios'},...(ia()?[{k:'users',i:'users',l:'Usuários'}]:[])];
   if(!user)return(<><style>{CSS}</style><Login onLogin={(u,t)=>{setUser(u);localStorage.setItem('user',JSON.stringify(u));localStorage.setItem('token',t);setView('dashboard');}}/></>);
   return(<>
     <style>{CSS}</style>
@@ -235,6 +235,7 @@ export default function App(){
         {view==='dashboard'&&<Dash mobile={mobile}/>}
         {view==='records'&&<RecList cw={cw()} ia={ia()} mobile={mobile} onEdit={r=>{setEditRec(r);setView('form');}} onNew={()=>{setEditRec(null);setView('form');}} toast_={toast_}/>}
         {view==='form'&&<RecForm rec={editRec} user={user} cw={cw()} mobile={mobile} onSave={()=>{toast_('Avaliação salva com sucesso!');setView('records');}} onCancel={()=>setView('records')} toast_={toast_}/>}
+        {view==='cadastros'&&<Cadastros mobile={mobile} toast_={toast_}/>}
         {view==='reports'&&<Reports mobile={mobile}/>}
         {view==='users'&&ia()&&<Users user={user} toast_={toast_}/>}
       </main>
@@ -736,6 +737,161 @@ function Users({user,toast_}){
           {err&&<div style={{background:'var(--danger-bg)',border:'1px solid #FECACA',borderRadius:8,padding:'9px 12px',fontSize:13,color:'var(--danger)',display:'flex',gap:7}}>{ICON.x}{err}</div>}
           <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:4}}>
             <button className="btn" onClick={()=>setShow(false)}>Cancelar</button>
+            <button className="btn primary" onClick={save}>{ICON.save}Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>}
+  </div>);
+}
+
+const CAD_ICON={pedidos:'📋',empresas:'🏢',processos:'⚙️',bases:'📍',avaliadores:'👤',motivos:'📌'};
+const CAD_COLS={
+  pedidos:[{k:'nome',l:'Pedido'}],
+  empresas:[{k:'nome',l:'Empresa'},{k:'valor',l:'Valor R$'},{k:'email',l:'Email'},{k:'dataInicio',l:'Início'},{k:'dataFim',l:'Fim'}],
+  processos:[{k:'processo',l:'Processo'},{k:'cargo',l:'Cargo'},{k:'atividades',l:'Atividades'}],
+  bases:[{k:'base',l:'Base'},{k:'uo',l:'UO'},{k:'regiao',l:'Região'}],
+  avaliadores:[{k:'nome',l:'Avaliador'}],
+  motivos:[{k:'nome',l:'Motivo'}]
+};
+const CAD_FORMS={
+  pedidos:[{k:'nome',l:'Nome do Pedido',req:true}],
+  empresas:[{k:'nome',l:'Nome da Empresa',req:true},{k:'valor',l:'Valor Renovação (R$)',type:'number'},{k:'email',l:'Email de Contato'},{k:'dataInicio',l:'Data Início',type:'date'},{k:'dataFim',l:'Data Fim',type:'date'},{k:'associado',l:'Associado Sindistal',opts:['SIM','NÃO']},{k:'docContratual',l:'Doc Contratual'}],
+  processos:[{k:'processo',l:'Nome do Processo',req:true},{k:'cargo',l:'Cargo'}],
+  bases:[{k:'base',l:'Base',req:true},{k:'uo',l:'Unidade Operacional'},{k:'regiao',l:'Região'}],
+  avaliadores:[{k:'nome',l:'Nome do Avaliador',req:true}],
+  motivos:[{k:'nome',l:'Motivo',req:true}]
+};
+
+function Cadastros({mobile,toast_}){
+  const [tab,setTab]=useState(0);
+  const [data,setData]=useState({});
+  const [loading,setLoading]=useState({});
+  const [showModal,setShowModal]=useState(false);
+  const [editItem,setEditItem]=useState(null);
+  const [confirmDel,setConfirmDel]=useState(null);
+  const tipos=Object.keys(CAD_ICON);
+  const tipo=tipos[tab];
+
+  const load=useCallback(async t=>{
+    setLoading(p=>({...p,[t]:true}));
+    const r=await api('cadastros?tipo='+t);
+    if(Array.isArray(r))setData(p=>({...p,[t]:r}));
+    setLoading(p=>({...p,[t]:false}));
+  },[]);
+
+  useEffect(()=>{load(tipo);},[tipo]);
+
+  const [form,setForm]=useState({});
+  const openForm=(item)=>{
+    if(item){
+      const f={};
+      CAD_FORMS[tipo].forEach(c=>{f[c.k]=item[c.k]||'';});
+      f._id=item.id;
+      setEditItem(item);
+      setForm(f);
+    }else{
+      const f={};CAD_FORMS[tipo].forEach(c=>{f[c.k]='';});
+      setEditItem(null);
+      setForm(f);
+    }
+    setShowModal(true);
+  };
+
+  const save=async()=>{
+    if(!form.nome&&tipo!=='empresas'&&tipo!=='processos'&&tipo!=='bases')return toast_('Preencha o nome','error');
+    const body=editItem?{id:editItem.id,...form}:{tipo,...form};
+    const method=editItem?'PUT':'POST';
+    const r=await api('cadastros',{method,body:JSON.stringify(body)});
+    if(r.error)return toast_(r.error,'error');
+    toast_(editItem?'Cadastro atualizado!':'Cadastro criado!');
+    setShowModal(false);
+    load(tipo);
+  };
+
+  const del=async()=>{
+    if(!confirmDel)return;
+    await api('cadastros?id='+confirmDel.id,{method:'DELETE'});
+    toast_('Cadastro excluído');
+    setConfirmDel(null);
+    load(tipo);
+  };
+
+  const formatVal=(item,col)=>{
+    if(col.k==='valor')return item.valor?`R$ ${parseFloat(item.valor).toFixed(2)}`:'—';
+    if(col.k==='associado')return item.associado==='SIM'||item.associado===true?'SIM':'NÃO';
+    if(col.k==='atividades')return Array.isArray(item.atividades)?`${item.atividades.length} atividades`:'—';
+    return item[col.k]||'—';
+  };
+
+  return(<div>
+    <div className="fu" style={{marginBottom:20}}>
+      <h1 style={{fontSize:22,fontWeight:700}}>Cadastros</h1>
+      <p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>Gerenciar tabelas auxiliares</p>
+    </div>
+    <div className="tab-bar fu1" style={{marginBottom:16,flexWrap:'wrap'}}>
+      {tipos.map((t,i)=><button key={t} className={`tab${tab===i?' active':''}`} onClick={()=>setTab(i)}>
+        <span style={{marginRight:6}}>{CAD_ICON[t]}</span>{t.charAt(0).toUpperCase()+t.slice(1)}
+      </button>)}
+    </div>
+    <div className="card fu2" style={{padding:0,overflow:'hidden'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}>
+        <p style={{fontSize:13,fontWeight:600,color:'var(--text2)'}}>
+          {CAD_ICON[tipo]} {tipo.charAt(0).toUpperCase()+tipo.slice(1)}
+          <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{data[tipo]?.length||0} registros</span>
+        </p>
+        <button className="btn primary sm" onClick={()=>openForm(null)}>{ICON.plus}Adicionar</button>
+      </div>
+      <div style={{overflowX:'auto'}}>
+        <table style={{width:'100%',borderCollapse:'collapse',minWidth:500}}>
+          <thead><tr>
+            {CAD_COLS[tipo].map(c=>{
+              const w=c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'?{minWidth:200}:c.k==='valor'?{width:120}:c.k==='atividades'?{width:120}:{};
+              return <th key={c.k} className="th" style={w}>{c.l}</th>;
+            })}
+            <th className="th" style={{width:80,textAlign:'right'}}>Ações</th>
+          </tr></thead>
+          <tbody>
+            {loading[tipo]?[1,2,3].map(i=><tr key={i}>
+              {CAD_COLS[tipo].map(c=><td key={c.k} className="td"><Skeleton h={14} w={c.k==='valor'?'60px':'140px'} r="4" m="0"/></td>)}
+              <td className="td"><Skeleton h={14} w="60px" r="4" m="0"/></td>
+            </tr>):data[tipo]?.length?data[tipo].map(item=><tr key={item.id}>
+              {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'?600:400,fontSize:13}}>{formatVal(item,c)}</td>)}
+              <td className="td" style={{textAlign:'right'}}>
+                <div style={{display:'flex',gap:4,justifyContent:'flex-end'}}>
+                  <button className="btn sm icon" onClick={()=>openForm(item)}>{ICON.edit}</button>
+                  <button className="btn sm icon danger" onClick={()=>setConfirmDel(item)}>{ICON.trash}</button>
+                </div>
+              </td>
+            </tr>):<tr><td colSpan={CAD_COLS[tipo].length+1} style={{textAlign:'center',padding:'3rem'}}>
+              <EmptyState title="Nenhum registro" desc={`Nenhum cadastro de ${tipo} encontrado.`}/>
+            </td></tr>}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <ConfirmModal show={confirmDel} title="Excluir Cadastro" msg={`Excluir "${confirmDel?.nome||confirmDel?.processo||confirmDel?.base||confirmDel?.[Object.keys(confirmDel||{})[0]]||'?'}"?`} onConfirm={del} onCancel={()=>setConfirmDel(null)}/>
+    {showModal&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setShowModal(false)}>
+      <div className="modal">
+        <div className="modal-hd">
+          <div><h3 style={{fontSize:16,fontWeight:700}}>{editItem?'Editar':'Novo'} {tipo.charAt(0).toUpperCase()+tipo.slice(1)}</h3></div>
+          <button className="btn ghost icon" onClick={()=>setShowModal(false)}>{ICON.x}</button>
+        </div>
+        <div className="modal-bd">
+          {CAD_FORMS[tipo].map(c=>(
+            c.opts?<div key={c.k}>
+              <label className="label">{c.l}{c.req&&<span className="req">*</span>}</label>
+              <select className="field" value={form[c.k]||''} onChange={e=>setForm(p=>({...p,[c.k]:e.target.value}))}>
+                <option value="">Selecionar...</option>
+                {c.opts.map(o=><option key={o} value={o}>{o}</option>)}
+              </select>
+            </div>:<div key={c.k}>
+              <label className="label">{c.l}{c.req&&<span className="req">*</span>}</label>
+              <input className="field" type={c.type||'text'} value={form[c.k]||''} onChange={e=>setForm(p=>({...p,[c.k]:e.target.value}))} placeholder={c.l}/>
+            </div>
+          ))}
+          <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:8}}>
+            <button className="btn" onClick={()=>setShowModal(false)}>Cancelar</button>
             <button className="btn primary" onClick={save}>{ICON.save}Salvar</button>
           </div>
         </div>
