@@ -237,6 +237,13 @@ export default function App(){
     return()=>window.removeEventListener('keydown',h);
   },[user]);
   const toggleTheme=()=>setTheme(p=>p==='light'?'dark':'light');
+  const [navBadges,setNavBadges]=useState({});
+  useEffect(()=>{
+    if(!user||user.role!=='SYSTEM')return;
+    const t=setInterval(()=>{api('licencas').then(r=>{if(Array.isArray(r))setNavBadges({clientes:r.filter(x=>x.status==='PENDENTE').length});}).catch(()=>{});},30000);
+    api('licencas').then(r=>{if(Array.isArray(r))setNavBadges({clientes:r.filter(x=>x.status==='PENDENTE').length});}).catch(()=>{});
+    return()=>clearInterval(t);
+  },[user]);
   const toast_=( msg,type='success')=>{setToast({msg,type});setTimeout(()=>setToast(null),3500);};
   const logout=()=>{localStorage.clear();setUser(null);setView('login');};
   const cw=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente'||(user.role==='COLABORADOR'&&user.permissions==='Leitura + Escrita'));
@@ -273,9 +280,9 @@ export default function App(){
         </div>
         <div style={{padding:'1rem .75rem',flex:1,display:'flex',flexDirection:'column',gap:3}}>
           <p style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.2)',textTransform:'uppercase',letterSpacing:'.8px',padding:'0 10px',marginBottom:6}}>Menu</p>
-          {nav.map(x=><div key={x.k} className={`nav-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)}>
+          {nav.map(x=><div key={x.k} className={`nav-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)} style={{position:'relative'}}>
             {ICON[x.i]}<span>{x.l}</span>
-            {view===x.k&&<div style={{marginLeft:'auto',width:6,height:6,borderRadius:'50%',background:'#818CF8'}}/>}
+            {navBadges[x.k]?<span className="badge dot red" style={{marginLeft:'auto',fontSize:10,padding:'1px 6px'}}>{navBadges[x.k]}</span>:view===x.k?<div style={{marginLeft:'auto',width:6,height:6,borderRadius:'50%',background:'#818CF8'}}/>:null}
           </div>)}
         </div>
         <div style={{padding:'1rem',borderTop:'1px solid rgba(255,255,255,.06)'}}>
@@ -374,7 +381,20 @@ function ErrorState({onRetry,msg}){return <div style={{textAlign:'center',paddin
 
 function Dash({mobile,user}){
   const [data,setData]=useState([]);const [loading,setLoading]=useState(true);const [error,setError]=useState(null);
-  const load=()=>{setLoading(true);setError(null);api('records').then(r=>{if(Array.isArray(r))setData(r);else setError('Erro ao carregar');setLoading(false);}).catch(()=>{setError('Erro de conexão');setLoading(false);});};
+  const [clientes,setClientes]=useState([]);const [licRequests,setLicRequests]=useState([]);
+  const load=()=>{
+    setLoading(true);setError(null);
+    if(user?.role==='SYSTEM'){
+      Promise.all([api('records'),api('clientes'),api('licencas')]).then(([r,c,l])=>{
+        if(Array.isArray(r))setData(r);
+        if(Array.isArray(c))setClientes(c);
+        if(Array.isArray(l))setLicRequests(l.filter(x=>x.status==='PENDENTE'));
+        setLoading(false);
+      }).catch(()=>{setError('Erro de conexão');setLoading(false);});
+    }else{
+      api('records').then(r=>{if(Array.isArray(r))setData(r);else setError('Erro ao carregar');setLoading(false);}).catch(()=>{setError('Erro de conexão');setLoading(false);});
+    }
+  };
   useEffect(()=>{load();},[]);
   const total=data.length,aprov=data.filter(r=>r.resultadoFinal==='APROVADO'||r.resultadoFinal==='APROVADO 2').length,reprov=data.filter(r=>r.resultadoFinal==='REPROVADO').length,pend=total-aprov-reprov,tx=total?Math.round(aprov/total*100):0;
   const byBase={};data.forEach(r=>{if(r.base)byBase[r.base]=(byBase[r.base]||0)+1;});
@@ -382,6 +402,77 @@ function Dash({mobile,user}){
   const rec=[...data].reverse().slice(0,5);
   const stats=[{n:total,l:'Total',c:'#4F46E5',bg:'linear-gradient(135deg,#4F46E5,#6366F1)',sh:'rgba(99,102,241,.3)'},{n:aprov,l:'Aprovados',c:'#059669',bg:'linear-gradient(135deg,#059669,#10B981)',sh:'rgba(5,150,105,.3)'},{n:reprov,l:'Reprovados',c:'#DC2626',bg:'linear-gradient(135deg,#DC2626,#EF4444)',sh:'rgba(220,38,38,.3)'},{n:pend,l:'Pendentes',c:'#D97706',bg:'linear-gradient(135deg,#D97706,#F59E0B)',sh:'rgba(217,119,6,.3)'}];
   if(error)return <div><div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Dashboard</h1></div><div className="fu1"><ErrorState msg={error} onRetry={load}/></div></div>;
+
+  // SYSTEM Dashboard com overview financeiro
+  if(user?.role==='SYSTEM'){
+    const receitaTotal=clientes.reduce((s,c)=>s+((c.slotsTotal||0)*(c.valorSlot||0)),0);
+    const slotsTotal=clientes.reduce((s,c)=>s+(c.slotsTotal||0),0);
+    const slotsUsados=clientes.reduce((s,c)=>s+(c.slotsUsados||0),0);
+    return(<div>
+      <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Dashboard</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>Visão geral do sistema · {clientes.length} clientes</p></div>
+      {loading?<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
+        {[1,2,3,4].map(i=><div key={i} style={{background:'var(--surface)',borderRadius:'var(--r)',padding:'1.25rem',border:'1px solid var(--border)'}}><Skeleton h={36} w="60px" m="0 0 8px 0"/><Skeleton h={14} w="80px" m="0"/></div>)}
+      </div>:<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
+        <div style={{background:'linear-gradient(135deg,#4F46E5,#6366F1)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(99,102,241,.3)',position:'relative',overflow:'hidden'}}>
+          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
+          <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{clientes.length}</div>
+          <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>Clientes</div>
+        </div>
+        <div style={{background:'linear-gradient(135deg,#059669,#10B981)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)',position:'relative',overflow:'hidden'}}>
+          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
+          <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>R$ {receitaTotal.toFixed(2)}</div>
+          <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>Receita Total</div>
+        </div>
+        <div style={{background:'linear-gradient(135deg,#7C3AED,#8B5CF6)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(124,58,237,.3)',position:'relative',overflow:'hidden'}}>
+          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
+          <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{slotsUsados}<span style={{fontSize:16}}>/{slotsTotal}</span></div>
+          <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>Slots Usados</div>
+        </div>
+        <div style={{background:'linear-gradient(135deg,#D97706,#F59E0B)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(217,119,6,.3)',position:'relative',overflow:'hidden'}}>
+          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
+          <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{licRequests.length}</div>
+          <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>Solicitações Pendentes</div>
+        </div>
+      </div>}
+      {licRequests.length>0&&<div className="card fu2" style={{padding:0,overflow:'hidden',marginBottom:20}}>
+        <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <p className="sec-h" style={{marginBottom:0}}>Solicitações de Licenças</p>
+          <span className="badge amber">{licRequests.length} pendentes</span>
+        </div>
+        {licRequests.slice(0,5).map(r=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 1.25rem',borderBottom:'1px solid var(--border)'}}>
+          <div><p style={{fontSize:14,fontWeight:600}}>{r.clienteNome||'—'}</p><p style={{fontSize:12,color:'var(--text3)'}}>+{r.quantidade} licenças · {r.motivo||'—'} · {new Date(r.createdAt).toLocaleDateString('pt-BR')}</p></div>
+          <span className="badge dot amber">PENDENTE</span>
+        </div>)}
+      </div>}
+      <div className="fu3" style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:16}}>
+        <div className="card" style={{padding:'1.25rem'}}>
+          <p className="sec-h">Clientes por Receita</p>
+          {clientes.sort((a,b)=>((b.slotsTotal||0)*(b.valorSlot||0))-((a.slotsTotal||0)*(a.valorSlot||0))).slice(0,6).map((c,i)=>{
+            const maxR=Math.max(...clientes.map(x=>(x.slotsTotal||0)*(x.valorSlot||0)),1);
+            return <div key={c.id} className="chart-row">
+              <span className="chart-lbl" style={{minWidth:100}}>{c.nome?.length>18?c.nome.slice(0,18)+'…':c.nome}</span>
+              <div className="chart-track"><div className="chart-bar" style={{width:Math.round(((c.slotsTotal||0)*(c.valorSlot||0))/maxR*100)+'%',background:'linear-gradient(90deg,#4F46E5,#818CF8)'}}/></div>
+              <span className="chart-val">R$ {((c.slotsTotal||0)*(c.valorSlot||0)).toFixed(0)}</span>
+            </div>;
+          })}
+          {!clientes.length&&<p style={{fontSize:13,color:'var(--text3)'}}>Nenhum cliente cadastrado.</p>}
+        </div>
+        <div className="card" style={{padding:'1.25rem'}}>
+          <p className="sec-h">Últimas Avaliações</p>
+          {rec.map((r,i)=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'8px 0',borderBottom:i<rec.length-1?'1px solid var(--border)':'none'}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <Avatar name={r.nomes} size={28}/>
+              <div><p style={{fontSize:13,fontWeight:600}}>{r.nomes||'—'}</p><p style={{fontSize:11,color:'var(--text3)'}}>{r.empresa||'—'}</p></div>
+            </div>
+            <Badge v={r.resultadoFinal}/>
+          </div>)}
+          {!rec.length&&<p style={{fontSize:13,color:'var(--text3)',textAlign:'center',padding:'1rem'}}>Nenhuma avaliação.</p>}
+        </div>
+      </div>
+    </div>);
+  }
+
+  // Dashboard padrão (admin_cliente, colaborador)
   return(<div>
     <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Dashboard</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>Visão geral das avaliações</p></div>
     {loading?<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
@@ -461,7 +552,9 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
   const imp=async f=>{const t=await f.text();const a=JSON.parse(t);const r=await api('records',{method:'POST',body:JSON.stringify(Array.isArray(a)?a:[a])});toast_(`${r.imported||0} registros importados!`);load();};
   const pages=Math.ceil(data.length/PER),paged=data.slice(page*PER,(page+1)*PER);
   if(error)return <div className="fu"><ErrorState msg={error} onRetry={load}/></div>;
-  if(mobile)return(<div>
+  if(mobile)return(<div
+    onTouchStart={e=>{const start=e.touches[0].clientY;const handler=e2=>{const diff=e2.changedTouches[0].clientY-start;if(diff>100){load();document.removeEventListener('touchend',handler);}};document.addEventListener('touchend',handler,{once:true});}}
+  >
     <div className="fu" style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
       <div><h1 style={{fontSize:20,fontWeight:700}}>Avaliações</h1><p style={{fontSize:13,color:'var(--text3)'}}>{data.length} registros</p></div>
       {cw&&<button className="btn primary sm" onClick={onNew}>{ICON.plus}Nova</button>}
