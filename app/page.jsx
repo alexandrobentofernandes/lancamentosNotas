@@ -158,7 +158,7 @@ tr:hover .td{background:rgba(89,48,226,.03)}
 .progress{height:8px;background:var(--surface2);border-radius:10px;overflow:hidden}
 .progress-fill{height:100%;border-radius:10px;transition:width .6s var(--ease)}
 
-.overlay{position:fixed;inset:0;background:rgba(26,26,46,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .2s both}
+.overlay{position:fixed;inset:0;background:rgba(26,26,46,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .2s both;overflow-y:auto}
 .modal{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:480px;box-shadow:var(--sh-lg);border:1px solid var(--border);overflow:hidden;animation:scaleIn .22s var(--ease) both}
 .modal-hd{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
 .modal-bd{padding:1.5rem;display:flex;flex-direction:column;gap:16px}
@@ -378,35 +378,36 @@ function Login({onLogin}){
     const d=await res.json();
     if(res.ok)onLogin(d.user,d.token);else{setErr(d.error||'Credenciais inválidas');setLoading(false);}
   };
-  return(<div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'var(--sidebar)',padding:16,position:'relative',overflow:'hidden'}}>
+  return(<div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'var(--bg)',padding:16,position:'relative',overflow:'hidden'}}>
     <div style={{position:'absolute',inset:0,overflow:'hidden',pointerEvents:'none'}}>
-      <div style={{position:'absolute',top:'-15%',right:'-10%',width:500,height:500,background:'radial-gradient(circle,rgba(89,48,226,.15) 0%,transparent 70%)',borderRadius:'50%'}}/>
-      <div style={{position:'absolute',bottom:'-15%',left:'-10%',width:400,height:400,background:'radial-gradient(circle,rgba(124,58,237,.1) 0%,transparent 70%)',borderRadius:'50%'}}/>
-      <div style={{position:'absolute',inset:0,backgroundImage:'radial-gradient(rgba(255,255,255,.025) 1px,transparent 1px)',backgroundSize:'30px 30px'}}/>
+      <div style={{position:'absolute',top:'-20%',right:'-5%',width:600,height:600,background:'radial-gradient(circle,rgba(89,48,226,.08) 0%,transparent 70%)',borderRadius:'50%'}}/>
+      <div style={{position:'absolute',bottom:'-20%',left:'-5%',width:500,height:500,background:'radial-gradient(circle,rgba(124,58,237,.06) 0%,transparent 70%)',borderRadius:'50%'}}/>
     </div>
     <div className="fu" style={{width:'100%',maxWidth:420,position:'relative',zIndex:1}}>
-      <div style={{textAlign:'center',marginBottom:'2.5rem'}}>
-        <div style={{width:68,height:68,background:'linear-gradient(135deg,#5930E2,#7C3AED)',borderRadius:22,display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px',boxShadow:'0 10px 36px rgba(89,48,226,.55)'}}>{ICON.bolt}</div>
-        <h1 style={{fontSize:27,fontWeight:700,color:'#fff',marginBottom:6}}>Lançamentos Notas</h1>
-        <p style={{fontSize:14,color:'rgba(255,255,255,.38)',fontWeight:400}}>CEO Cabo Frio · Sistema de Avaliações 2026</p>
+      <div style={{textAlign:'center',marginBottom:'2rem'}}>
+        <div style={{width:72,height:72,background:'linear-gradient(135deg,#5930E2,#7C5CFF)',borderRadius:24,display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px',boxShadow:'0 12px 40px rgba(89,48,226,.35)'}}>
+          <svg width="28" height="28" fill="none" stroke="#fff" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h1 style={{fontSize:28,fontWeight:700,color:'var(--text)',marginBottom:4}}>Lançamentos Notas</h1>
+        <p style={{fontSize:14,color:'var(--text3)',fontWeight:400}}>CEO Cabo Frio · Sistema de Avaliações 2026</p>
       </div>
-      <div style={{background:'rgba(255,255,255,.04)',border:'1px solid rgba(255,255,255,.08)',borderRadius:22,padding:'2rem',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)'}}>
-        <div style={{display:'flex',flexDirection:'column',gap:14}}>
-          <div>
-            <label style={{fontSize:12.5,fontWeight:600,color:'rgba(255,255,255,.45)',display:'block',marginBottom:6}}>Usuário</label>
-            <input className="field" value={u} onChange={e=>setU(e.target.value)} onKeyDown={e=>e.key==='Enter'&&go()} placeholder="Digite seu usuário" style={{background:'rgba(255,255,255,.06)',border:'1.5px solid rgba(255,255,255,.08)',color:'#fff'}}/>
+      <div className="card-lg" style={{padding:'2rem'}}>
+        <div style={{display:'flex',flexDirection:'column',gap:16}}>
+          <div className="fl">
+            <input className="field" id="login-user" value={u} onChange={e=>setU(e.target.value)} onKeyDown={e=>e.key==='Enter'&&go()} placeholder=" "/>
+            <label htmlFor="login-user" style={{color:'var(--text3)'}}>Usuário</label>
           </div>
-          <div>
-            <label style={{fontSize:12.5,fontWeight:600,color:'rgba(255,255,255,.45)',display:'block',marginBottom:6}}>Senha</label>
-            <input className="field" type="password" value={p} onChange={e=>setP(e.target.value)} onKeyDown={e=>e.key==='Enter'&&go()} placeholder="••••••••" style={{background:'rgba(255,255,255,.06)',border:'1.5px solid rgba(255,255,255,.08)',color:'#fff'}}/>
+          <div className="fl">
+            <input className="field" id="login-pass" type="password" value={p} onChange={e=>setP(e.target.value)} onKeyDown={e=>e.key==='Enter'&&go()} placeholder=" "/>
+            <label htmlFor="login-pass" style={{color:'var(--text3)'}}>Senha</label>
           </div>
-          {err&&<div style={{background:'rgba(220,38,38,.15)',border:'1px solid rgba(220,38,38,.3)',borderRadius:8,padding:'9px 12px',fontSize:13,color:'#FCA5A5',display:'flex',gap:7,alignItems:'center'}}>{ICON.x}{err}</div>}
-          <button className="btn primary" style={{width:'100%',justifyContent:'center',padding:'11px 0',fontSize:15,marginTop:4}} onClick={go} disabled={loading}>
+          {err&&<div style={{background:'var(--danger-bg)',border:'1px solid rgba(229,57,53,.3)',borderRadius:10,padding:'10px 14px',fontSize:13,color:'var(--danger-text)',display:'flex',gap:8,alignItems:'center'}}>{ICON.x}{err}</div>}
+          <button className="btn primary" style={{width:'100%',justifyContent:'center',padding:'12px 0',fontSize:15,marginTop:4}} onClick={go} disabled={loading}>
             {loading?<><Spin/>Entrando...</>:<>{ICON.shield}Entrar no Sistema</>}
           </button>
         </div>
       </div>
-      <p style={{textAlign:'center',fontSize:12,color:'rgba(255,255,255,.18)',marginTop:16}}>system · system@2026</p>
+      <p style={{textAlign:'center',fontSize:12,color:'var(--text3)',marginTop:16,opacity:.5}}>system · system@2026</p>
     </div>
   </div>);
 }
