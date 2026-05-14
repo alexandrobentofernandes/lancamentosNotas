@@ -213,7 +213,7 @@ export default function App(){
   const [user,setUser]=useState(null);
   const [view,setView]=useState('login');
   const [editRec,setEditRec]=useState(null);
-  const [toast,setToast]=useState(null);
+  const [toasts,setToasts]=useState([]);
   const [mobile,setMobile]=useState(false);
   const [theme,setTheme]=useState('light');
   const [sidebarOpen,setSidebarOpen]=useState(true);
@@ -247,7 +247,7 @@ export default function App(){
     api('licencas').then(r=>{if(Array.isArray(r))setNavBadges({clientes:r.filter(x=>x.status==='PENDENTE').length});}).catch(()=>{});
     return()=>clearInterval(t);
   },[user]);
-  const toast_=( msg,type='success')=>{setToast({msg,type});setTimeout(()=>setToast(null),3500);};
+  const toast_=(msg,type='success')=>{const id=Date.now();setToasts(p=>[...p,{id,msg,type}]);setTimeout(()=>setToasts(p=>p.filter(t=>t.id!==id)),4000);};
   const logout=()=>{localStorage.clear();setUser(null);setView('login');};
   const cw=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente'||(user.role==='COLABORADOR'&&user.permissions==='Leitura + Escrita'));
   const ia=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente');
@@ -266,8 +266,8 @@ export default function App(){
   if(!user)return(<><style>{CSS}</style><Login onLogin={(u,t)=>{setUser(u);localStorage.setItem('user',JSON.stringify(u));localStorage.setItem('token',t);setView('dashboard');}}/></>);
   return(<>
     <style>{CSS}</style>
-    {toast&&<div className="toast-in" style={{position:'fixed',top:20,right:20,zIndex:9999,background:toast.type==='error'?'#FEF2F2':'#ECFDF5',color:toast.type==='error'?'#991B1B':'#065F46',border:`1px solid ${toast.type==='error'?'#FECACA':'#A7F3D0'}`,padding:'11px 18px',borderRadius:12,fontSize:13.5,fontWeight:500,maxWidth:340,boxShadow:'0 8px 24px rgba(0,0,0,.12)',display:'flex',alignItems:'center',gap:8}}>
-      {toast.type==='error'?ICON.x:ICON.check}{toast.msg}</div>}
+    {toasts.map(t=><div key={t.id} className="toast-in" style={{position:'fixed',top:20+toasts.indexOf(t)*56,right:20,zIndex:9999,background:t.type==='error'?'var(--danger-bg)':'var(--success-bg)',color:t.type==='error'?'var(--danger-text)':'var(--success-text)',border:`1px solid ${t.type==='error'?'#FECACA':'#A7F3D0'}`,padding:'11px 18px',borderRadius:12,fontSize:13.5,fontWeight:500,maxWidth:340,boxShadow:'0 8px 24px rgba(0,0,0,.12)',display:'flex',alignItems:'center',gap:8}}>
+      {t.type==='error'?ICON.x:ICON.check}{t.msg}</div>)}
     <div style={{display:'flex',minHeight:'100vh'}}>
       {!mobile&&<nav style={{width:sidebarOpen?'var(--sw)':0,background:'var(--sidebar)',position:'fixed',top:0,bottom:0,left:0,zIndex:100,display:'flex',flexDirection:'column',overflow:'hidden',transition:'width .25s cubic-bezier(.4,0,.2,1)',borderRight:sidebarOpen?'1px solid rgba(255,255,255,.06)':'none'}}>
         <div style={{padding:'1.5rem 1.25rem 1rem',borderBottom:'1px solid rgba(255,255,255,.06)'}}>
@@ -553,8 +553,16 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
   const [data,setData]=useState([]);const [loading,setLoading]=useState(true);const [error,setError]=useState(null);
   const [q,setQ]=useState('');const [base,setBase]=useState('');const [res,setRes]=useState('');const [page,setPage]=useState(0);
   const [confirmDel,setConfirmDel]=useState(null);
-  const PER=20;const fileRef=useRef(null);
+  const PER=20;const fileRef=useRef(null);const searchTimer=useRef(null);
   const load=useCallback(()=>{setLoading(true);setError(null);api('records?'+new URLSearchParams({q,base,resultado:res})).then(r=>{if(Array.isArray(r))setData(r);else setError('Erro ao carregar');setLoading(false);}).catch(()=>{setError('Erro de conexão');setLoading(false);});},[q,base,res]);
+  const setQDebounced=v=>{
+    setQ(v);setPage(0);
+    if(searchTimer.current)clearTimeout(searchTimer.current);
+    searchTimer.current=setTimeout(()=>{
+      setLoading(true);setError(null);
+      api('records?'+new URLSearchParams({q:v,base,resultado:res})).then(r=>{if(Array.isArray(r))setData(r);setLoading(false);}).catch(()=>setLoading(false));
+    },300);
+  };
   useEffect(()=>{load();},[load]);
   const del=async id=>{await api('records/'+id,{method:'DELETE'});toast_('Registro excluído');setConfirmDel(null);load();};
   const imp=async f=>{const t=await f.text();const a=JSON.parse(t);const r=await api('records',{method:'POST',body:JSON.stringify(Array.isArray(a)?a:[a])});toast_(`${r.imported||0} registros importados!`);load();};
@@ -569,7 +577,7 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
     </div>
     <div style={{position:'relative',marginBottom:14}}>
       <div style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'var(--text3)',pointerEvents:'none'}}>{ICON.search}</div>
-      <input className="field" style={{paddingLeft:36}} placeholder="Buscar nome, empresa, CPF..." value={q} onChange={e=>{setQ(e.target.value);setPage(0);}}/>
+      <input className="field" style={{paddingLeft:36}} placeholder="Buscar nome, empresa, CPF..." value={q} onChange={e=>setQDebounced(e.target.value)}/>
     </div>
     {loading?[1,2,3].map(i=><div key={i} className="card fu" style={{padding:14,marginBottom:10}}>
       <div style={{display:'flex',gap:10,alignItems:'center',marginBottom:8}}><Skeleton h={40} w="40px" r="50%" m="0"/><div style={{flex:1}}><Skeleton h={14} w="140px" m="0 0 6px 0"/><Skeleton h={12} w="100px" m="0"/></div></div>
@@ -885,13 +893,15 @@ function Reports({mobile}){
 
 function Users({user,toast_}){
   const [users,setUsers]=useState([]);const [loading,setLoading]=useState(true);const [show,setShow]=useState(false);const [editU,setEditU]=useState(null);
-  const [form,setForm]=useState({username:'',password:'',nome:'',role:'COLABORADOR',permissions:'Somente Leitura'});const [err,setErr]=useState('');
+  const [form,setForm]=useState({username:'',password:'',nome:'',role:'COLABORADOR',permissions:'Somente Leitura'});const [err,setErr]=useState('');const [saving,setSaving]=useState(false);
   useEffect(()=>{api('users').then(r=>{if(Array.isArray(r))setUsers(r);setLoading(false);});},[]);
   const open=u=>{setForm(u?{...u,password:''}:{username:'',password:'',nome:'',role:'COLABORADOR',permissions:'Somente Leitura'});setEditU(u||null);setErr('');setShow(true);};
   const save=async()=>{
     if(!form.username||!form.nome)return setErr('Usuário e nome obrigatórios');
     if(!editU&&!form.password)return setErr('Senha obrigatória');
+    setSaving(true);
     const r=await api('users',{method:editU?'PUT':'POST',body:JSON.stringify(editU?{id:editU.id,...form}:form)});
+    setSaving(false);
     if(r.error)return setErr(r.error);
     const u=await api('users');if(Array.isArray(u))setUsers(u);
     setShow(false);toast_(editU?'Usuário atualizado!':'Usuário criado!');
@@ -946,8 +956,8 @@ function Users({user,toast_}){
           </div>}
           {err&&<div style={{background:'var(--danger-bg)',border:'1px solid #FECACA',borderRadius:8,padding:'9px 12px',fontSize:13,color:'var(--danger)',display:'flex',gap:7}}>{ICON.x}{err}</div>}
           <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:4}}>
-            <button className="btn" onClick={()=>setShow(false)}>Cancelar</button>
-            <button className="btn primary" onClick={save}>{ICON.save}Salvar</button>
+            <button className="btn" onClick={()=>setShow(false)} disabled={saving}>Cancelar</button>
+            <button className="btn primary" onClick={save} disabled={saving}>{saving?<><Spin/>Salvando...</>:<>{ICON.save}Salvar</>}</button>
           </div>
         </div>
       </div>
@@ -980,6 +990,7 @@ function Cadastros({mobile,toast_}){
   const [showModal,setShowModal]=useState(false);
   const [editItem,setEditItem]=useState(null);
   const [confirmDel,setConfirmDel]=useState(null);
+  const [saving,setSaving]=useState(false);
   const importRef=useRef(null);
   const tipos=Object.keys(CAD_ICON);
   const importCad=async f=>{
@@ -1025,9 +1036,11 @@ function Cadastros({mobile,toast_}){
 
   const save=async()=>{
     if(!form.nome&&tipo!=='empresas'&&tipo!=='processos'&&tipo!=='bases')return toast_('Preencha o nome','error');
+    setSaving(true);
     const body=editItem?{id:editItem.id,...form}:{tipo,...form};
     const method=editItem?'PUT':'POST';
     const r=await api('cadastros',{method,body:JSON.stringify(body)});
+    setSaving(false);
     if(r.error)return toast_(r.error,'error');
     toast_(editItem?'Cadastro atualizado!':'Cadastro criado!');
     setShowModal(false);
@@ -1120,8 +1133,8 @@ function Cadastros({mobile,toast_}){
             </div>
           ))}
           <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:8}}>
-            <button className="btn" onClick={()=>setShowModal(false)}>Cancelar</button>
-            <button className="btn primary" onClick={save}>{ICON.save}Salvar</button>
+            <button className="btn" onClick={()=>setShowModal(false)} disabled={saving}>Cancelar</button>
+            <button className="btn primary" onClick={save} disabled={saving}>{saving?<><Spin/>Salvando...</>:<>{ICON.save}Salvar</>}</button>
           </div>
         </div>
       </div>
@@ -1244,7 +1257,7 @@ function AdminDash({mobile,user,toast_}){
 
 function Clientes({user,toast_}){
   const [data,setData]=useState([]);const [loading,setLoading]=useState(true);
-  const [show,setShow]=useState(false);const [editItem,setEditItem]=useState(null);
+  const [show,setShow]=useState(false);const [editItem,setEditItem]=useState(null);const [saving,setSaving]=useState(false);
   const [confirmDel,setConfirmDel]=useState(null);
   const [form,setForm]=useState({nome:'',documento:'',email:'',contato:'',slotsTotal:5,valorSlot:0});
 
@@ -1259,9 +1272,11 @@ function Clientes({user,toast_}){
 
   const save=async()=>{
     if(!form.nome)return toast_('Nome do cliente obrigatório','error');
+    setSaving(true);
     const body=editItem?{id:editItem.id,...form}:form;
     const method=editItem?'PUT':'POST';
     const r=await api('clientes',{method,body:JSON.stringify(body)});
+    setSaving(false);
     if(r.error)return toast_(r.error,'error');
     toast_(editItem?'Cliente atualizado!':'Cliente criado!');
     setShow(false);load();
@@ -1334,8 +1349,8 @@ function Clientes({user,toast_}){
             <div><label className="label">Valor por Slot (R$)</label><input className="field" type="number" step="0.01" min="0" value={form.valorSlot} onChange={e=>setForm(p=>({...p,valorSlot:parseFloat(e.target.value)||0}))}/></div>
           </div>
           <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:8}}>
-            <button className="btn" onClick={()=>setShow(false)}>Cancelar</button>
-            <button className="btn primary" onClick={save}>{ICON.save}Salvar</button>
+            <button className="btn" onClick={()=>setShow(false)} disabled={saving}>Cancelar</button>
+            <button className="btn primary" onClick={save} disabled={saving}>{saving?<><Spin/>Salvando...</>:<>{ICON.save}Salvar</>}</button>
           </div>
         </div>
       </div>
