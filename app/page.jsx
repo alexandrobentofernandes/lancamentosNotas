@@ -41,7 +41,7 @@ const CSS=`
   --sw:240px;
 }
 [data-theme="dark"]{
-  --bg:#0B1120; --surface:#1E293B; --surface2:#0F172A; --border:rgba(255,255,255,.06);
+  --bg:#0B1120; --surface:#1E293B; --surface2:#0F172A; --border:rgba(255,255,255,.08);
   --sidebar:#020617;
   --success-bg:rgba(5,150,105,.15); --success-text:#34D399;
   --danger-bg:rgba(220,38,38,.15); --danger-text:#FCA5A5;
@@ -50,9 +50,27 @@ const CSS=`
   --sh-sm:0 1px 3px rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.2);
   --sh:0 4px 16px rgba(0,0,0,.4),0 1px 4px rgba(0,0,0,.2);
   --sh-lg:0 10px 40px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.25);
-  --surface2:rgba(255,255,255,.03);
+  --surface2:rgba(255,255,255,.04);
   --primary-glow:rgba(99,102,241,.4);
 }
+[data-theme="dark"] .field{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);color:#F1F5F9}
+[data-theme="dark"] .field:focus{background:rgba(255,255,255,.08);border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+[data-theme="dark"] .field.auto{background:rgba(255,255,255,.03);color:#64748B;border-style:dashed}
+[data-theme="dark"] .field option{background:#1E293B;color:#F1F5F9}
+[data-theme="dark"] select.field{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394A3B8' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;appearance:none;padding-right:30px}
+[data-theme="dark"] .bn-item{color:rgba(255,255,255,.4)}
+[data-theme="dark"] .bn-item.active{color:var(--primary)}
+[data-theme="dark"] .th{background:rgba(255,255,255,.03);color:#64748B}
+[data-theme="dark"] tr:hover .td{background:rgba(255,255,255,.03)}
+[data-theme="dark"] .td{border-color:rgba(255,255,255,.06)}
+[data-theme="dark"] .card,[data-theme="dark"] .card-lg{border-color:rgba(255,255,255,.08)}
+[data-theme="dark"] .tab-bar{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
+[data-theme="dark"] .tab.active{background:var(--surface);border-color:rgba(255,255,255,.1)}
+[data-theme="dark"] .badge.gray{background:rgba(255,255,255,.06);color:#94A3B8}
+[data-theme="dark"] .badge.blue{background:rgba(59,130,246,.15);color:#60A5FA}
+[data-theme="dark"] .badge.violet{background:rgba(139,92,246,.15);color:#A78BFA}
+[data-theme="dark"] .progress{background:rgba(255,255,255,.08)}
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1)}
 
 html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 ::selection{background:var(--primary);color:#fff}
@@ -131,7 +149,9 @@ tr:hover .td{background:#F8FAFF}
 .fl .field:focus~label,.fl .field:not(:placeholder-shown)~label,.fl .field.filled~label{top:6px;font-size:10.5px;color:var(--primary);font-weight:600}
 .fl .field:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px var(--primary-glow)}
 .fl .field.auto~label{top:6px;font-size:10.5px;font-weight:600}
-[data-theme="dark"] .fl .field:focus{background:var(--surface2)}
+[data-theme="dark"] .fl .field:focus{background:rgba(255,255,255,.08)}
+[data-theme="dark"] .fl label{color:rgba(255,255,255,.4)}
+[data-theme="dark"] .fl .field:focus~label,[data-theme="dark"] .fl .field:not(:placeholder-shown)~label{color:var(--primary)}
 
 .progress{height:7px;background:rgba(0,0,0,.06);border-radius:10px;overflow:hidden}
 .progress-fill{height:100%;border-radius:10px;transition:width .5s var(--ease)}
