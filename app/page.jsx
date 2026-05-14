@@ -1474,16 +1474,10 @@ function Clientes({user,toast_}){
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:700}}>
           <thead><tr>
-            <th className="th" style={{width:36}}>
-              <input type="checkbox" style={{cursor:'pointer'}} checked={paged.length>0&&selected.size===sorted.length} onChange={e=>setSelected(e.target.checked?new Set(sorted.map(r=>r.id)):new Set())}/>
-            </th>
-            <th className="th" style={{cursor:'pointer'}} onClick={()=>toggleSort('nomes')}>Nome<SortIcon k="nomes"/></th>
-            <th className="th hide-tab" style={{cursor:'pointer'}} onClick={()=>toggleSort('empresa')}>Empresa<SortIcon k="empresa"/></th>
-            <th className="th hide-mob">Base</th>
-            <th className="th hide-tab">Processo</th>
-            <th className="th hide-mob" style={{cursor:'pointer'}} onClick={()=>toggleSort('dataRealizacao')}>Data<SortIcon k="dataRealizacao"/></th>
-            <th className="th" style={{cursor:'pointer'}} onClick={()=>toggleSort('resultadoFinal')}>Resultado<SortIcon k="resultadoFinal"/></th>
-            {cw&&<th className="th" style={{textAlign:'right'}}>Ações</th>}
+            <th className="th">Cliente</th><th className="th">Documento</th><th className="th">Contato</th>
+            <th className="th" style={{textAlign:'center'}}>Slots</th><th className="th" style={{textAlign:'center'}}>Usados</th>
+            <th className="th" style={{textAlign:'right'}}>Valor/Slot</th><th className="th" style={{textAlign:'right'}}>Receita</th>
+            <th className="th" style={{textAlign:'center'}}>Status</th><th className="th" style={{textAlign:'right',width:80}}>Ações</th>
           </tr></thead>
           <tbody>
             {loading?[1,2,3].map(i=><tr key={i}>{[1,2,3,4,5,6,7,8,9].map(j=><td key={j} className="td"><Skeleton h={14} w={j===3||j===4?'40px':j>=5?'70px':'120px'} r="4" m="0"/></td>)}</tr>):data.map(c=><tr key={c.id}>
