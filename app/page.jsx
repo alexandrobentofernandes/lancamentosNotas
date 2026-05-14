@@ -9,7 +9,7 @@ const MOTIVOS=["SEGURANÇA","QUALIDADE","BAREMO","SEGURANÇA + QUALIDADE","SEGUR
 const STATUS_PRATICA=["APTO","NÃO APTO","PENDENTE","NÃO REALIZADO"];
 const PROCESSOS=["LINHA_VIVA","CONSTRUÇÃO_E_MANUTENÇÃO_OBRA","APOIO_À_EMERGÊNCIA","APOIO_À_EMERGÊNCIA_G","ATENDIMENTO_DE_EMERGÊNCIA","ENCARREGADO","COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO","INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL","INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO","INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL","INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS","INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6","PODA_COM_REDE_ENERGIZADA","PODA_COM_REDE_DESENERGIZADA","PODA_DESENERGIZADA_A_DISTANCIA","OPERADOR_DE_CESTA_AÉREA","OPERADOR_DE_GUINDAUTO","REDE_SUBTERRÂNEA","MANUTENÇÃO_CORRETIVA_E_PREVENTINA_EM_SE_DESENERGIZADA_EM_ATÉ_138_KV","ENCARREGADO_DE_SE_DESENERGIZADA_EM_ATÉ_138_KV","LIMPEZA_DE_REDE","OPERADOR_SE"];
 const EMPRESAS_NOMES=["3C SERVICES-52L0002064","3C SERVICES-52L0002309","3C SERVICES-JA10098617","CENEGED - JA10134979","DÍNAMO LAGOS-JA10140367","ELLCA-52L0002379","ELLCA-JA10110696","ELLCA-JA10146796","ELLCA-JA10149890","ELLCA-JA10170084","ELLCA-JA10179591","EMA MAGÉ-JA10091870","EMA SG-52L0002365","ENGELMIG-JA10083461","ENGELMIG-JA10114811","ENGELMIG-JA10166038","INDICA-JA10110552","M&E-JA10072640","MEDRAL-JA10098645","PROGEN-JA10086153","PROGEN-JA10131908","PROGEN-JA10140365","PROGEN-JA10148049","PSE ENERGIA - 52L0002200","PSE-JA10135676","REENERGISA-JA10083849","STN-JA10087291","STN-JA100117257","TEES-JA10166037","COMPEL-JA10159368","POWER SOLUTION-JA10184918","VEMAN LAGOS-52L0002297","VEMAN SERRANA-JA10119303","ENEL","DINAMO LAGOS-52L0002141"];
-const ROLES={SYSTEM:{label:'SYSTEM',bg:'rgba(139,92,246,.15)',color:'#A78BFA'},ADMIN:{label:'Administrador',bg:'rgba(59,130,246,.15)',color:'#60A5FA'},COLABORADOR:{label:'Colaborador',bg:'rgba(156,163,175,.15)',color:'#9CA3AF'}};
+const ROLES={SYSTEM:{label:'SYSTEM',bg:'rgba(139,92,246,.15)',color:'#A78BFA'},ADMIN:{label:'Administrador',bg:'rgba(59,130,246,.15)',color:'#60A5FA'},COLABORADOR:{label:'Colaborador',bg:'rgba(156,163,175,.15)',color:'#9CA3AF'},admin_cliente:{label:'Admin Cliente',bg:'rgba(16,185,129,.15)',color:'#34D399'},colaborador:{label:'Colaborador',bg:'rgba(156,163,175,.15)',color:'#9CA3AF'}};
 
 function api(path,opts={}){
   const token=typeof window!=='undefined'?localStorage.getItem('token'):null;
@@ -185,9 +185,19 @@ export default function App(){
   useEffect(()=>{const u=localStorage.getItem('user'),t=localStorage.getItem('token');if(u&&t){setUser(JSON.parse(u));setView('dashboard');}},[]);
   const toast_=( msg,type='success')=>{setToast({msg,type});setTimeout(()=>setToast(null),3500);};
   const logout=()=>{localStorage.clear();setUser(null);setView('login');};
-  const cw=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||(user.role==='COLABORADOR'&&user.permissions==='Leitura + Escrita'));
-  const ia=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN');
-  const nav=[{k:'dashboard',i:'home',l:'Dashboard'},{k:'records',i:'list',l:'Avaliações'},...(cw()?[{k:'form',i:'plus',l:'Nova'}]:[]),{k:'cadastros',i:'list',l:'Cadastros'},{k:'reports',i:'chart',l:'Relatórios'},...(ia()?[{k:'users',i:'users',l:'Usuários'}]:[])];
+  const cw=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente'||(user.role==='COLABORADOR'&&user.permissions==='Leitura + Escrita'));
+  const ia=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente');
+  const nav=user?[
+    {k:'dashboard',i:'home',l:'Dashboard'},
+    ...(user.tipo==='admin_cliente'?[{k:'admin-dash',i:'chart',l:'Meu Painel'}]:[]),
+    {k:'records',i:'list',l:'Avaliações'},
+    ...(cw()?[{k:'form',i:'plus',l:'Nova'}]:[]),
+    {k:'cadastros',i:'list',l:'Cadastros'},
+    {k:'reports',i:'chart',l:'Relatórios'},
+    ...(ia()?[{k:'users',i:'users',l:'Usuários'}]:[]),
+    ...(user.role==='SYSTEM'?[{k:'clientes',i:'users',l:'Clientes'}]:[]),
+    ...(user.tipo==='admin_cliente'?[{k:'licencas',i:'shield',l:'Licenças'}]:[]),
+  ]:[];
   if(!user)return(<><style>{CSS}</style><Login onLogin={(u,t)=>{setUser(u);localStorage.setItem('user',JSON.stringify(u));localStorage.setItem('token',t);setView('dashboard');}}/></>);
   return(<>
     <style>{CSS}</style>
@@ -232,12 +242,15 @@ export default function App(){
           </div>
           <Avatar name={user.nome} size={34}/>
         </div>}
-        {view==='dashboard'&&<Dash mobile={mobile}/>}
-        {view==='records'&&<RecList cw={cw()} ia={ia()} mobile={mobile} onEdit={r=>{setEditRec(r);setView('form');}} onNew={()=>{setEditRec(null);setView('form');}} toast_={toast_}/>}
+        {view==='dashboard'&&<Dash mobile={mobile} user={user}/>}
+        {view==='admin-dash'&&<AdminDash mobile={mobile} user={user} toast_={toast_}/>}
+        {view==='records'&&<RecList cw={cw()} ia={ia()} mobile={mobile} user={user} onEdit={r=>{setEditRec(r);setView('form');}} onNew={()=>{setEditRec(null);setView('form');}} toast_={toast_}/>}
         {view==='form'&&<RecForm rec={editRec} user={user} cw={cw()} mobile={mobile} onSave={()=>{toast_('Avaliação salva com sucesso!');setView('records');}} onCancel={()=>setView('records')} toast_={toast_}/>}
         {view==='cadastros'&&<Cadastros mobile={mobile} toast_={toast_}/>}
         {view==='reports'&&<Reports mobile={mobile}/>}
         {view==='users'&&ia()&&<Users user={user} toast_={toast_}/>}
+        {view==='clientes'&&user.role==='SYSTEM'&&<Clientes user={user} toast_={toast_}/>}
+        {view==='licencas'&&user.tipo==='admin_cliente'&&<Licencas user={user} toast_={toast_}/>}
       </main>
       {mobile&&<nav className="bottom-nav">{nav.map(x=><div key={x.k} className={`bn-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)}>{ICON[x.i]}<span>{x.l}</span></div>)}</nav>}
     </div>
@@ -289,7 +302,7 @@ function Login({onLogin}){
 function Skeleton({h=14,w='100%',r=6,m='0 0 10px 0'}){return <div style={{height:h,width:w,borderRadius:r,background:'linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite',margin:m}}/>}
 function EmptyState({icon,title,desc}){return <div style={{textAlign:'center',padding:'3rem 1rem',color:'var(--text3)'}}><div style={{fontSize:40,marginBottom:12,opacity:.3}}>{icon||ICON.list}</div><p style={{fontSize:15,fontWeight:600,color:'var(--text2)',marginBottom:4}}>{title||'Nenhum dado'}</p><p style={{fontSize:13}}>{desc||'Nenhum registro encontrado'}</p></div>}
 
-function Dash({mobile}){
+function Dash({mobile,user}){
   const [data,setData]=useState([]);const [loading,setLoading]=useState(true);
   useEffect(()=>{api('records').then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});},[]);
   const total=data.length,aprov=data.filter(r=>r.resultadoFinal==='APROVADO'||r.resultadoFinal==='APROVADO 2').length,reprov=data.filter(r=>r.resultadoFinal==='REPROVADO').length,pend=total-aprov-reprov,tx=total?Math.round(aprov/total*100):0;
@@ -893,6 +906,280 @@ function Cadastros({mobile,toast_}){
           <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:8}}>
             <button className="btn" onClick={()=>setShowModal(false)}>Cancelar</button>
             <button className="btn primary" onClick={save}>{ICON.save}Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>}
+  </div>);
+}
+
+function AdminDash({mobile,user,toast_}){
+  const [data,setData]=useState([]);const [loading,setLoading]=useState(true);
+  const [cliente,setCliente]=useState(null);const [requests,setRequests]=useState([]);
+  const [showSolicitar,setShowSolicitar]=useState(false);const [qtdSolicitar,setQtdSolicitar]=useState(1);const [motivoSolicitar,setMotivoSolicitar]=useState('');
+
+  useEffect(()=>{
+    Promise.all([
+      api('records'),
+      user.clienteId?api('clientes?id='+user.clienteId):null,
+      api('licencas'),
+    ]).then(([recs,cli,reqs])=>{
+      if(Array.isArray(recs))setData(recs);
+      if(cli)setCliente(cli);
+      if(Array.isArray(reqs))setRequests(reqs);
+      setLoading(false);
+    });
+  },[]);
+
+  const slotsLivres=cliente?(cliente.slotsTotal||0)-(cliente.slotsUsados||0):0;
+  const baixaLicenca=slotsLivres<=3&&slotsLivres>0;
+
+  const solicitar=async()=>{
+    const r=await api('licencas',{method:'POST',body:JSON.stringify({quantidade:qtdSolicitar,motivo:motivoSolicitar})});
+    if(r.error)return toast_(r.error,'error');
+    toast_('Solicitação enviada com sucesso!');
+    setShowSolicitar(false);setQtdSolicitar(1);setMotivoSolicitar('');
+    const r2=await api('licencas');if(Array.isArray(r2))setRequests(r2);
+  };
+
+  const total=data.length,aprov=data.filter(r=>r.resultadoFinal==='APROVADO'||r.resultadoFinal==='APROVADO 2').length,reprov=data.filter(r=>r.resultadoFinal==='REPROVADO').length,pend=total-aprov-reprov,tx=total?Math.round(aprov/total*100):0;
+
+  return(<div>
+    <div className="fu"><h1 style={{fontSize:22,fontWeight:700}}>Meu Painel</h1><p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>Visão geral do seu cliente</p></div>
+
+    {loading?<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
+      {[1,2,3,4].map(i=><div key={i} style={{background:'var(--surface)',borderRadius:'var(--r)',padding:'1.25rem',border:'1px solid var(--border)'}}><Skeleton h={32} w="50px" m="0 0 6px 0"/><Skeleton h={14} w="80px" m="0"/></div>)}
+    </div>:<><div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
+      <div style={{background:'linear-gradient(135deg,#059669,#10B981)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{cliente?.slotsUsados||0}<span style={{fontSize:16}}>/{cliente?.slotsTotal||0}</span></div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:3,fontWeight:500}}>Slots Utilizados</div>
+      </div>
+      <div style={{background:baixaLicenca?'linear-gradient(135deg,#D97706,#F59E0B)':'linear-gradient(135deg,#4F46E5,#6366F1)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:baixaLicenca?'0 6px 20px rgba(217,119,6,.3)':'0 6px 20px rgba(99,102,241,.3)',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{slotsLivres}</div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:3,fontWeight:500}}>Slots Disponíveis</div>
+      </div>
+      <div style={{background:'linear-gradient(135deg,#DC2626,#EF4444)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(220,38,38,.3)',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{total}</div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:3,fontWeight:500}}>Avaliações</div>
+      </div>
+      <div style={{background:'linear-gradient(135deg,#7C3AED,#8B5CF6)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(124,58,237,.3)',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{tx}<span style={{fontSize:16}}>%</span></div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:3,fontWeight:500}}>Aprovação</div>
+      </div>
+    </div>
+    {baixaLicenca&&<div className="fu2" style={{background:'var(--warning-bg)',border:'1px solid #FDE68A',borderRadius:'var(--r)',padding:'1rem 1.25rem',marginBottom:20,display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
+      <div style={{display:'flex',alignItems:'center',gap:10}}>
+        <span style={{fontSize:24}}>⚠️</span>
+        <div><p style={{fontSize:14,fontWeight:600,color:'var(--warning)'}}>Restam apenas {slotsLivres} licenças</p><p style={{fontSize:12,color:'var(--text3)'}}>Solicite mais licenças para continuar cadastrando colaboradores.</p></div>
+      </div>
+      <button className="btn amber-btn" onClick={()=>setShowSolicitar(true)}>Solicitar Licenças</button>
+    </div>}</>}
+
+    {requests.length>0&&<div className="card fu3" style={{padding:0,overflow:'hidden',marginBottom:20}}>
+      <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0}}>Solicitações Recentes</p></div>
+      {requests.slice(0,5).map(r=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 1.25rem',borderBottom:'1px solid var(--border)'}}>
+        <div><p style={{fontSize:13.5,fontWeight:600}}>+{r.quantidade} licenças</p><p style={{fontSize:12,color:'var(--text3)'}}>{new Date(r.createdAt).toLocaleDateString('pt-BR')} · {r.status}</p></div>
+        <span className={`badge dot ${r.status==='APROVADO'?'green':r.status==='NEGADO'?'red':'amber'}`}>{r.status}</span>
+      </div>)}
+    </div>}
+
+    <div className="card fu3">
+      <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0}}>Métricas de Avaliações</p></div>
+      <div style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:13,padding:'1.25rem'}}>
+        <div><p style={{fontSize:13,color:'var(--text3)',marginBottom:8}}>Resultados</p>
+          {[['APROVADO',aprov,'#059669'],['REPROVADO',reprov,'#DC2626'],['PENDENTE',pend,'#D97706']].map(([l,n,c])=><div key={l} style={{display:'flex',justifyContent:'space-between',padding:'6px 0',fontSize:13.5}}>
+            <span>{l}</span><span style={{fontWeight:700,color:c}}>{n}</span>
+          </div>)}
+        </div>
+        <div><p style={{fontSize:13,color:'var(--text3)',marginBottom:8}}>Progresso</p>
+          <div style={{display:'flex',flexDirection:'column',justifyContent:'center',height:'80%'}}>
+            <div style={{fontSize:48,fontWeight:800,color:'#059669',lineHeight:1}}>{tx}<span style={{fontSize:24}}>%</span></div>
+            <div className="progress" style={{marginTop:12,height:10}}><div className="progress-fill" style={{width:tx+'%',background:'linear-gradient(90deg,#059669,#34D399)'}}/></div>
+            <p style={{fontSize:12,color:'var(--text3)',marginTop:6}}>{aprov} aprovados de {total}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {showSolicitar&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setShowSolicitar(false)}>
+      <div className="modal" style={{maxWidth:420}}>
+        <div className="modal-hd"><h3 style={{fontSize:16,fontWeight:700}}>Solicitar Licenças</h3><button className="btn ghost icon" onClick={()=>setShowSolicitar(false)}>{ICON.x}</button></div>
+        <div className="modal-bd">
+          <p style={{fontSize:13,color:'var(--text2)',marginBottom:8}}>Atualmente você possui <strong>{slotsLivres}</strong> slots disponíveis de <strong>{cliente?.slotsTotal||0}</strong>.</p>
+          <div><label className="label">Quantidade</label>
+            <input className="field" type="number" min="1" value={qtdSolicitar} onChange={e=>setQtdSolicitar(Math.max(1,parseInt(e.target.value)||1))}/>
+          </div>
+          <div><label className="label">Motivo</label>
+            <textarea className="field" rows={3} value={motivoSolicitar} onChange={e=>setMotivoSolicitar(e.target.value)} placeholder="Descreva o motivo da solicitação..." style={{resize:'vertical'}}/>
+          </div>
+          <div style={{display:'flex',gap:8,justifyContent:'flex-end'}}>
+            <button className="btn" onClick={()=>setShowSolicitar(false)}>Cancelar</button>
+            <button className="btn primary" onClick={solicitar}>{ICON.save}Enviar Solicitação</button>
+          </div>
+        </div>
+      </div>
+    </div>}
+  </div>);
+}
+
+function Clientes({user,toast_}){
+  const [data,setData]=useState([]);const [loading,setLoading]=useState(true);
+  const [show,setShow]=useState(false);const [editItem,setEditItem]=useState(null);
+  const [confirmDel,setConfirmDel]=useState(null);
+  const [form,setForm]=useState({nome:'',documento:'',email:'',contato:'',slotsTotal:5,valorSlot:0});
+
+  const load=()=>{setLoading(true);api('clientes').then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});};
+  useEffect(()=>{load();},[]);
+
+  const openForm=item=>{
+    if(item){setForm({nome:item.nome,documento:item.documento||'',email:item.email||'',contato:item.contato||'',slotsTotal:item.slotsTotal||0,valorSlot:item.valorSlot||0});setEditItem(item);}
+    else{setForm({nome:'',documento:'',email:'',contato:'',slotsTotal:5,valorSlot:0});setEditItem(null);}
+    setShow(true);
+  };
+
+  const save=async()=>{
+    if(!form.nome)return toast_('Nome do cliente obrigatório','error');
+    const body=editItem?{id:editItem.id,...form}:form;
+    const method=editItem?'PUT':'POST';
+    const r=await api('clientes',{method,body:JSON.stringify(body)});
+    if(r.error)return toast_(r.error,'error');
+    toast_(editItem?'Cliente atualizado!':'Cliente criado!');
+    setShow(false);load();
+  };
+
+  const del=async()=>{
+    if(!confirmDel)return;
+    await api('clientes?id='+confirmDel.id,{method:'DELETE'});
+    toast_('Cliente excluído');setConfirmDel(null);load();
+  };
+
+  const receitaTotal=data.reduce((s,c)=>s+((c.slotsTotal||0)*(c.valorSlot||0)),0);
+
+  return(<div>
+    <div className="fu" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:20,flexWrap:'wrap',gap:12}}>
+      <div><h1 style={{fontSize:22,fontWeight:700}}>Clientes</h1><p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>{data.length} clientes · Receita Total: <strong style={{color:'#059669'}}>R$ {receitaTotal.toFixed(2)}</strong></p></div>
+      <button className="btn primary" onClick={()=>openForm(null)}>{ICON.uplus}Novo Cliente</button>
+    </div>
+    <div className="card fu1" style={{padding:0,overflow:'hidden'}}>
+      <div style={{overflowX:'auto'}}>
+        <table style={{width:'100%',borderCollapse:'collapse',minWidth:700}}>
+          <thead><tr>
+            <th className="th">Cliente</th><th className="th">Documento</th><th className="th">Contato</th>
+            <th className="th" style={{textAlign:'center'}}>Slots</th><th className="th" style={{textAlign:'center'}}>Usados</th>
+            <th className="th" style={{textAlign:'right'}}>Valor/Slot</th><th className="th" style={{textAlign:'right'}}>Receita</th>
+            <th className="th" style={{textAlign:'center'}}>Status</th><th className="th" style={{textAlign:'right',width:80}}>Ações</th>
+          </tr></thead>
+          <tbody>
+            {loading?[1,2,3].map(i=><tr key={i}>{[1,2,3,4,5,6,7,8,9].map(j=><td key={j} className="td"><Skeleton h={14} w={j===3||j===4?'40px':j>=5?'70px':'120px'} r="4" m="0"/></td>)}</tr>):data.map(c=><tr key={c.id}>
+              <td className="td" style={{fontWeight:600}}>{c.nome}</td>
+              <td className="td" style={{fontSize:12,fontFamily:'var(--mono)'}}>{c.documento||'—'}</td>
+              <td className="td" style={{fontSize:13,color:'var(--text2)'}}>{c.email||'—'}<br/>{c.contato||''}</td>
+              <td className="td" style={{textAlign:'center',fontWeight:700,fontSize:15}}>{c.slotsTotal||0}</td>
+              <td className="td" style={{textAlign:'center'}}>
+                <span style={{color:c.slotsUsados>=(c.slotsTotal||1)*0.9?'var(--danger)':'var(--text2)',fontWeight:600}}>{c.slotsUsados||0}</span>
+                {c.slotsTotal>0&&<div className="progress" style={{marginTop:4,height:5,maxWidth:80,marginLeft:'auto',marginRight:'auto'}}>
+                  <div className="progress-fill" style={{width:Math.min(100,((c.slotsUsados||0)/(c.slotsTotal||1)*100))+'%',background:((c.slotsUsados||0)>=c.slotsTotal)?'#DC2626':'linear-gradient(90deg,#4F46E5,#818CF8)'}}/>
+                </div>}
+              </td>
+              <td className="td" style={{textAlign:'right',fontSize:13}}>R$ {parseFloat(c.valorSlot||0).toFixed(2)}</td>
+              <td className="td" style={{textAlign:'right',fontWeight:700,color:'#059669'}}>R$ {((c.slotsTotal||0)*(c.valorSlot||0)).toFixed(2)}</td>
+              <td className="td" style={{textAlign:'center'}}><span className={`badge dot ${c.status==='ATIVO'?'green':'gray'}`}>{c.status||'ATIVO'}</span></td>
+              <td className="td" style={{textAlign:'right'}}>
+                <div style={{display:'flex',gap:4,justifyContent:'flex-end'}}>
+                  <button className="btn sm icon" onClick={()=>openForm(c)}>{ICON.edit}</button>
+                  <button className="btn sm icon danger" onClick={()=>setConfirmDel(c)}>{ICON.trash}</button>
+                </div>
+              </td>
+            </tr>)}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <ConfirmModal show={confirmDel} title="Excluir Cliente" msg={`Excluir "${confirmDel?.nome}" e todos os seus usuários?`} onConfirm={del} onCancel={()=>setConfirmDel(null)}/>
+    {show&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setShow(false)}>
+      <div className="modal">
+        <div className="modal-hd">
+          <div><h3 style={{fontSize:16,fontWeight:700}}>{editItem?'Editar':'Novo'} Cliente</h3></div>
+          <button className="btn ghost icon" onClick={()=>setShow(false)}>{ICON.x}</button>
+        </div>
+        <div className="modal-bd">
+          <div><label className="label">Nome do Cliente *</label><input className="field" value={form.nome} onChange={e=>setForm(p=>({...p,nome:e.target.value}))} placeholder="Razão social"/></div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:13}}>
+            <div><label className="label">Documento (CNPJ/CPF)</label><input className="field" value={form.documento} onChange={e=>setForm(p=>({...p,documento:e.target.value}))} placeholder="Apenas números"/></div>
+            <div><label className="label">Contato</label><input className="field" value={form.contato} onChange={e=>setForm(p=>({...p,contato:e.target.value}))} placeholder="Nome do contato"/></div>
+          </div>
+          <div><label className="label">Email</label><input className="field" type="email" value={form.email} onChange={e=>setForm(p=>({...p,email:e.target.value}))} placeholder="email@cliente.com"/></div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:13}}>
+            <div><label className="label">Total de Slots (Licenças) *</label><input className="field" type="number" min="1" value={form.slotsTotal} onChange={e=>setForm(p=>({...p,slotsTotal:parseInt(e.target.value)||0}))}/></div>
+            <div><label className="label">Valor por Slot (R$)</label><input className="field" type="number" step="0.01" min="0" value={form.valorSlot} onChange={e=>setForm(p=>({...p,valorSlot:parseFloat(e.target.value)||0}))}/></div>
+          </div>
+          <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:8}}>
+            <button className="btn" onClick={()=>setShow(false)}>Cancelar</button>
+            <button className="btn primary" onClick={save}>{ICON.save}Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>}
+  </div>);
+}
+
+function Licencas({user,toast_}){
+  const [requests,setRequests]=useState([]);const [cliente,setCliente]=useState(null);
+  const [loading,setLoading]=useState(true);
+  const [showSolicitar,setShowSolicitar]=useState(false);
+  const [qtdSolicitar,setQtdSolicitar]=useState(1);const [motivoSolicitar,setMotivoSolicitar]=useState('');
+
+  const load=()=>{Promise.all([api('licencas'),user.clienteId?api('clientes?id='+user.clienteId):null]).then(([r,c])=>{if(Array.isArray(r))setRequests(r);if(c)setCliente(c);setLoading(false);});};
+  useEffect(()=>{load();},[]);
+
+  const slotsLivres=(cliente?.slotsTotal||0)-(cliente?.slotsUsados||0);
+
+  const solicitar=async()=>{
+    const r=await api('licencas',{method:'POST',body:JSON.stringify({quantidade:qtdSolicitar,motivo:motivoSolicitar})});
+    if(r.error)return toast_(r.error,'error');
+    toast_('Solicitação enviada!');setShowSolicitar(false);setQtdSolicitar(1);setMotivoSolicitar('');load();
+  };
+
+  return(<div>
+    <div className="fu"><h1 style={{fontSize:22,fontWeight:700}}>Licenças</h1><p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>Gerencie suas licenças e solicitações</p></div>
+    <div className="fu1" style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:13,marginBottom:20}}>
+      <div style={{background:'linear-gradient(135deg,#4F46E5,#6366F1)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(99,102,241,.3)'}}>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{cliente?.slotsTotal||0}</div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)'}}>Total de Licenças</div>
+      </div>
+      <div style={{background:'linear-gradient(135deg,#059669,#10B981)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)'}}>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{cliente?.slotsUsados||0}</div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)'}}>Em Uso</div>
+      </div>
+      <div style={{background:slotsLivres<=3?'linear-gradient(135deg,#D97706,#F59E0B)':'linear-gradient(135deg,#059669,#10B981)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(217,119,6,.3)'}}>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{slotsLivres}</div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)'}}>Disponíveis</div>
+      </div>
+    </div>
+    <div style={{display:'flex',justifyContent:'flex-end',marginBottom:16}}>
+      <button className="btn primary" onClick={()=>setShowSolicitar(true)}>{ICON.plus}Solicitar Licenças</button>
+    </div>
+    <div className="card fu2" style={{padding:0,overflow:'hidden'}}>
+      <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0}}>Histórico de Solicitações</p></div>
+      {loading?<div style={{padding:'1rem'}}><Skeleton h={14} w="100%" r="4" m="0 0 8px 0"/><Skeleton h={14} w="80%" r="4" m="0"/></div>:requests.map((r,i)=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 1.25rem',borderBottom:i<requests.length-1?'1px solid var(--border)':'none'}}>
+        <div><p style={{fontSize:14,fontWeight:600}}>+{r.quantidade} licenças</p><p style={{fontSize:12,color:'var(--text3)'}}>{new Date(r.createdAt).toLocaleDateString('pt-BR')} · {r.motivo||'—'}</p></div>
+        <span className={`badge dot ${r.status==='APROVADO'?'green':r.status==='NEGADO'?'red':'amber'}`}>{r.status}</span>
+      </div>)}
+    </div>
+    {showSolicitar&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setShowSolicitar(false)}>
+      <div className="modal" style={{maxWidth:420}}>
+        <div className="modal-hd"><h3 style={{fontSize:16,fontWeight:700}}>Solicitar Licenças</h3><button className="btn ghost icon" onClick={()=>setShowSolicitar(false)}>{ICON.x}</button></div>
+        <div className="modal-bd">
+          <p style={{fontSize:13,color:'var(--text2)',marginBottom:8}}>Slots disponíveis: <strong>{slotsLivres}</strong> de <strong>{cliente?.slotsTotal||0}</strong></p>
+          <div><label className="label">Quantidade</label><input className="field" type="number" min="1" value={qtdSolicitar} onChange={e=>setQtdSolicitar(Math.max(1,parseInt(e.target.value)||1))}/></div>
+          <div><label className="label">Motivo</label><textarea className="field" rows={3} value={motivoSolicitar} onChange={e=>setMotivoSolicitar(e.target.value)} placeholder="Descreva o motivo..." style={{resize:'vertical'}}/></div>
+          <div style={{display:'flex',gap:8,justifyContent:'flex-end'}}>
+            <button className="btn" onClick={()=>setShowSolicitar(false)}>Cancelar</button>
+            <button className="btn primary" onClick={solicitar}>{ICON.save}Enviar</button>
           </div>
         </div>
       </div>

@@ -18,6 +18,7 @@ export async function PUT(req, { params }) {
   const body = await req.json();
   const data = applyBusinessRules(body);
   data.updatedBy = user.nome;
+  if (user.clienteId) data.clienteId = user.clienteId;
   const record = await updateRecord(params.id, data);
   if (!record) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
   await addAudit(user.username, 'UPDATE', params.id, record.nomes);

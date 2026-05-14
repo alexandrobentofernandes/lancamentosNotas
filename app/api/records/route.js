@@ -18,6 +18,9 @@ export async function GET(req) {
     dtFim: searchParams.get('dtFim') || '',
   };
 
+  // Filtrar por cliente
+  if (user.clienteId) filters.clienteId = user.clienteId;
+
   const records = await getAllRecords(filters);
   return NextResponse.json(records);
 }
@@ -39,6 +42,7 @@ export async function POST(req) {
   // Single record
   const data = applyBusinessRules(body);
   data.createdBy = user.nome;
+  if (user.clienteId) data.clienteId = user.clienteId;
   const record = await createRecord(data);
   await addAudit(user.username, 'CREATE', record.id, record.nomes);
   return NextResponse.json(record, { status: 201 });
