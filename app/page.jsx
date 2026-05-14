@@ -682,7 +682,8 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
     <div className="card fu1" style={{padding:'1rem 1.25rem',marginBottom:16,display:'flex',gap:12,flexWrap:'wrap',alignItems:'center'}}>
       <div style={{position:'relative',flex:2,minWidth:200}}>
         <div style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'var(--text3)',pointerEvents:'none'}}>{ICON.search}</div>
-        <input className="field" style={{paddingLeft:36}} placeholder="Buscar nome, empresa, CPF, turma..." value={q} onChange={e=>setQDebounced(e.target.value)}/>
+        <input className="field" style={{paddingLeft:36}} placeholder="Buscar nome, empresa, CPF, turma..." value={q} onChange={e=>setQDebounced(e.target.value)} list="rec-suggest"/>
+        <datalist id="rec-suggest">{data.slice(0,20).flatMap(r=>[r.nomes,r.empresa].filter(Boolean)).filter((v,i,a)=>a.indexOf(v)===i).map(s=><option key={s} value={s}/>)}</datalist>
       </div>
       <select className="field" style={{flex:1,minWidth:140}} value={base} onChange={e=>{setBase(e.target.value);setPage(0);}}>
         <option value="">Todas as Bases</option>{BASES.map(b=><option key={b}>{b}</option>)}
@@ -721,8 +722,9 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
               <td className="td"><Badge v={r.resultadoFinal}/></td>
               {cw&&<td className="td" style={{textAlign:'right'}}>
                 <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
-                  <button className="btn sm icon" onClick={()=>onEdit(r)}>{ICON.edit}</button>
-                  {user?.role==='SYSTEM'&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(r)}>{ICON.trash}</button>}
+                  <button className="btn sm icon" onClick={()=>onEdit(r)} title="Editar">{ICON.edit}</button>
+                  <button className="btn sm icon" style={{color:'#E53935'}} onClick={()=>window.open('/api/export-pdf?id='+r.id,'_blank')} title="PDF">{ICON.down}</button>
+                  {user?.role==='SYSTEM'&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(r)} title="Excluir">{ICON.trash}</button>}
                 </div>
               </td>}
             </tr>)}
@@ -984,6 +986,16 @@ function Reports({mobile}){
         <button className="btn primary" onClick={aplicarFiltros} style={{marginBottom:1}}>{ICON.search}Filtrar</button>
         {filtrosAplicados&&<button className="btn ghost sm" onClick={()=>{setDtIni('');setDtFim('');setFb('');setTimeout(()=>aplicarFiltros(),0);}}>{ICON.x}Limpar</button>}
       </div>
+      {!mobile&&<div style={{display:'flex',gap:6,marginTop:8,flexWrap:'wrap'}}>
+        {[['7d','7 dias'],['30d','30 dias'],['90d','90 dias'],['ano','Este ano']].map(([k,l])=><button key={k} className={`btn sm ${(dtIni||dtFim)?'ghost':'ghost'}`} style={{fontSize:11.5,padding:'4px 10px',background:k==='7d'&&!dtIni&&!dtFim?'var(--primary)':'',color:k==='7d'&&!dtIni&&!dtFim?'#fff':''}} onClick={()=>{
+          const h=new Date();
+          if(k==='7d'){h.setDate(h.getDate()-7);setDtIni(h.toISOString().slice(0,10));setDtFim('');}
+          else if(k==='30d'){h.setDate(h.getDate()-30);setDtIni(h.toISOString().slice(0,10));setDtFim('');}
+          else if(k==='90d'){h.setDate(h.getDate()-90);setDtIni(h.toISOString().slice(0,10));setDtFim('');}
+          else{setDtIni(h.getFullYear()+'-01-01');setDtFim('');}
+          setTimeout(()=>aplicarFiltros(),0);
+        }}>{l}</button>)}
+      </div>}
     </div>
     <div className="fu2" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
       {[{n:total,l:'No Período',c:'#5930E2',bg:'linear-gradient(135deg,#5930E2,#7C5CFF)'},{n:aprov,l:'Aprovados',c:'#059669',bg:'linear-gradient(135deg,#059669,#2EAA5C)'},{n:reprov,l:'Reprovados',c:'#DC2626',bg:'linear-gradient(135deg,#DC2626,#EF4444)'},{n:ausente,l:'Ausentes',c:'#D97706',bg:'linear-gradient(135deg,#D97706,#F59E0B)'}].map((s,i)=><div key={i} style={{background:s.bg,borderRadius:'var(--r)',padding:'1.25rem',boxShadow:`0 5px 18px ${s.c}33`,position:'relative',overflow:'hidden'}}>
