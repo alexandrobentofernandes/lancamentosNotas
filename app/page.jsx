@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { applyBusinessRules, calcISBN, getBaremo, getCargo, getIT, getEmpresaData, calcStatusProvaOnline, calcStatusProvaTeorica, calcStatusParcial, calcResultadoFinal, BASE_UO_REGIAO, PROCESSOS_MAP } from '../lib/business';
 
 const BASES=["ANGRA DOS REIS","ARARUAMA","CABO FRIO","CAMPOS","CANTAGALO","ENEL RIO","ITAMBI","ITAPERUNA","MACAÉ","MAGÉ","NITERÓI","PÁDUA","PETRÓPOLIS","RESENDE","SÃO GONÇALO","SÃO PEDRO DA ALDEIA","TANGUÁ","TERESÓPOLIS"];
@@ -155,7 +156,8 @@ tr:hover .td{background:#F8FAFF}
 .chart-track{flex:1;background:rgba(0,0,0,.05);height:9px;border-radius:6px;overflow:hidden}
 .chart-bar{height:100%;border-radius:6px;transition:width .6s var(--ease)}
 .chart-val{font-size:12px;font-weight:700;color:var(--text);min-width:24px;text-align:right}
-@media(max-width:768px){.g2,.g3,.g4{grid-template-columns:1fr!important}}
+@media(max-width:768px){.g2,.g3,.g4{grid-template-columns:1fr!important}.hide-mob{display:none!important}}
+@media(max-width:1024px){.hide-tab{display:none!important}}
 `;
 
 const emptyForm=()=>({statusColaborador:'CANDIDATO',pedido:'',turma:'',dataRealizacao:'',nomes:'',matricula:'',cpf:'',empresa:'',estado:'',base:'',unidadeOperacional:'',regiao:'',avaliador:'',processo:'',processoPrincipal:'',testeOnline:'',avaliacaoOnline:'',statusProvaOnline:'',notaProva:'',statusProvaTeorica:'',avaliacao1:'',baremo1:'',statusProva1:'',motivo1:'',it1:'',detalhe1:'',avaliacao2:'',baremo2:'',statusProva2:'',motivo2:'',it2:'',detalhe2:'',avaliacao3:'',baremo3:'',statusProva3:'',motivo3:'',it3:'',detalhe3:'',avaliacao4:'',baremo4:'',statusProva4:'',motivo4:'',it4:'',detalhe4:'',avaliacao5:'',baremo5:'',statusProva5:'',motivo5:'',it5:'',detalhe5:'',avaliacao6:'',baremo6:'',statusProva6:'',motivo6:'',it6:'',detalhe6:'',reavaliacao:'',reavaliacaoBaremo:'',statusParcial:'',nivelamentoTeorico:'',nivelamentoPratico:'',reavaliacaoPratica:'',resultadoFinal:'',har:'',localAvaliacao:'',links:'',documentoHar:'',cargosProcessos:'',empresaAvaliadora:'',statusHarVencida:'',emailEmpresa:'',dataInicioAssinatura:'',dataFimAssinatura:'',associadoSindistal:'',docContratual:'',nRenovacao:'',isbn:'',fotoCandidato:''});
@@ -433,7 +435,7 @@ function ConfirmModal({show,title,msg,onConfirm,onCancel}){
   </div>;
 }
 
-function RecList({cw,ia,mobile,onEdit,onNew,toast_}){
+function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
   const [data,setData]=useState([]);const [loading,setLoading]=useState(true);
   const [q,setQ]=useState('');const [base,setBase]=useState('');const [res,setRes]=useState('');const [page,setPage]=useState(0);
   const [confirmDel,setConfirmDel]=useState(null);
@@ -505,18 +507,18 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_}){
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:750}}>
           <thead><tr>
             <th className="th" style={{width:50}}></th>
-            <th className="th">Nome</th><th className="th">Empresa</th><th className="th">Base</th>
-            <th className="th">Processo</th><th className="th">Data</th><th className="th">Resultado</th>
+            <th className="th">Nome</th><th className="th hide-tab">Empresa</th><th className="th hide-mob">Base</th>
+            <th className="th hide-tab">Processo</th><th className="th hide-mob">Data</th><th className="th">Resultado</th>
             {cw&&<th className="th" style={{textAlign:'right'}}>Ações</th>}
           </tr></thead>
           <tbody>
             {paged.map(r=><tr key={r.id}>
               <td className="td">{r.fotoCandidato?<img src={r.fotoCandidato} style={{width:32,height:32,borderRadius:'50%',objectFit:'cover'}}/>:<Avatar name={r.nomes} size={32}/>}</td>
               <td className="td" style={{fontWeight:600}}>{r.nomes||'—'}</td>
-              <td className="td" style={{fontSize:13,color:'var(--text2)'}}>{r.empresa||'—'}</td>
-              <td className="td">{r.base?<span className="badge blue">{r.base}</span>:'—'}</td>
-              <td className="td" style={{fontSize:12,color:'var(--text3)',maxWidth:150,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{(r.processo||'—').replace(/_/g,' ')}</td>
-              <td className="td" style={{fontSize:12,fontFamily:'var(--mono)'}}>{r.dataRealizacao||'—'}</td>
+              <td className="td hide-tab" style={{fontSize:13,color:'var(--text2)'}}>{r.empresa||'—'}</td>
+              <td className="td hide-mob">{r.base?<span className="badge blue">{r.base}</span>:'—'}</td>
+              <td className="td hide-tab" style={{fontSize:12,color:'var(--text3)',maxWidth:150,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{(r.processo||'—').replace(/_/g,' ')}</td>
+              <td className="td hide-mob" style={{fontSize:12,fontFamily:'var(--mono)'}}>{r.dataRealizacao||'—'}</td>
               <td className="td"><Badge v={r.resultadoFinal}/></td>
               {cw&&<td className="td" style={{textAlign:'right'}}>
                 <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
@@ -691,9 +693,10 @@ function Reports({mobile}){
   useEffect(()=>{aplicarFiltros();},[]);
   const total=data.length,aprov=data.filter(r=>r.resultadoFinal==='APROVADO'||r.resultadoFinal==='APROVADO 2').length,reprov=data.filter(r=>r.resultadoFinal==='REPROVADO').length,ausente=data.filter(r=>r.resultadoFinal==='AUSENTE').length,pend=total-aprov-reprov-ausente,tx=total?Math.round(aprov/total*100):0;
   const byBase={};data.forEach(r=>{if(r.base)byBase[r.base]=(byBase[r.base]||0)+1;});
-  const topB=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,7),maxB=topB[0]?.[1]||1;
+  const topB=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,7);
   const byP={};data.forEach(r=>{if(r.processo){const k=r.processo.replace(/_/g,' ').slice(0,26);byP[k]=(byP[k]||0)+1;}});
-  const topP=Object.entries(byP).sort((a,b)=>b[1]-a[1]).slice(0,6),maxP=topP[0]?.[1]||1;
+  const topP=Object.entries(byP).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const pieData=[{name:'Aprovados',value:aprov,fill:'#059669'},{name:'Reprovados',value:reprov,fill:'#DC2626'},{name:'Ausentes',value:ausente,fill:'#D97706'},{name:'Pendentes',value:pend,fill:'#94A3B8'}].filter(d=>d.value>0);
   return(<div>
     <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Relatórios</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>Análise por período e filtros</p></div>
     <div className="card fu1" style={{padding:'1.25rem',marginBottom:20}}>
@@ -720,22 +723,48 @@ function Reports({mobile}){
     </div>:<div className="fu3" style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:16}}>
       <div className="card" style={{padding:'1.25rem'}}>
         <p className="sec-h">Por Base</p>
-        {topB.length?topB.map(([b,n])=><div key={b} className="chart-row"><span className="chart-lbl">{b}</span><div className="chart-track"><div className="chart-bar" style={{width:Math.round(n/maxB*100)+'%',background:'linear-gradient(90deg,#4F46E5,#818CF8)'}}/></div><span className="chart-val">{n}</span></div>):<p style={{fontSize:13,color:'var(--text3)'}}>Sem dados</p>}
+        <div style={{height:Math.max(200,topB.length*36)}}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={topB.map(([b,n])=>({name:b.split(' ')[0],total:n}))} layout="vertical" margin={{left:10,right:10,top:5,bottom:5}}>
+              <XAxis type="number" hide/>
+              <YAxis type="category" dataKey="name" tick={{fontSize:11,fill:'var(--text2)'}} width={80}/>
+              <Tooltip contentStyle={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:8,fontSize:12}}/>
+              <Bar dataKey="total" fill="#4F46E5" radius={[0,4,4,0]} maxBarSize={16}/>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+      <div className="card" style={{padding:'1.25rem'}}>
+        <p className="sec-h">Distribuição</p>
+        <div style={{height:220,display:'flex',alignItems:'center',justifyContent:'center'}}>
+          {pieData.length?<ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie data={pieData} cx="50%" cy="50%" innerRadius={55} outerRadius={85} paddingAngle={3} dataKey="value">
+                {pieData.map((e,i)=><Cell key={i} fill={e.fill}/>)}
+              </Pie>
+              <Tooltip contentStyle={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:8,fontSize:12}}/>
+            </PieChart>
+          </ResponsiveContainer>:<p style={{fontSize:13,color:'var(--text3)'}}>Sem dados</p>}
+        </div>
+        <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap',marginTop:8}}>
+          {pieData.map(d=><div key={d.name} style={{display:'flex',alignItems:'center',gap:4,fontSize:11.5,color:'var(--text3)'}}>
+            <span style={{width:10,height:10,borderRadius:3,background:d.fill}}/>
+            <span>{d.name} ({d.value})</span>
+          </div>)}
+        </div>
       </div>
       <div className="card" style={{padding:'1.25rem'}}>
         <p className="sec-h">Top Processos</p>
-        {topP.length?topP.map(([p,n])=><div key={p} className="chart-row"><span className="chart-lbl">{p}</span><div className="chart-track"><div className="chart-bar" style={{width:Math.round(n/maxP*100)+'%',background:'linear-gradient(90deg,#059669,#34D399)'}}/></div><span className="chart-val">{n}</span></div>):<p style={{fontSize:13,color:'var(--text3)'}}>Sem dados</p>}
-      </div>
-      <div className="card" style={{padding:'1.25rem'}}>
-        <p className="sec-h">Distribuição de Resultados</p>
-        {[['APROVADO',aprov,'#059669'],['REPROVADO',reprov,'#DC2626'],['AUSENTE',ausente,'#D97706'],['PENDENTE',pend,'#94A3B8']].map(([l,n,c])=><div key={l} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 0',borderBottom:'1px solid var(--border)'}}>
-          <span style={{fontSize:13.5,fontWeight:500}}>{l}</span>
-          <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <div style={{width:88,height:7,background:'rgba(0,0,0,.05)',borderRadius:5,overflow:'hidden'}}><div style={{height:'100%',borderRadius:5,background:c,width:total?Math.round(n/total*100)+'%':'0%',transition:'width .5s'}}/></div>
-            <span style={{fontSize:13,fontWeight:700,minWidth:28,textAlign:'right'}}>{n}</span>
-            <span style={{fontSize:11.5,color:'var(--text3)',fontFamily:'var(--mono)',minWidth:34}}>{total?Math.round(n/total*100):0}%</span>
-          </div>
-        </div>)}
+        <div style={{height:Math.max(180,topP.length*30)}}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={topP.map(([p,n])=>({name:p.length>20?p.slice(0,20)+'…':p,total:n}))} layout="vertical" margin={{left:10,right:10,top:5,bottom:5}}>
+              <XAxis type="number" hide/>
+              <YAxis type="category" dataKey="name" tick={{fontSize:10,fill:'var(--text2)'}} width={90}/>
+              <Tooltip contentStyle={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:8,fontSize:12}}/>
+              <Bar dataKey="total" fill="#059669" radius={[0,4,4,0]} maxBarSize={16}/>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
       <div className="card" style={{padding:'1.25rem',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
         <p className="sec-h" style={{alignSelf:'flex-start',width:'100%'}}>Taxa de Aprovação</p>
