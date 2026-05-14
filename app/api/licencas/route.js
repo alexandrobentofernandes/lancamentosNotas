@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAuth, PERMISSOES } from '../../../lib/auth';
 import { getLicencaRequests, createLicencaRequest, updateLicencaRequest, getCliente, addAudit } from '../../../lib/db';
+import { notificarSolicitacaoLicenca } from '../../../lib/email';
 
 export async function GET(req) {
   const user = requireAuth(req);
@@ -37,8 +38,14 @@ export async function POST(req) {
     solicitadoPorEmail: user.username,
   });
 
-  // Enviar email (placeholder - implementar com nodemailer ou serviço SMTP)
-  const emailBody = `Nova solicitação de licenças:\nCliente: ${cliente?.nome}\nQuantidade: ${body.quantidade}\nMotivo: ${body.motivo || '—'}\nSolicitante: ${user.nome} (${user.username})`;
+  // Notificar SYSTEM por email
+  notificarSolicitacaoLicenca({
+    clienteNome: cliente?.nome || '—',
+    quantidade: body.quantidade,
+    motivo: body.motivo || '',
+    solicitante: user.nome,
+    emailSolicitante: user.username,
+  });
 
   await addAudit(user.username, 'LICENCA_REQUEST', reqData.id, `${cliente?.nome}: ${body.quantidade} licenças`);
   return NextResponse.json(reqData, { status: 201 });
