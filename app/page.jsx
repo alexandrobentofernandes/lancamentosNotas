@@ -604,7 +604,8 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
   const [data,setData]=useState([]);const [loading,setLoading]=useState(true);const [error,setError]=useState(null);
   const [q,setQ]=useState('');const [base,setBase]=useState('');const [res,setRes]=useState('');const [page,setPage]=useState(0);
   const [confirmDel,setConfirmDel]=useState(null);
-  const [sortKey,setSortKey]=useState(null);const [sortDir,setSortDir]=useState('asc');
+  const   [sortKey,setSortKey]=useState(null);const [sortDir,setSortDir]=useState('asc');
+  const [selected,setSelected]=useState(new Set());
   const PER=20;const fileRef=useRef(null);const searchTimer=useRef(null);
   const load=useCallback(()=>{setLoading(true);setError(null);api('records?'+new URLSearchParams({q,base,resultado:res})).then(r=>{if(Array.isArray(r))setData(r);else setError('Erro ao carregar');setLoading(false);}).catch(()=>{setError('Erro de conexão');setLoading(false);});},[q,base,res]);
   const setQDebounced=v=>{
@@ -657,6 +658,87 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
       <span style={{fontSize:13,color:'var(--text3)'}}>{page+1}/{pages}</span>
       <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(p=>p+1)}>Prox ›</button>
     </div>}
+  </div>);
+  // Desktop view
+  const bulkDel=async()=>{
+    if(!selected.size)return;
+    if(!confirm(`Excluir ${selected.size} registro(s)?`))return;
+    for(const id of selected){await api('records/'+id,{method:'DELETE'});}
+    toast_(`${selected.size} registro(s) excluído(s)`);
+    setSelected(new Set());load();
+  };
+  return(<div>
+    <div className="fu" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:20,flexWrap:'wrap',gap:12}}>
+      <div><h1 style={{fontSize:24,fontWeight:700}}>Avaliações</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>{sorted.length} registros</p></div>
+      <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+        <button className="btn" onClick={()=>window.location.href='/api/export?'+new URLSearchParams({q,base,resultado:res}).toString()}>{ICON.down}CSV</button>
+        <button className="btn success" onClick={()=>window.location.href='/api/export-excel?'+new URLSearchParams({q,base,resultado:res}).toString()}>{ICON.down}Excel</button>
+        {selected.size>0&&<button className="btn danger" onClick={bulkDel}>{ICON.trash}Excluir {selected.size}</button>}
+        {cw&&<><input ref={fileRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])imp(e.target.files[0]);e.target.value='';}}/>
+        <button className="btn amber-btn" onClick={()=>fileRef.current.click()}>{ICON.up}Importar JSON</button>
+        <button className="btn primary" onClick={onNew}>{ICON.plus}Nova Avaliação</button></>}
+      </div>
+    </div>
+    <div className="card fu1" style={{padding:'1rem 1.25rem',marginBottom:16,display:'flex',gap:12,flexWrap:'wrap',alignItems:'center'}}>
+      <div style={{position:'relative',flex:2,minWidth:200}}>
+        <div style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',color:'var(--text3)',pointerEvents:'none'}}>{ICON.search}</div>
+        <input className="field" style={{paddingLeft:36}} placeholder="Buscar nome, empresa, CPF, turma..." value={q} onChange={e=>setQDebounced(e.target.value)}/>
+      </div>
+      <select className="field" style={{flex:1,minWidth:140}} value={base} onChange={e=>{setBase(e.target.value);setPage(0);}}>
+        <option value="">Todas as Bases</option>{BASES.map(b=><option key={b}>{b}</option>)}
+      </select>
+      <select className="field" style={{flex:1,minWidth:140}} value={res} onChange={e=>{setRes(e.target.value);setPage(0);}}>
+        <option value="">Todos Resultados</option>
+        {['APROVADO','APROVADO 2','REPROVADO','AUSENTE','PENDENTE'].map(r=><option key={r}>{r}</option>)}
+      </select>
+      {(q||base||res)&&<button className="btn ghost sm" onClick={()=>{setQ('');setBase('');setRes('');setPage(0);}}>Limpar</button>}
+    </div>
+    <div className="card fu2" style={{padding:0,overflow:'hidden'}}>
+      <div style={{overflowX:'auto'}}>
+        <table style={{width:'100%',borderCollapse:'collapse',minWidth:750}}>
+          <thead><tr>
+            <th className="th" style={{width:36}}>
+              <input type="checkbox" style={{cursor:'pointer'}} checked={paged.length>0&&selected.size===sorted.length} onChange={e=>setSelected(e.target.checked?new Set(sorted.map(r=>r.id)):new Set())}/>
+            </th>
+            <th className="th" style={{width:50}}></th>
+            <th className="th" style={{cursor:'pointer'}} onClick={()=>toggleSort('nomes')}>Nome<SortIcon k="nomes"/></th>
+            <th className="th hide-tab" style={{cursor:'pointer'}} onClick={()=>toggleSort('empresa')}>Empresa<SortIcon k="empresa"/></th>
+            <th className="th hide-mob">Base</th>
+            <th className="th hide-tab">Processo</th>
+            <th className="th hide-mob" style={{cursor:'pointer'}} onClick={()=>toggleSort('dataRealizacao')}>Data<SortIcon k="dataRealizacao"/></th>
+            <th className="th" style={{cursor:'pointer'}} onClick={()=>toggleSort('resultadoFinal')}>Resultado<SortIcon k="resultadoFinal"/></th>
+            {cw&&<th className="th" style={{textAlign:'right'}}>Ações</th>}
+          </tr></thead>
+          <tbody>
+            {loading?[1,2,3,4,5].map(i=><tr key={i}>{[0,1,2,3,4,5,6,7,8].slice(0,cw?9:8).map(j=><td key={j} className="td"><Skeleton h={14} w={j===0?'16px':j===1?'32px':j===3?'100px':j===5?'120px':j===7?'70px':'140px'} r="4" m="0"/></td>)}</tr>):paged.map(r=><tr key={r.id} style={{background:selected.has(r.id)?'rgba(89,48,226,.04)':''}}>
+              <td className="td"><input type="checkbox" checked={selected.has(r.id)} onChange={e=>{const s=new Set(selected);e.target.checked?s.add(r.id):s.delete(r.id);setSelected(s);}}/></td>
+              <td className="td">{r.fotoCandidato?<img src={r.fotoCandidato} style={{width:32,height:32,borderRadius:'50%',objectFit:'cover'}}/>:<Avatar name={r.nomes} size={32}/>}</td>
+              <td className="td" style={{fontWeight:600}}>{r.nomes||'—'}</td>
+              <td className="td hide-tab" style={{fontSize:13,color:'var(--text2)'}}>{r.empresa||'—'}</td>
+              <td className="td hide-mob">{r.base?<span className="badge blue">{r.base}</span>:'—'}</td>
+              <td className="td hide-tab" style={{fontSize:12,color:'var(--text3)',maxWidth:150,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{(r.processo||'—').replace(/_/g,' ')}</td>
+              <td className="td hide-mob" style={{fontSize:12,fontFamily:'var(--mono)'}}>{r.dataRealizacao||'—'}</td>
+              <td className="td"><Badge v={r.resultadoFinal}/></td>
+              {cw&&<td className="td" style={{textAlign:'right'}}>
+                <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
+                  <button className="btn sm icon" onClick={()=>onEdit(r)}>{ICON.edit}</button>
+                  {user?.role==='SYSTEM'&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(r)}>{ICON.trash}</button>}
+                </div>
+              </td>}
+            </tr>)}
+            {!loading&&!paged.length&&<tr><td colSpan={cw?9:8} style={{textAlign:'center',padding:'3rem',color:'var(--text3)'}}>
+              <EmptyState title="Nenhum registro" desc="Importe dados via JSON ou crie uma nova avaliação."/>
+            </td></tr>}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {pages>1&&<div className="fu3" style={{display:'flex',justifyContent:'center',alignItems:'center',gap:10,marginTop:16}}>
+      <button className="btn sm" disabled={page===0} onClick={()=>setPage(p=>p-1)}>‹ Anterior</button>
+      <span style={{fontSize:13,color:'var(--text3)',fontFamily:'var(--mono)'}}>Página {page+1} de {pages}</span>
+      <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(p=>p+1)}>Próxima ›</button>
+    </div>}
+    <ConfirmModal show={confirmDel} title="Excluir Avaliação" msg={`Excluir permanentemente a avaliação de "${confirmDel?.nomes||'?'}"?`} onConfirm={()=>del(confirmDel.id)} onCancel={()=>setConfirmDel(null)}/>
   </div>);
 }
 
@@ -725,6 +807,19 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
     return n;
   });
   useEffect(()=>{if(!errors)return;const e={...errors};let changed=false;['nomes','pedido','empresa','base','processo'].forEach(k=>{if(e[k]&&form[k]){delete e[k];changed=true;}});if(changed)setErrors(e);},[form.nomes,form.pedido,form.empresa,form.base,form.processo]);
+  useEffect(()=>{
+    if(!rec&&Object.values(form).some(v=>v&&v!=='')){
+      const h=e=>{e.preventDefault();e.returnValue='';};
+      window.addEventListener('beforeunload',h);
+      return()=>window.removeEventListener('beforeunload',h);
+    }
+  },[form,rec]);
+  const confirmCancel=()=>{
+    if(!rec&&Object.values(form).some(v=>v&&v!=='')){
+      if(!confirm('Há dados não salvos. Deseja realmente sair?'))return;
+    }
+    localStorage.removeItem(draftKey);onCancel();
+  };
   const save=async()=>{
     const e={};if(!form.nomes)e.nomes='Obrigatório';if(!form.pedido)e.pedido='Obrigatório';if(!form.empresa)e.empresa='Obrigatório';if(!form.base)e.base='Obrigatório';if(!form.processo)e.processo='Obrigatório';
     setErrors(e);if(Object.keys(e).length){toast_('Preencha os campos obrigatórios','error');return;}
@@ -733,7 +828,19 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
     setSaving(false);
     if(r.error)toast_(r.error,'error');else{localStorage.removeItem(draftKey);onSave();}
   };
-  const photo=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>upd('fotoCandidato',ev.target.result);r.readAsDataURL(f);};
+  const photo=e=>{
+    const f=e.target.files[0];if(!f)return;
+    const img=new Image();const url=URL.createObjectURL(f);
+    img.onload=()=>{
+      const max=600;let w=img.width,h=img.height;
+      if(w>max||h>max){const r=Math.min(max/w,max/h);w*=r;h*=r;}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);
+      upd('fotoCandidato',c.toDataURL('image/jpeg',.7));
+      URL.revokeObjectURL(url);
+    };
+    img.src=url;
+  };
   const errStyle=field=>errors[field]?{borderColor:'var(--danger)',background:'var(--danger-bg)'}:{};
   const F=({label,field,type='text',opts,auto,req,ph})=>(<div className="fl" style={mobile?{}:{}}>
     {opts?<><select className={`field${auto?' auto':''}${form[field]?' filled':''}`} style={errStyle(field)} value={form[field]||''} onChange={e=>upd(field,e.target.value)} disabled={auto}>
@@ -772,7 +879,7 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
         </div>
       </div>
       <div style={{display:'flex',gap:8}}>
-        <button className="btn" onClick={()=>{localStorage.removeItem(draftKey);onCancel();}}>Cancelar</button>
+        <button className="btn" onClick={confirmCancel}>Cancelar</button>
         {cw&&<button className="btn primary" onClick={save} disabled={saving}>{saving?<><Spin/>Salvando...</>:<>{ICON.save}Salvar Avaliação</>}</button>}
       </div>
     </div>
@@ -1355,7 +1462,9 @@ function Clientes({user,toast_}){
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:700}}>
           <thead><tr>
-            <th className="th" style={{width:50}}></th>
+            <th className="th" style={{width:36}}>
+              <input type="checkbox" style={{cursor:'pointer'}} checked={paged.length>0&&selected.size===sorted.length} onChange={e=>setSelected(e.target.checked?new Set(sorted.map(r=>r.id)):new Set())}/>
+            </th>
             <th className="th" style={{cursor:'pointer'}} onClick={()=>toggleSort('nomes')}>Nome<SortIcon k="nomes"/></th>
             <th className="th hide-tab" style={{cursor:'pointer'}} onClick={()=>toggleSort('empresa')}>Empresa<SortIcon k="empresa"/></th>
             <th className="th hide-mob">Base</th>
