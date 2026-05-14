@@ -1454,7 +1454,8 @@ function Clientes({user,toast_}){
     setSaving(false);
     if(r.error)return toast_(r.error,'error');
     toast_(editItem?'Cliente atualizado!':'Cliente criado!');
-    setShow(false);load();
+    setShow(false);
+    setTimeout(()=>load(),50);
   };
 
   const del=async()=>{
