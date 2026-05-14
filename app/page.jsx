@@ -320,7 +320,7 @@ export default function App(){
           </div>
         </div>
       </nav>}
-      <main style={{flex:1,marginLeft:mobile||!sidebarOpen?0:'var(--sw)',padding:mobile?'1rem 1rem 90px':'2rem 2rem 2.5rem',minHeight:'100vh'}}>
+      <main style={{flex:1,marginLeft:mobile||!sidebarOpen?0:'var(--sw)',padding:mobile?'1.25rem 1rem 90px':'2.5rem 2rem 2.5rem',minHeight:'100vh'}}>
         {!mobile&&user&&<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:16,fontSize:12.5,color:'var(--text3)'}}>
           <span style={{cursor:'pointer',transition:'var(--t)',padding:'4px 6px',borderRadius:6}} onClick={()=>setSidebarOpen(!sidebarOpen)} title="Toggle sidebar">{ICON.list}</span>
           <span style={{color:'var(--text3)',opacity:.4}}>/</span>
@@ -630,7 +630,7 @@ function AuditLog({toast_}){
   useEffect(()=>{load();},[]);
   if(error)return <div className="fu"><ErrorState msg={error} onRetry={load}/></div>;
   return(<div>
-    <div className="fu"><h1 style={{fontSize:22,fontWeight:700}}>Auditoria</h1><p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>Histórico de ações no sistema</p></div>
+    <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Auditoria</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>Histórico de ações no sistema</p></div>
     <div className="card fu1" style={{padding:0,overflow:'hidden'}}>
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:600}}>
@@ -1083,11 +1083,11 @@ function Cadastros({mobile,toast_}){
   };
 
   return(<div>
-    <div className="fu" style={{marginBottom:20}}>
-      <h1 style={{fontSize:22,fontWeight:700}}>Cadastros</h1>
-      <p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>Gerenciar tabelas auxiliares</p>
+    <div className="fu" style={{marginBottom:24}}>
+      <h1 style={{fontSize:24,fontWeight:700}}>Cadastros</h1>
+      <p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>Gerenciar tabelas auxiliares</p>
     </div>
-    <div className="tab-bar fu1" style={{marginBottom:16,flexWrap:'wrap'}}>
+    <div className="tab-bar fu1" style={{marginBottom:20,flexWrap:'wrap'}}>
       {tipos.map((t,i)=><button key={t} className={`tab${tab===i?' active':''}`} onClick={()=>setTab(i)}>
         <span style={{marginRight:6}}>{CAD_ICON[t]}</span>{t.charAt(0).toUpperCase()+t.slice(1)}
       </button>)}
@@ -1194,7 +1194,7 @@ function AdminDash({mobile,user,toast_}){
   const total=data.length,aprov=data.filter(r=>r.resultadoFinal==='APROVADO'||r.resultadoFinal==='APROVADO 2').length,reprov=data.filter(r=>r.resultadoFinal==='REPROVADO').length,pend=total-aprov-reprov,tx=total?Math.round(aprov/total*100):0;
 
   return(<div>
-    <div className="fu"><h1 style={{fontSize:22,fontWeight:700}}>Meu Painel</h1><p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>Visão geral do seu cliente</p></div>
+    <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Meu Painel</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>Visão geral do seu cliente</p></div>
 
     {loading?<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
       {[1,2,3,4].map(i=><div key={i} style={{background:'var(--surface)',borderRadius:'var(--r)',padding:'1.25rem',border:'1px solid var(--border)'}}><Skeleton h={32} w="50px" m="0 0 6px 0"/><Skeleton h={14} w="80px" m="0"/></div>)}
@@ -1312,7 +1312,7 @@ function Clientes({user,toast_}){
 
   return(<div>
     <div className="fu" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:20,flexWrap:'wrap',gap:12}}>
-      <div><h1 style={{fontSize:22,fontWeight:700}}>Clientes</h1><p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>{data.length} clientes · Receita Total: <strong style={{color:'#059669'}}>R$ {receitaTotal.toFixed(2)}</strong></p></div>
+      <div><h1 style={{fontSize:24,fontWeight:700}}>Clientes</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>{data.length} clientes · Receita Total: <strong style={{color:'#059669'}}>R$ {receitaTotal.toFixed(2)}</strong></p></div>
       <button className="btn primary" onClick={()=>openForm(null)}>{ICON.uplus}Novo Cliente</button>
     </div>
     <div className="card fu1" style={{padding:0,overflow:'hidden'}}>
@@ -1396,7 +1396,7 @@ function Licencas({user,toast_}){
   };
 
   return(<div>
-    <div className="fu"><h1 style={{fontSize:22,fontWeight:700}}>Licenças</h1><p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>Gerencie suas licenças e solicitações</p></div>
+    <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Licenças</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>Gerencie suas licenças e solicitações</p></div>
     <div className="fu1" style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:13,marginBottom:20}}>
       <div style={{background:'linear-gradient(135deg,#4F46E5,#6366F1)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(99,102,241,.3)'}}>
         <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{cliente?.slotsTotal||0}</div>
@@ -1463,7 +1463,7 @@ function GestaoLicencas({user,toast_}){
   const pendentes=requests.filter(r=>r.status==='PENDENTE');
   const historico=requests.filter(r=>r.status!=='PENDENTE');
   return(<div>
-    <div className="fu"><h1 style={{fontSize:22,fontWeight:700}}>Gestão de Licenças</h1><p style={{fontSize:13,color:'var(--text3)',marginTop:2}}>{pendentes.length} solicitações pendentes</p></div>
+    <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Gestão de Licenças</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>{pendentes.length} solicitações pendentes</p></div>
     {pendentes.length>0&&<div className="card fu1" style={{padding:0,overflow:'hidden',marginBottom:20}}>
       <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0,color:'var(--warning)'}}>Pendentes</p></div>
       {pendentes.map(r=><div key={r.id} style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}>
