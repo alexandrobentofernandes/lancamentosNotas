@@ -1,0 +1,38 @@
+import { NextResponse } from 'next/server';
+import { requireAuth, canWrite } from '../../../../lib/auth';
+import { getRecord, updateRecord, deleteRecord, addAudit } from '../../../../lib/db';
+import { applyBusinessRules } from '../../../../lib/business';
+
+export async function GET(req, { params }) {
+  const user = requireAuth(req);
+  if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+  const record = await getRecord(params.id);
+  if (!record) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
+  return NextResponse.json(record);
+}
+
+export async function PUT(req, { params }) {
+  const user = requireAuth(req);
+  if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+  if (!canWrite(user)) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 });
+  const body = await req.json();
+  const data = applyBusinessRules(body);
+  data.updatedBy = user.nome;
+  const record = await updateRecord(params.id, data);
+  if (!record) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
+  await addAudit(user.username, 'UPDATE', params.id, record.nomes);
+  return NextResponse.json(record);
+}
+
+export async function DELETE(req, { params }) {
+  const user = requireAuth(req);
+  if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+  if (!canWrite(user)) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 });
+  if (user.role !== 'SYSTEM' && user.role !== 'ADMIN')
+    return NextResponse.json({ error: 'Apenas admins podem excluir' }, { status: 403 });
+  const record = await getRecord(params.id);
+  if (!record) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
+  await deleteRecord(params.id);
+  await addAudit(user.username, 'DELETE', params.id, record.nomes);
+  return NextResponse.json({ ok: true });
+}
