@@ -120,6 +120,14 @@ tr:hover .td{background:#F8FAFF}
 .label .req{color:var(--danger);margin-left:2px}
 .err-msg{font-size:11.5px;color:var(--danger);margin-top:4px}
 
+.fl{position:relative;margin-bottom:4px}
+.fl .field{padding-top:18px;padding-bottom:6px;height:48px;transition:var(--t)}
+.fl label{position:absolute;left:13px;top:14px;font-size:14px;color:var(--text3);pointer-events:none;transition:var(--t);font-weight:400}
+.fl .field:focus~label,.fl .field:not(:placeholder-shown)~label,.fl .field.filled~label{top:6px;font-size:10.5px;color:var(--primary);font-weight:600}
+.fl .field:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px var(--primary-glow)}
+.fl .field.auto~label{top:6px;font-size:10.5px;font-weight:600}
+[data-theme="dark"] .fl .field:focus{background:var(--surface2)}
+
 .progress{height:7px;background:rgba(0,0,0,.06);border-radius:10px;overflow:hidden}
 .progress-fill{height:100%;border-radius:10px;transition:width .5s var(--ease)}
 
@@ -472,6 +480,7 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_}){
       <div><h1 style={{fontSize:24,fontWeight:700}}>Avaliações</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>{data.length} registros</p></div>
       <div style={{display:'flex',gap:8}}>
         <button className="btn" onClick={()=>window.location.href='/api/export?'+new URLSearchParams({q,base,resultado:res}).toString()}>{ICON.down}CSV</button>
+        <button className="btn success" onClick={()=>window.location.href='/api/export-excel?'+new URLSearchParams({q,base,resultado:res}).toString()}>{ICON.down}Excel</button>
         {cw&&<><input ref={fileRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])imp(e.target.files[0]);e.target.value='';}}/>
         <button className="btn amber-btn" onClick={()=>fileRef.current.click()}>{ICON.up}Importar JSON</button>
         <button className="btn primary" onClick={onNew}>{ICON.plus}Nova Avaliação</button></>}
@@ -561,11 +570,11 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
   };
   const photo=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>upd('fotoCandidato',ev.target.result);r.readAsDataURL(f);};
   const errStyle=field=>errors[field]?{borderColor:'var(--danger)',background:'var(--danger-bg)'}:{};
-  const F=({label,field,type='text',opts,auto,req,ph})=>(<div>
-    <label className="label">{label}{req&&<span className="req">*</span>}</label>
-    {opts?<select className={`field${auto?' auto':''}`} style={errStyle(field)} value={form[field]||''} onChange={e=>upd(field,e.target.value)} disabled={auto}>
-      <option value="">Selecionar...</option>{opts.map(o=><option key={o} value={o}>{typeof o==='string'?o.replace(/_/g,' '):o}</option>)}
-    </select>:<input className={`field${auto?' auto':''}`} style={errStyle(field)} type={type} value={form[field]||''} onChange={e=>upd(field,e.target.value)} readOnly={auto} placeholder={ph}/>}
+  const F=({label,field,type='text',opts,auto,req,ph})=>(<div className="fl" style={mobile?{}:{}}>
+    {opts?<><select className={`field${auto?' auto':''}${form[field]?' filled':''}`} style={errStyle(field)} value={form[field]||''} onChange={e=>upd(field,e.target.value)} disabled={auto}>
+      <option value="">{auto?'—':'Selecionar...'}</option>{opts.map(o=><option key={o} value={o}>{typeof o==='string'?o.replace(/_/g,' '):o}</option>)}
+    </select><label style={{color:errors[field]?'var(--danger)':auto?'var(--text3)':''}}>{label}{req&&<span className="req">*</span>}</label></>:<><input className={`field${auto?' auto':''}${form[field]?' filled':''}`} style={errStyle(field)} type={type} value={form[field]||''} onChange={e=>upd(field,e.target.value)} readOnly={auto} placeholder={ph||' '}/>
+    <label style={{color:errors[field]?'var(--danger)':auto?'var(--text3)':''}}>{label}{req&&<span className="req">*</span>}</label></>}
     {errors[field]&&<p className="err-msg">{errors[field]}</p>}
   </div>);
   const ativOpts=useMemo(()=>{
@@ -672,8 +681,14 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
 }
 
 function Reports({mobile}){
-  const [data,setData]=useState([]);const [loading,setLoading]=useState(false);const [dtIni,setDtIni]=useState('');const [dtFim,setDtFim]=useState('');const [fb,setFb]=useState('');
-  useEffect(()=>{setLoading(true);api('records?'+new URLSearchParams({dtIni,dtFim,base:fb})).then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});},[dtIni,dtFim,fb]);
+  const [data,setData]=useState([]);const [loading,setLoading]=useState(false);
+  const [dtIni,setDtIni]=useState('');const [dtFim,setDtFim]=useState('');const [fb,setFb]=useState('');
+  const [filtrosAplicados,setFiltrosAplicados]=useState(false);
+  const aplicarFiltros=()=>{
+    setLoading(true);setFiltrosAplicados(true);
+    api('records?'+new URLSearchParams({dtIni,dtFim,base:fb})).then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});
+  };
+  useEffect(()=>{aplicarFiltros();},[]);
   const total=data.length,aprov=data.filter(r=>r.resultadoFinal==='APROVADO'||r.resultadoFinal==='APROVADO 2').length,reprov=data.filter(r=>r.resultadoFinal==='REPROVADO').length,ausente=data.filter(r=>r.resultadoFinal==='AUSENTE').length,pend=total-aprov-reprov-ausente,tx=total?Math.round(aprov/total*100):0;
   const byBase={};data.forEach(r=>{if(r.base)byBase[r.base]=(byBase[r.base]||0)+1;});
   const topB=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,7),maxB=topB[0]?.[1]||1;
@@ -683,11 +698,12 @@ function Reports({mobile}){
     <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Relatórios</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>Análise por período e filtros</p></div>
     <div className="card fu1" style={{padding:'1.25rem',marginBottom:20}}>
       <p className="sec-h">Filtros</p>
-      <div style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr 1fr auto',gap:12,alignItems:'end'}}>
-        <div><label className="label">Data Início</label><input className="field" type="date" value={dtIni} onChange={e=>setDtIni(e.target.value)}/></div>
-        <div><label className="label">Data Fim</label><input className="field" type="date" value={dtFim} onChange={e=>setDtFim(e.target.value)}/></div>
+      <div style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr 1fr auto auto',gap:12,alignItems:'end'}}>
+        <div><label className="label">Data Início</label><input className="field" type="date" value={dtIni} onChange={e=>setDtIni(e.target.value)} onKeyDown={e=>e.key==='Enter'&&aplicarFiltros()}/></div>
+        <div><label className="label">Data Fim</label><input className="field" type="date" value={dtFim} onChange={e=>setDtFim(e.target.value)} onKeyDown={e=>e.key==='Enter'&&aplicarFiltros()}/></div>
         <div><label className="label">Base</label><select className="field" value={fb} onChange={e=>setFb(e.target.value)}><option value="">Todas</option>{BASES.map(b=><option key={b}>{b}</option>)}</select></div>
-        {(dtIni||dtFim||fb)&&<button className="btn ghost sm" onClick={()=>{setDtIni('');setDtFim('');setFb('');}}>Limpar</button>}
+        <button className="btn primary" onClick={aplicarFiltros} style={{marginBottom:1}}>{ICON.search}Filtrar</button>
+        {filtrosAplicados&&<button className="btn ghost sm" onClick={()=>{setDtIni('');setDtFim('');setFb('');setTimeout(()=>aplicarFiltros(),0);}}>{ICON.x}Limpar</button>}
       </div>
     </div>
     <div className="fu2" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
