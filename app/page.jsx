@@ -26,7 +26,7 @@ const CSS=`
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#F5F6FA; --surface:#fff; --surface2:#F0F1F5; --border:rgba(0,0,0,.05);
-  --sidebar:#1A1A2E; --primary:#5930E2; --primary-l:#7C5CFF; --primary-glow:rgba(89,48,226,.18);
+  --sidebar:#fff; --primary:#5930E2; --primary-l:#7C5CFF; --primary-glow:rgba(89,48,226,.18);
   --success:#1F8B4C; --success-bg:#E8F5E9; --success-text:#1B6B3A;
   --danger:#E53935; --danger-bg:#FFEBEE; --danger-text:#B71C1C;
   --warning:#F9A825; --warning-bg:#FFF8E1; --warning-text:#E65100;
@@ -42,7 +42,7 @@ const CSS=`
 }
 [data-theme="dark"]{
   --bg:#0F0F23; --surface:#1A1A35; --surface2:#12122A; --border:rgba(255,255,255,.06);
-  --sidebar:#0A0A1A;
+  --sidebar:#12122A;
   --success-bg:rgba(31,139,76,.15); --success-text:#4CAF50;
   --danger-bg:rgba(229,57,53,.15); --danger-text:#EF5350;
   --warning-bg:rgba(249,168,37,.15); --warning-text:#FFB300;
@@ -126,9 +126,9 @@ input,select,textarea,button{font-family:var(--font)}
 .badge.violet{background:rgba(139,92,246,.1);color:#7C3AED}
 .badge.gray{background:var(--surface2);color:var(--text3)}
 
-.nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.4);transition:var(--t)}
-.nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8)}
-.nav-item.active{background:rgba(89,48,226,.2);color:#fff}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:500;color:var(--text3);transition:var(--t)}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:rgba(89,48,226,.1);color:#5930E2;font-weight:600}
 .nav-item svg{flex-shrink:0}
 
 .th{text-align:left;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;padding:12px 16px;border-bottom:1.5px solid var(--border);background:var(--surface2)}
@@ -159,7 +159,7 @@ tr:hover .td{background:rgba(89,48,226,.03)}
 .progress-fill{height:100%;border-radius:10px;transition:width .6s var(--ease)}
 
 .overlay{position:fixed;inset:0;background:rgba(26,26,46,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .2s both;overflow-y:auto}
-.modal{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:480px;box-shadow:var(--sh-lg);border:1px solid var(--border);overflow:hidden;animation:scaleIn .22s var(--ease) both}
+.modal{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:480px;box-shadow:var(--sh-lg);border:1px solid var(--border);overflow:hidden;animation:scaleIn .22s var(--ease) both;margin:auto}
 .modal-hd{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
 .modal-bd{padding:1.5rem;display:flex;flex-direction:column;gap:16px}
 
@@ -302,36 +302,36 @@ export default function App(){
     {toasts.map(t=><div key={t.id} className="toast-in" style={{position:'fixed',top:20+toasts.indexOf(t)*56,right:20,zIndex:9999,background:t.type==='error'?'var(--danger-bg)':'var(--success-bg)',color:t.type==='error'?'var(--danger-text)':'var(--success-text)',border:`1px solid ${t.type==='error'?'#FECACA':'#A7F3D0'}`,padding:'11px 18px',borderRadius:12,fontSize:13.5,fontWeight:500,maxWidth:340,boxShadow:'0 8px 24px rgba(0,0,0,.12)',display:'flex',alignItems:'center',gap:8}}>
       {t.type==='error'?ICON.x:ICON.check}{t.msg}</div>)}
     <div style={{display:'flex',minHeight:'100vh'}}>
-      {!mobile&&<nav style={{width:sidebarOpen?'var(--sw)':0,background:'var(--sidebar)',position:'fixed',top:0,bottom:0,left:0,zIndex:100,display:'flex',flexDirection:'column',overflow:'hidden',transition:'width .25s cubic-bezier(.4,0,.2,1)',borderRight:sidebarOpen?'1px solid rgba(255,255,255,.06)':'none'}}>
-        <div style={{padding:'1.5rem 1.25rem 1rem',borderBottom:'1px solid rgba(255,255,255,.06)'}}>
+      {!mobile&&<nav style={{width:sidebarOpen?'var(--sw)':0,background:'var(--sidebar)',position:'fixed',top:0,bottom:0,left:0,zIndex:100,display:'flex',flexDirection:'column',overflow:'hidden',transition:'width .25s cubic-bezier(.4,0,.2,1)',borderRight:sidebarOpen?'1px solid var(--border)':'none'}}>
+        <div style={{padding:'1.5rem 1.25rem 1rem',borderBottom:'1px solid var(--border)'}}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <div style={{width:38,height:38,background:'linear-gradient(135deg,#5930E2,#7C3AED)',borderRadius:11,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 14px rgba(89,48,226,.45)'}}>
+            <div style={{width:38,height:38,background:'linear-gradient(135deg,#5930E2,#7C5CFF)',borderRadius:11,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 14px rgba(89,48,226,.45)'}}>
               {ICON.bolt}
             </div>
             <div>
-              <p style={{fontSize:14,fontWeight:700,color:'#fff',lineHeight:1.2}}>Lançamentos</p>
-              <p style={{fontSize:11,color:'rgba(255,255,255,.35)',fontWeight:400}}>Notas · CEO 2026</p>
+              <p style={{fontSize:14,fontWeight:700,color:'var(--text)',lineHeight:1.2}}>Lançamentos</p>
+              <p style={{fontSize:11,color:'var(--text3)',fontWeight:400}}>Notas · CEO 2026</p>
             </div>
           </div>
         </div>
         <div style={{padding:'1rem .75rem',flex:1,display:'flex',flexDirection:'column',gap:3}}>
-          <p style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.2)',textTransform:'uppercase',letterSpacing:'.8px',padding:'0 10px',marginBottom:6}}>Menu</p>
+          <p style={{fontSize:10,fontWeight:700,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.8px',padding:'0 10px',marginBottom:6}}>Menu</p>
           {nav.map(x=><div key={x.k} className={`nav-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)} style={{position:'relative'}}>
             {ICON[x.i]}<span>{x.l}</span>
-            {navBadges[x.k]?<span className="badge dot red" style={{marginLeft:'auto',fontSize:10,padding:'1px 6px'}}>{navBadges[x.k]}</span>:view===x.k?<div style={{marginLeft:'auto',width:6,height:6,borderRadius:'50%',background:'#9B7FFF'}}/>:null}
+            {navBadges[x.k]?<span className="badge dot red" style={{marginLeft:'auto',fontSize:10,padding:'1px 6px'}}>{navBadges[x.k]}</span>:view===x.k?<div style={{marginLeft:'auto',width:6,height:6,borderRadius:'50%',background:'#5930E2'}}/>:null}
           </div>)}
         </div>
-        <div style={{padding:'1rem',borderTop:'1px solid rgba(255,255,255,.06)'}}>
-          <div style={{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',borderRadius:10,background:'rgba(255,255,255,.04)'}}>
-            <Avatar name={user.nome} size={32}/>
-            <div style={{flex:1,minWidth:0}}>
-              <p style={{fontSize:13,fontWeight:600,color:'rgba(255,255,255,.9)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{user.nome}</p>
-              <p style={{fontSize:11,color:'rgba(255,255,255,.3)'}}>{ROLES[user.role]?.label}</p>
+          <div style={{padding:'1rem',borderTop:'1px solid var(--border)'}}>
+            <div style={{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',borderRadius:10,background:'var(--surface2)'}}>
+              <Avatar name={user.nome} size={32}/>
+              <div style={{flex:1,minWidth:0}}>
+                <p style={{fontSize:13,fontWeight:600,color:'var(--text)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{user.nome}</p>
+                <p style={{fontSize:11,color:'var(--text3)'}}>{ROLES[user.role]?.label}</p>
+              </div>
+              <button className="btn ghost icon" style={{color:'var(--text3)',padding:5,borderRadius:8}} onClick={toggleTheme} title={theme==='light'?'Modo escuro':'Modo claro'}>{theme==='light'?<svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>:<svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path strokeLinecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>}</button>
+              <button className="btn ghost icon" style={{color:'var(--text3)',padding:5,borderRadius:8}} onClick={logout} title="Sair">{ICON.logout}</button>
             </div>
-            <button className="btn ghost icon" style={{color:'rgba(255,255,255,.3)',padding:5,borderRadius:8}} onClick={toggleTheme} title={theme==='light'?'Modo escuro':'Modo claro'}>{theme==='light'?<svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>:<svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path strokeLinecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>}</button>
-            <button className="btn ghost icon" style={{color:'rgba(255,255,255,.3)',padding:5,borderRadius:8}} onClick={logout} title="Sair">{ICON.logout}</button>
           </div>
-        </div>
       </nav>}
       <main style={{flex:1,marginLeft:mobile||!sidebarOpen?0:'var(--sw)',padding:mobile?'1.25rem 1rem 90px':'5rem 2.5rem 2.5rem',minHeight:'100vh'}}>
         {!mobile&&user&&<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:20,fontSize:12.5,color:'var(--text3)'}}>
