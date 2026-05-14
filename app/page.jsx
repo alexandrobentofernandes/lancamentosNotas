@@ -320,8 +320,8 @@ export default function App(){
           </div>
         </div>
       </nav>}
-      <main style={{flex:1,marginLeft:mobile||!sidebarOpen?0:'var(--sw)',padding:mobile?'1.25rem 1rem 90px':'4rem 2.5rem 2.5rem',minHeight:'100vh'}}>
-        {!mobile&&user&&<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:16,fontSize:12.5,color:'var(--text3)'}}>
+      <main style={{flex:1,marginLeft:mobile||!sidebarOpen?0:'var(--sw)',padding:mobile?'1.25rem 1rem 90px':'5rem 2.5rem 2.5rem',minHeight:'100vh'}}>
+        {!mobile&&user&&<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:20,fontSize:12.5,color:'var(--text3)'}}>
           <span style={{cursor:'pointer',transition:'var(--t)',padding:'4px 6px',borderRadius:6}} onClick={()=>setSidebarOpen(!sidebarOpen)} title="Toggle sidebar">{ICON.list}</span>
           <span style={{color:'var(--text3)',opacity:.4}}>/</span>
           {['dashboard','admin-dash','records','cadastros','reports','users','clientes','licencas'].includes(view)?<span style={{fontWeight:500,color:'var(--text2)'}}>{LABELS[view]||view}</span>:<><span style={{cursor:'pointer',color:'var(--primary)'}} onClick={()=>setView('records')}>{LABELS.records}</span><span style={{color:'var(--text3)',opacity:.4}}>/</span><span style={{fontWeight:500,color:'var(--text2)'}}>{view==='form'?(editRec?'Editar':'Nova')+' Avaliação':view}</span></>}
@@ -932,7 +932,7 @@ function Users({user,toast_}){
       <div><h1 style={{fontSize:24,fontWeight:700}}>Usuários</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>{users.length} usuários cadastrados</p></div>
       <button className="btn primary" onClick={()=>open(null)}>{ICON.uplus}Novo Usuário</button>
     </div>
-    <div className="card fu1" style={{padding:0,overflow:'hidden'}}>
+    <div className="card fu1" style={{padding:0,overflow:'hidden',marginTop:6}}>
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:600}}>
           <thead><tr><th className="th" style={{width:48}}></th><th className="th">Nome</th><th className="th">Usuário</th><th className="th">Perfil</th><th className="th">Permissão</th><th className="th">Status</th><th className="th" style={{textAlign:'right'}}>Ações</th></tr></thead>
@@ -1315,7 +1315,7 @@ function Clientes({user,toast_}){
       <div><h1 style={{fontSize:24,fontWeight:700}}>Clientes</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>{data.length} clientes · Receita Total: <strong style={{color:'#059669'}}>R$ {receitaTotal.toFixed(2)}</strong></p></div>
       <button className="btn primary" onClick={()=>openForm(null)}>{ICON.uplus}Novo Cliente</button>
     </div>
-    <div className="card fu1" style={{padding:0,overflow:'hidden'}}>
+    <div className="card fu1" style={{padding:0,overflow:'hidden',marginTop:4}}>
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:700}}>
           <thead><tr>
