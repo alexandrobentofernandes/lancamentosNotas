@@ -320,7 +320,7 @@ export default function App(){
           </div>
         </div>
       </nav>}
-      <main style={{flex:1,marginLeft:mobile||!sidebarOpen?0:'var(--sw)',padding:mobile?'1.25rem 1rem 90px':'2.5rem 2rem 2.5rem',minHeight:'100vh'}}>
+      <main style={{flex:1,marginLeft:mobile||!sidebarOpen?0:'var(--sw)',padding:mobile?'1.25rem 1rem 90px':'4rem 2.5rem 2.5rem',minHeight:'100vh'}}>
         {!mobile&&user&&<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:16,fontSize:12.5,color:'var(--text3)'}}>
           <span style={{cursor:'pointer',transition:'var(--t)',padding:'4px 6px',borderRadius:6}} onClick={()=>setSidebarOpen(!sidebarOpen)} title="Toggle sidebar">{ICON.list}</span>
           <span style={{color:'var(--text3)',opacity:.4}}>/</span>
