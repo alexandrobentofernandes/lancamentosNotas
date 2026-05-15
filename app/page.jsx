@@ -1086,7 +1086,8 @@ function Users({user,toast_}){
     const r=await api('users',{method:editU?'PUT':'POST',body:JSON.stringify(editU?{id:editU.id,...form}:form)});
     setSaving(false);
     if(r.error)return setErr(r.error);
-    const u=await api('users');if(Array.isArray(u))setUsers(u);
+    if(editU)setUsers(us=>us.map(x=>x.id===editU.id?{...x,...r}:x));
+    else if(r.id)setUsers(us=>[...us,r]);
     setShow(false);toast_(editU?'Usuário atualizado!':'Usuário criado!');
   };
   const toggle=async u=>{await api('users',{method:'PUT',body:JSON.stringify({id:u.id,active:!u.active})});setUsers(us=>us.map(x=>x.id===u.id?{...x,active:!x.active}:x));};
@@ -1461,9 +1462,10 @@ function Clientes({user,toast_}){
     const r=await api('clientes',{method,body:JSON.stringify(body)});
     setSaving(false);
     if(r.error)return toast_(r.error,'error');
+    if(editItem)setData(prev=>prev.map(x=>x.id===editItem.id?{...x,...r}:x));
+    else if(r.id)setData(prev=>[...prev,r]);
     toast_(editItem?'Cliente atualizado!':'Cliente criado!');
     setShow(false);
-    setTimeout(()=>load(),50);
   };
 
   const del=async()=>{
