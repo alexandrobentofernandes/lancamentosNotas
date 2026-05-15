@@ -786,6 +786,8 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
   });
   const [tab,setTab]=useState(0);const [errors,setErrors]=useState({});const [saving,setSaving]=useState(false);
   const [draftSaved,setDraftSaved]=useState(false);
+  const [processosOpts,setProcessosOpts]=useState(PROCESSOS);
+  useEffect(()=>{api('cadastros?tipo=processos').then(r=>{if(Array.isArray(r)&&r.length){setProcessosOpts(r.map(p=>p.processo));}}).catch(()=>{});},[]);
   const photoRef=useRef(null);
   const draftTimer=useRef(null);
   useEffect(()=>{
@@ -923,7 +925,7 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
         <p className="sec-h">Localização & Avaliação</p>
         <div style={g3}><F label="Empresa" field="empresa" opts={EMPRESAS_NOMES} req/><F label="Base" field="base" opts={BASES} req/><F label="UO (auto)" field="unidadeOperacional" auto/></div>
         <div style={g3}><F label="Região (auto)" field="regiao" auto/><F label="Avaliador" field="avaliador" opts={AVALIADORES}/><F label="Local de Avaliação" field="localAvaliacao"/></div>
-        <div style={g2}><F label="Processo" field="processo" opts={PROCESSOS} req/><F label="Cargo (auto)" field="cargosProcessos" auto/></div>
+        <div style={g2}><F label="Processo" field="processo" opts={processosOpts} req/><F label="Cargo (auto)" field="cargosProcessos" auto/></div>
       </div>}
       {tab===1&&<div style={{display:'flex',flexDirection:'column',gap:16}}>
         <p className="sec-h">Teste Online</p>
@@ -1151,7 +1153,7 @@ const CAD_ICON={pedidos:'📋',empresas:'🏢',processos:'⚙️',bases:'📍',a
 const CAD_COLS={
   pedidos:[{k:'nome',l:'Pedido'}],
   empresas:[{k:'nome',l:'Empresa'},{k:'valor',l:'Valor R$'},{k:'email',l:'Email'},{k:'dataInicio',l:'Início'},{k:'dataFim',l:'Fim'}],
-  processos:[{k:'processo',l:'Processo'},{k:'cargo',l:'Cargo'},{k:'atividades',l:'Atividades'}],
+  processos:[{k:'processo',l:'Processo'},{k:'cargo',l:'Cargo'},{k:'atividade',l:'Atividade'},{k:'valorBaremo',l:'Baremo'},{k:'it',l:'IT'},{k:'unicos',l:'Únicos'}],
   bases:[{k:'base',l:'Base'},{k:'uo',l:'UO'},{k:'regiao',l:'Região'}],
   avaliadores:[{k:'nome',l:'Avaliador'}],
   motivos:[{k:'nome',l:'Motivo'}],
@@ -1160,7 +1162,7 @@ const CAD_COLS={
 const CAD_FORMS={
   pedidos:[{k:'nome',l:'Nome do Pedido',req:true}],
   empresas:[{k:'nome',l:'Nome da Empresa',req:true},{k:'valor',l:'Valor Renovação (R$)',type:'number'},{k:'email',l:'Email de Contato'},{k:'dataInicio',l:'Data Início',type:'date'},{k:'dataFim',l:'Data Fim',type:'date'},{k:'associado',l:'Associado Sindistal',opts:['SIM','NÃO']},{k:'docContratual',l:'Doc Contratual'}],
-  processos:[{k:'processo',l:'Nome do Processo',req:true},{k:'cargo',l:'Cargo'}],
+  processos:[{k:'processo',l:'Nome do Processo',req:true},{k:'cargo',l:'Cargo',req:true},{k:'atividade',l:'Atividade',req:true},{k:'valorBaremo',l:'Valor Baremo',type:'number',req:true},{k:'it',l:'IT do Processo'},{k:'unicos',l:'Únicos'}],
   bases:[{k:'base',l:'Base',req:true},{k:'uo',l:'Unidade Operacional'},{k:'regiao',l:'Região'}],
   avaliadores:[{k:'nome',l:'Nome do Avaliador',req:true}],
   motivos:[{k:'nome',l:'Motivo',req:true}],
@@ -1175,6 +1177,9 @@ function Cadastros({mobile,toast_,cw}){
   const [editItem,setEditItem]=useState(null);
   const [confirmDel,setConfirmDel]=useState(null);
   const [saving,setSaving]=useState(false);
+  const [sortKey,setSortKey]=useState(null);const [sortDir,setSortDir]=useState('asc');
+  const toggleSort=k=>{if(sortKey===k){setSortDir(d=>d==='asc'?'desc':'asc');}else{setSortKey(k);setSortDir('asc');}};
+  const SortIcon=({k})=><span style={{fontSize:10,marginLeft:4,opacity:sortKey===k?1:.2}}>{sortKey===k?(sortDir==='asc'?'▲':'▼'):'▼'}</span>;
   const importRef=useRef(null);
   const photoRef=useRef(null);
   const tipos=Object.keys(CAD_ICON);
@@ -1237,7 +1242,9 @@ function Cadastros({mobile,toast_,cw}){
   const save=async()=>{
     if(tipo==='candidatos'){
       if(!form.nome||!form.cpf||!form.email||!form.estado||!form.cidade)return toast_('Preencha todos os campos obrigatórios','error');
-    }else if(!form.nome&&tipo!=='empresas'&&tipo!=='processos'&&tipo!=='bases')return toast_('Preencha o nome','error');
+    }else if(tipo==='processos'){
+      if(!form.processo||!form.cargo||!form.atividade||!form.valorBaremo)return toast_('Preencha todos os campos obrigatórios (Processo, Cargo, Atividade, Baremo)','error');
+    }else if(!form.nome&&tipo!=='empresas'&&tipo!=='bases')return toast_('Preencha o nome','error');
     setSaving(true);
     const body=editItem?{id:editItem.id,...form}:{tipo,...form};
     const method=editItem?'PUT':'POST';
@@ -1262,9 +1269,39 @@ function Cadastros({mobile,toast_,cw}){
     if(col.k==='associado')return item.associado==='SIM'||item.associado===true?'SIM':'NÃO';
     if(col.k==='atividades')return Array.isArray(item.atividades)?`${item.atividades.length} atividades`:'—';
     if(col.k==='foto')return item.foto?<img src={item.foto} style={{width:32,height:32,borderRadius:'50%',objectFit:'cover'}}/>:'—';
+    if(col.k==='valorBaremo')return item.valorBaremo?parseFloat(item.valorBaremo).toFixed(2):'—';
     return item[col.k]||'—';
   };
 
+  const [editCell,setEditCell]=useState(null);
+  const [editVal,setEditVal]=useState('');
+  const editRef=useRef(null);
+  const startEdit=(item,col)=>{
+    if(col.k==='foto'||!cw)return;
+    setEditCell({id:item.id,field:col.k});
+    setEditVal(item[col.k]||'');
+    setTimeout(()=>editRef.current?.focus(),50);
+  };
+  const saveEdit=async()=>{
+    if(!editCell)return;
+    const c=editCell;setEditCell(null);
+    if(String(editVal)===String(data[tipo]?.find(i=>i.id===c.id)?.[c.field]||''))return;
+    const body={id:c.id,[c.field]:editVal};
+    const r=await api('cadastros',{method:'PUT',body:JSON.stringify(body)});
+    if(r.error)return toast_(r.error,'error');
+    toast_('Campo atualizado!');
+    load(tipo);
+  };
+  const cancelEdit=()=>setEditCell(null);
+  const editKeyDown=e=>{if(e.key==='Enter')saveEdit();if(e.key==='Escape')cancelEdit();};
+  const sortedData=useMemo(()=>{
+    const arr=data[tipo]||[];
+    if(!sortKey)return arr;
+    return[...arr].sort((a,b)=>{
+      const va=(a[sortKey]||'').toString().toLowerCase(),vb=(b[sortKey]||'').toString().toLowerCase();
+      return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
+    });
+  },[data[tipo],sortKey,sortDir]);
   return(<div>
     <div className="fu" style={{marginBottom:24}}>
       <h1 style={{fontSize:24,fontWeight:700}}>Cadastros</h1>
@@ -1279,7 +1316,7 @@ function Cadastros({mobile,toast_,cw}){
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}>
         <p style={{fontSize:13,fontWeight:600,color:'var(--text2)'}}>
           {CAD_ICON[tipo]} {tipo.charAt(0).toUpperCase()+tipo.slice(1)}
-          <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{data[tipo]?.length||0} registros</span>
+          <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{sortedData.length} registros</span>
         </p>
         <div style={{display:'flex',gap:6}}>
           {cw&&<><input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
@@ -1292,17 +1329,25 @@ function Cadastros({mobile,toast_,cw}){
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:500}}>
           <thead><tr>
             {CAD_COLS[tipo].map(c=>{
-              const w=c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'?{minWidth:200}:c.k==='valor'?{width:120}:c.k==='atividades'?{width:120}:c.k==='foto'?{width:60}:{};
-              return <th key={c.k} className="th" style={w}>{c.l}</th>;
+              const w=c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'||c.k==='atividade'?{minWidth:200}:c.k==='valor'?{width:120}:c.k==='valorBaremo'?{width:80}:c.k==='it'?{minWidth:150}:c.k==='unicos'?{minWidth:180}:c.k==='foto'?{width:60}:{};
+              return <th key={c.k} className="th" style={{...w,cursor:'pointer'}} onClick={()=>toggleSort(c.k)}>{c.l}<SortIcon k={c.k}/></th>;
             })}
             <th className="th" style={{width:80,textAlign:'right'}}>Ações</th>
           </tr></thead>
           <tbody>
             {loading[tipo]?[1,2,3].map(i=><tr key={i}>
-              {CAD_COLS[tipo].map(c=><td key={c.k} className="td"><Skeleton h={14} w={c.k==='valor'?'60px':c.k==='foto'?'32px':'140px'} r={c.k==='foto'?'50%':'4'} m="0"/></td>)}
+              {CAD_COLS[tipo].map(c=><td key={c.k} className="td"><Skeleton h={14} w={c.k==='valor'||c.k==='valorBaremo'?'60px':c.k==='foto'?'32px':'140px'} r={c.k==='foto'?'50%':'4'} m="0"/></td>)}
               <td className="td"><Skeleton h={14} w="60px" r="4" m="0"/></td>
-            </tr>):data[tipo]?.length?data[tipo].map(item=><tr key={item.id}>
-              {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'?600:400,fontSize:13,textAlign:c.k==='foto'?'center':'left'}}>{formatVal(item,c)}</td>)}
+            </tr>):sortedData.length?sortedData.map(item=><tr key={item.id}>
+              {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='atividade'||c.k==='base'?600:400,fontSize:13,textAlign:c.k==='foto'||c.k==='valorBaremo'?'center':'left',cursor:cw&&c.k!=='foto'?'pointer':'default'}} onClick={()=>startEdit(item,c)}>
+                {editCell?.id===item.id&&editCell?.field===c.k
+                  ?(CAD_FORMS[tipo]?.find(f=>f.k===c.k)?.opts
+                    ?<select className="field" style={{padding:'2px 4px',fontSize:12,minHeight:0,height:26}} value={editVal} onChange={e=>{setEditVal(e.target.value);setEditCell(null);api('cadastros',{method:'PUT',body:JSON.stringify({id:item.id,[c.k]:e.target.value})}).then(r=>{if(!r.error){toast_('Campo atualizado!');load(tipo);}});}} ref={editRef} autoFocus onClick={e=>e.stopPropagation()}>
+                      {(CAD_FORMS[tipo].find(f=>f.k===c.k)?.opts||[]).map(o=><option key={o} value={o}>{o}</option>)}
+                    </select>
+                    :<input className="field" style={{padding:'2px 4px',fontSize:12,minHeight:0,height:26}} type={CAD_FORMS[tipo]?.find(f=>f.k===c.k)?.type==='number'?'number':'text'} value={editVal} onChange={e=>setEditVal(e.target.value)} onBlur={saveEdit} onKeyDown={editKeyDown} ref={editRef} autoFocus onClick={e=>e.stopPropagation()}/>)
+                  :formatVal(item,c)}
+              </td>)}
               <td className="td" style={{textAlign:'right'}}>
                 <div style={{display:'flex',gap:4,justifyContent:'flex-end'}}>
                   {cw&&<button className="btn sm icon" onClick={()=>openForm(item)}>{ICON.edit}</button>}

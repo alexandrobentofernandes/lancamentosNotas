@@ -1,0 +1,4266 @@
+[
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CRUZETAS",
+    "valorBaremo": "3",
+    "it": "IT 0102 /",
+    "unicos": "LINHA_VIVA"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_PINO",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_SUSPENSÃO",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "APOIO_À_EMERGÊNCIA"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CONEXÃO",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": "APOIO_À_EMERGÊNCIA_G"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "ATENDIMENTO_DE_EMERGÊNCIA"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL_RELIGADORA",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_PARA_RAIOS",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_TIPO_FACA",
+    "valorBaremo": "3",
+    "it": "IT 0102 /",
+    "unicos": "PODA_COM_REDE_DESENERGIZADA"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_SECCIONADOR_MONOFÁSICO_FUSISAVER",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": "PODA_COM_REDE_ENERGIZADA"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_BRAÇO_TIPO_J",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": "REDE_SUBTERRÂNEA"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CE3",
+    "valorBaremo": "4",
+    "it": "IT 0102 /",
+    "unicos": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "INTERLIGAÇÃO_DE_CIRCUITO_R_.CONVENCIONAL_E_COMPACTA",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_RELIGADORES_ELETRÔNICOS",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_REGULADORES_DE_TENSÃO_ELETRÔNICOS",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TENSIONAMENTO_DA_REDE",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "INTERLIGAÇÃO_DE_CHAVE_TELECOMANDADA_COM_RGDAT_À_REDE_AT",
+    "valorBaremo": "7",
+    "it": "IT 0102 /",
+    "unicos": "OPERADOR_DE_GUINDAUTO"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "LIGAÇÃO_DO_TP_À_REDE_M.T",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "AJUDANTE_DE_ELETRICISTA"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "BYPASS_DO_SECCIONADOR_AUTOMÁTICO",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "ENCARREGADO"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "BYPASS_DO_RELIGADOR",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "OPERADOR_DE_CESTA_AÉREA"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "BLOQUEIO_DA_CHAVE_FUSÍVEL_RELIGADORA",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "OPERAÇÃO_E_MANUTENÇÃO_DE_TELECONTROLE"
+  },
+  {
+    "processo": "LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 0102 /",
+    "unicos": "NORMALIZAÇÃO_GRUPO_B_TRADICIONAL"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "REGRAS_DE_IMPEDIMENTO_DE_REDE",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CRUZETAS_",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_PINO_",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "PODA_DESENERGIZADA_A_DISTANCIA"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_SUSPENSÃO",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ELETRICISTAS"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CONEXÃO",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ENCARREGADOS"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ELO_FUSÍVEL",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "APOIO_À_EMERGÊNCIA_BT"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "OPERAÇÃO_EM_SUBESTAÇÃO_GESTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL_RELIGADORA_",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "COMPORTAMENTAL_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_PARA_RAIOS",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "LINHA_VIVA_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_TIPO_FACA_",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "APOIO_À_EMERGÊNCIA_BT_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_SECCIONADOR_MONOFÁSICO_FUSISAVER",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "APOIO_À_EMERGÊNCIA_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_BRAÇO_TIPO_J",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CE2",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_TRANSFORMADOR",
+    "valorBaremo": "4",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TESTE_EM_TRANSFORMADOR_A_VAZIO",
+    "valorBaremo": "4",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "INTERLIGAÇÃO_DE_CIRCUITO_R_.CONVENCIONAL_E_COMPACTA",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_RELIGADORES_ELETRÔNICOS",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "LIMPEZA_DE_REDE"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_REGULADORES_DE_TENSÃO_ELETRÔNICOS",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TENSIONAMENTO_DA_REDE",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "INTERLIGAÇÃO_DE_CHAVE_TELECOMANDADA_COM_RGDAT_À_REDE_AT_",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA_INSTRUTORES"
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": "PODA_A_DISTÂNCIA_INSTRUTORES"
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_CHAVES_FACA",
+    "valorBaremo": "1",
+    "it": "IT 001 / IT 005",
+    "unicos": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO_INSTRUTORES"
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_CHAVES_FUSÍVEIS",
+    "valorBaremo": "1",
+    "it": "IT 001 / IT 005",
+    "unicos": "OPERADOR_DE_GUINDAUTO_INSTRUTORES"
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ELO_FUSÍVEL",
+    "valorBaremo": "1",
+    "it": "IT 001 / IT 005",
+    "unicos": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS_INSTRUTORES"
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 001 / IT 005",
+    "unicos": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP_INSTRUTORES"
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_G",
+    "cargo": "TÉCNICOS",
+    "atividade": "MANOBRA_EM_CHAVES_FACA",
+    "valorBaremo": "1",
+    "it": "-",
+    "unicos": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP"
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_G",
+    "cargo": "TÉCNICOS",
+    "atividade": "MANOBRA_EM_CHAVES_FUSÍVEIS",
+    "valorBaremo": "1",
+    "it": "-",
+    "unicos": "MANUTENÇÃO_CORRETIVA_E_PREVENTINA_EM_SE_DESENERGIZADA_EM_ATÉ_138_KV"
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_G",
+    "cargo": "TÉCNICOS",
+    "atividade": "SUBSTITUIÇÃO_DE_ELO_FUSÍVEL",
+    "valorBaremo": "1",
+    "it": "-",
+    "unicos": "ENCARREGADO_DE_SE_DESENERGIZADA_EM_ATÉ_138_KV"
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_G",
+    "cargo": "TÉCNICOS",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "-",
+    "unicos": "OPERADOR_DE_GUINDAUTO_EM_AT"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "REGRAS_DE_IMPEDIMENTO_DE_REDE_",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": "REVITALIZAÇÃO_DOS_DISJUNTORES"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CRUZETAS",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": "MANUTENÇÃO_LT_DESENERGIZADA"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_PINO",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": "EMENDAS_E_TERMINAIS_DE_MT"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_SUSPENSÃO",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": "MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CONEXÃO",
+    "valorBaremo": "2",
+    "it": "IT 116",
+    "unicos": "MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ELO_FUSÍVEL",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": "ENCARREGADO_MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": "ENCARREGADO_MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL_RELIGADORA",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": "MANUTENCAO_ESPECIALIZADA"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_PARA_RAIOS",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": "OPERADOR_SE"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_TIPO_FACA",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": "ENCARREGADO_LT_DESENERGIZADA"
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_SECCIONADOR_MONOFÁSICO_FUSISAVE_",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_TRANSFORMADOR",
+    "valorBaremo": "4",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAIS_DE_LIGAÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDORES",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TESTE_EM_TRANSFORMADOR_A_VAZIO",
+    "valorBaremo": "4",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_TRANSFORMADORES",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_CHAVES_FUSÍVEIS",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_CHAVES_FACA",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_CHAVE_SECCIONADORA",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_RELIGADORES_ELETRÔNICOS",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_REGULADORES_DE_TENSÃO_ELETRÔNICOS",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAL_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAL_DE_B.T",
+    "valorBaremo": "2",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 116",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_BLINDAGEM_DE_TRAFO",
+    "valorBaremo": "4",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "REGRAS_DE_IMPEDIMENTO_DE_REDE",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CRUZETAS",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_PINO",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_SUSPENSÃO",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CONEXÃO_",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ELO_FUSÍVEL",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL_RELIGADORA",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_PARA-RAIOS",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_TIPO_FACA",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_SECCIONADOR_MONOFÁSICO_FUSISAVE_",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_TRANSFORMADOR",
+    "valorBaremo": "4",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAIS_DE_LIGAÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDORES",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "TESTE_EM_TRANSFORMADOR_A_VAZIO",
+    "valorBaremo": "4",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_TRANSFORMADORES",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_CHAVES_FUSÍVEIS",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_CHAVES_FACA",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_CHAVE_SECCIONADORA",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_RELIGADORES_ELETRÔNICOS",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_REGULADORES_DE_TENSÃO_ELETRÔNICOS",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_COM_BLINDAGEM_DE_TRAFO",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "LIGAÇÃO_DE_MEDIDOR_MONOFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDOR_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "LIGAÇÃO_DE_RAMAL_DE_LIGAÇÃO_MONOFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAL_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DA_CAIXA_DE_DERIVAÇÕES",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "INSTALAÇÃO_DE_MACROMEDIÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "TESTES_DE_FUNCIONAMENTO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "CORTE_RELIGAÇÃO_DE_FORNECIMENTO_NO_BORNE_DO_MEDIDOR_MONOFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "CORTE_RELIGAÇÃO_DE_FORNECIMENTO_NO_BORNE_DO_MEDIDOR_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "CORTE_RELIGAÇÃO_NO_RAMAL_DE_LIGAÇÃO_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "CORTE_RELIGAÇÃO_DE_FORNECIMENTO_NA_CAIXA_DE_DISTRIBUIÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "CORTE_RELIGAÇÃO_DE_FORNECIMENTO_NA_CAIXA_DE_DERIVAÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "CORTE_RELIGAÇÃO_DE_FORNECIMENTO_NA_REDE_DE_DISTRIBUIÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "CORTE_RELIGAÇÃO_COM_RETIRADA_INSTALAÇÃO_DO_RAMAL_DE_LIGAÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDORES",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAIS_DE_LIGAÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 073 / IT 0825",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_DESENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "IÇAMENTO_DE_MATERIAIS",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_DESENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TRABALHOS_COM_CORDAS_E_NÓS",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_DESENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DE_FACÃO_FOICE_BASTÃO_PODADOR_SERRA_TIPO_JACK_ARCO_DE_SERRA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_DESENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_PODA_COM_MOTOSERRA_COMBUSTÃO_HIDRÁULICA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_DESENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_PODA_COM_MOTOPODA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_DESENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANUTENÇÃO_REGULAGEM_CONSERVAÇÃO_DA_MOTOSERRA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_DESENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "PROCEDIMENTOS_PARA_ABATE_DE_ÁRVORES_CORTE_HORIZONTAL_VERTICAL_DIAGONAL_DIRECIONAL",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_DESENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_ENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "IÇAMENTO_DE_MATERIAIS",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_ENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TRABALHOS_COM_CORDAS_E_NÓS",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_ENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DE_FACÃO_FOICE_BASTÃO_PODADOR_SERRA_TIPO_JACK_ARCO_DE_SERRA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_ENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_PODA_COM_MOTOSERRA_COMBUSTÃO_HIDRÁULICA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_ENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_PODA_COM_MOTOPODA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_ENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANUTENÇÃO_REGULAGEM_CONSERVAÇÃO_DA_MOTOSERRA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_ENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "PROTEÇÃO_DE_REDE_M.T_E_B.T",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_COM_REDE_ENERGIZADA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "REDE_SUBTERRÂNEA",
+    "cargo": "ELETRICISTA",
+    "atividade": "EMENDAS_DE_CABOS_B.T",
+    "valorBaremo": "4",
+    "it": "EDRJ 0130",
+    "unicos": ""
+  },
+  {
+    "processo": "REDE_SUBTERRÂNEA",
+    "cargo": "ELETRICISTA",
+    "atividade": "EMENDAS_DE_CABOS_M.T",
+    "valorBaremo": "6",
+    "it": "EDRJ 0130",
+    "unicos": ""
+  },
+  {
+    "processo": "REDE_SUBTERRÂNEA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_EM_TRANSFORMADOR_PEDESTAL",
+    "valorBaremo": "4",
+    "it": "EDRJ 0130",
+    "unicos": ""
+  },
+  {
+    "processo": "REDE_SUBTERRÂNEA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TROCA_DE_FUSÍVEL_EM_TRANSFORMADOR_PEDESTAL",
+    "valorBaremo": "1",
+    "it": "EDRJ 0130",
+    "unicos": ""
+  },
+  {
+    "processo": "REDE_SUBTERRÂNEA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "EDRJ 0130",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "AFERIÇÃO_EM_MEDIDOR_MONOFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "AFERIÇÃO_EM_MEDIDOR_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSPEÇÃO_TÉCNICA_DE_IRREGULARIDADES_MD_BT",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSPEÇÃO_VISUAL_DE_IREGULARIDADES_MD_BT",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "LIGAÇÃO_DE_MEDIDOR_MONOFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "LIGAÇÃO_DE_RAMAL_DE_LIGAÇÃO_MONOFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "PREENCHIMENTO_DO_TOI",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDOR_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAL_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TESTES_DE_FUNCIONAMENTO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDORES",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAIS_DE_LIGAÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "AFERIÇÃO_EM_MEDIDOR_MONOFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "AFERIÇÃO_EM_MEDIDOR_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "CORTE_DE_MEDIÇÃO_TRIFÁSICA",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSPEÇÃO_TÉCNICA_DE_IRREGULARIDADES_MD_BT",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSPEÇÃO_VISUAL_DE_IREGULARIDADES_MD_BT",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "PREENCHIMENTO_DO_TOI",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "RELIGAÇÃO_DE_MEDIÇÃO_TRIFÁSICA",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAL_CONCÊNTRICO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TESTES_DE_FUNCIONAMENTO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAL_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "ABERTURA_E_FECHAMENTO_DE_CHAVES_FUSÍVEL_E_FACA",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "AFERIÇÃO_EM_MEDIDOR_TRIFÁSICO_ADR4000_E_TESTES_MANUAIS",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "CÁLCULOS_DE_CONSTANTES",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSPEÇÃO_EM_MEDIDOR_TRIFÁSICO_ADR4000_E_TESTES_MANUAIS",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSPEÇÃO_TÉCNICA_DE_IRREGULARIDADES_CABINES_ABRIGADAS",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSPEÇÃO_TÉCNICA_DE_IRREGULARIDADES_CONJUNTO_DE_MEDIÇÃO",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "LEITURA",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDOR_COM_SE_ENERGIZADA",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "VERIFICAÇÃO_DIAGRAMA_FASORIAL",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "VERIFICAÇÃO_PARAMETRIZAÇÃO_DO_MEDIDOR_E_CONSTANTES",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "ABERTURA_E_FECHAMENTO_DE_CHAVES_FUSÍVEL_E_FACA",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "AFERIÇÃO_EM_MEDIDOR_TRIFÁSICO_ADR4000_E_TESTES_MANUAIS",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "CÁLCULOS_DE_CONSTANTES",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSPEÇÃO_EM_MEDIDOR_TRIFÁSICO_ADR4000_E_TESTES_MANUAIS",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSPEÇÃO_TÉCNICA_DE_IRREGULARIDADES_CABINES_ABRIGADAS",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSPEÇÃO_TÉCNICA_DE_IRREGULARIDADES_CONJUNTO_DE_MEDIÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "LEITURA",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDOR_COM_SE_ENERGIZADA",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "VERIFICAÇÃO_DIAGRAMA_FASORIAL",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "VERIFICAÇÃO_PARAMETRIZAÇÃO_DO_MEDIDOR_E_CONSTANTES",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDOR_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "MANOBRA_EM_CHAVES_FUSÍVEIS",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "MANOBRA_EM_CHAVES_FACA",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_ELO_FUSÍVEL",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CRUZETA",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSTALAÇÃO_ESTRIBO_E_GLV",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSTALAÇÃO_E_RETIRADA_DE_CONJUNTO_DE_MEDIÇÃO",
+    "valorBaremo": "2",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSTALAÇÃO_DE_CHAVE_FACA_E_FUSÍVEL",
+    "valorBaremo": "2",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "LANÇAMENTO_DE_CABOS_E_CONEXÕES_EM_TC_E_TP_NO_SECUNDÁRIO_DOS_TIS",
+    "valorBaremo": "2",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSTALAÇÃO_E_ALIMENTAÇÃO_CA_E_CC_DO_PAINEL_DE_8_POSIÇÕES",
+    "valorBaremo": "2",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSTALAÇÃO_DO_MEDIDOR_SL7000_PARAMETRIZAÇÃO_COMISSIONAMENTO_E_COMUNICAÇÃO",
+    "valorBaremo": "2",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSTALAÇÃO_E_ALIMENTAÇÃO_CA_DO_PAINEL_DE_2_POSIÇÕES",
+    "valorBaremo": "2",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSTALAÇÃO_DE_NOBREAK",
+    "valorBaremo": "2",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSTALAÇÃO_DO_MEDIDOR_ION_8650_PARAMETRIZAÇÃO_COMISSIONAMENTO_E_COMUNICAÇÃO",
+    "valorBaremo": "2",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "ABERTURA_E_FECHAMENTO_DE_CHAVES_FUSÍVEL_E_FACA_",
+    "valorBaremo": "2",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "PREENCHIMENTO_DE_RELATÓRIO_DE_COMISSIONAMENTO",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO",
+    "cargo": "ELETRICISTA",
+    "atividade": "AJUSTE_DA_CINTACORRENTE",
+    "valorBaremo": "1",
+    "it": "IT 017",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO",
+    "cargo": "ELETRICISTA",
+    "atividade": "ARMAZENAMENTO_E_MOVIMENTAÇÃO_DE_CARGA",
+    "valorBaremo": "1",
+    "it": "IT 017",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO",
+    "cargo": "ELETRICISTA",
+    "atividade": "ENGASTAMENTO_DE_POSTE",
+    "valorBaremo": "1",
+    "it": "IT 017",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_TRANSFORMADOR_",
+    "valorBaremo": "1",
+    "it": "IT 017",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO",
+    "cargo": "ELETRICISTA",
+    "atividade": "INSTALAÇÃO_DE_TRANSFORMADOR",
+    "valorBaremo": "1",
+    "it": "IT 017",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 017",
+    "unicos": ""
+  },
+  {
+    "processo": "AJUDANTE_DE_ELETRICISTA",
+    "cargo": "AJUDANTE",
+    "atividade": "TRABALHOS_COM_CORDAS_E_NÓS",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126",
+    "unicos": ""
+  },
+  {
+    "processo": "AJUDANTE_DE_ELETRICISTA",
+    "cargo": "AJUDANTE",
+    "atividade": "TIPOS_DE_AMARRAÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126",
+    "unicos": ""
+  },
+  {
+    "processo": "AJUDANTE_DE_ELETRICISTA",
+    "cargo": "AJUDANTE",
+    "atividade": "NOME_DE_EQUIPAMENTOS_FERRAMENTAS_E_MATERIAIS",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126",
+    "unicos": ""
+  },
+  {
+    "processo": "AJUDANTE_DE_ELETRICISTA",
+    "cargo": "AJUDANTE",
+    "atividade": "IÇAMENTO_DE_MATERIAL",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126",
+    "unicos": ""
+  },
+  {
+    "processo": "AJUDANTE_DE_ELETRICISTA",
+    "cargo": "AJUDANTE",
+    "atividade": "SINALIZAÇÃO_DA_ÁREA",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126",
+    "unicos": ""
+  },
+  {
+    "processo": "AJUDANTE_DE_ELETRICISTA",
+    "cargo": "AJUDANTE",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO",
+    "cargo": "ENCARREGADO",
+    "atividade": "CONHECIMENTOS TÉCNICOS",
+    "valorBaremo": "1",
+    "it": "IT 0004",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO",
+    "cargo": "ENCARREGADO",
+    "atividade": "COMANDO CONDUÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 0004",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO",
+    "cargo": "ENCARREGADO",
+    "atividade": "PERCEPÇÃO DE RISCO",
+    "valorBaremo": "1",
+    "it": "IT 0004",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO",
+    "cargo": "ENCARREGADO",
+    "atividade": "PROCEDIMENTO PASSO A PASSO",
+    "valorBaremo": "1",
+    "it": "IT 0004",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO",
+    "cargo": "ENCARREGADO",
+    "atividade": "TAREFA ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 0004",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_CESTA_AÉREA",
+    "cargo": "ELETRICISTA",
+    "atividade": "LIMPAR_O_LINE",
+    "valorBaremo": "1",
+    "it": "IT 0009",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_CESTA_AÉREA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANUSEAR_A_CESTA_AÉREA_PELAS_ALAVANCAS_INFERIORES",
+    "valorBaremo": "1",
+    "it": "IT 0009",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_CESTA_AÉREA",
+    "cargo": "ELETRICISTA",
+    "atividade": "PREPARAR_O_VEÍCULO_PARA_OPERAR_A_CESTA_AÉREA",
+    "valorBaremo": "1",
+    "it": "IT 0009",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_CESTA_AÉREA",
+    "cargo": "ELETRICISTA",
+    "atividade": "RESGATE_DE_ACIDENTADO_EM_CESTA_AÉREA",
+    "valorBaremo": "1",
+    "it": "IT 0009",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_CESTA_AÉREA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TESTAR_A_VÁLVULA_DE_SEGURANÇA",
+    "valorBaremo": "1",
+    "it": "IT 0009",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_CESTA_AÉREA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 0009",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERAÇÃO_E_MANUTENÇÃO_DE_TELECONTROLE",
+    "cargo": "ELETRICISTA",
+    "atividade": "MOBILIZAÇÃO_DESMOBILIZAÇÃO_E_SINALIZAÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 0145 / IT 0141",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERAÇÃO_E_MANUTENÇÃO_DE_TELECONTROLE",
+    "cargo": "ELETRICISTA",
+    "atividade": "ABERTURA_DE_FECHAMENTO_DE_CHAVE_FACA",
+    "valorBaremo": "1",
+    "it": "IT 0145 / IT 0141",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERAÇÃO_E_MANUTENÇÃO_DE_TELECONTROLE",
+    "cargo": "ELETRICISTA",
+    "atividade": "PREPARAÇÃO_DE_RELIGADOR_PARA_BYPASS",
+    "valorBaremo": "1",
+    "it": "IT 0145 / IT 0141",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERAÇÃO_E_MANUTENÇÃO_DE_TELECONTROLE",
+    "cargo": "ELETRICISTA",
+    "atividade": "OPERAÇÃO_DE_RELIGADOR_NO_MODO_LOCAL",
+    "valorBaremo": "1",
+    "it": "IT 0145 / IT 0141",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERAÇÃO_E_MANUTENÇÃO_DE_TELECONTROLE",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 0145 / IT 0141",
+    "unicos": ""
+  },
+  {
+    "processo": "NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDORES",
+    "valorBaremo": "1",
+    "it": "EDCE 0027",
+    "unicos": ""
+  },
+  {
+    "processo": "NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDOR_MONOFÁSICO",
+    "valorBaremo": "1",
+    "it": "EDCE 0027",
+    "unicos": ""
+  },
+  {
+    "processo": "NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDOR_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "EDCE 0027",
+    "unicos": ""
+  },
+  {
+    "processo": "NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "ELETRICISTA",
+    "atividade": "TESTE_DE_FUNCIONAMENTO",
+    "valorBaremo": "1",
+    "it": "EDCE 0027",
+    "unicos": ""
+  },
+  {
+    "processo": "NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAL_DE_LIGAÇÃO",
+    "valorBaremo": "1",
+    "it": "EDCE 0027",
+    "unicos": ""
+  },
+  {
+    "processo": "NORMALIZAÇÃO_GRUPO_B_TRADICIONAL",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "EDCE 0027",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "PROTEÇÃO_EM_REDE_PRIMÁRIA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "PROTEÇÃO_EM_REDE_SECUNDÁRIA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "CINCO_RO",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DE_MOTOPODA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DE_MOTOSERRA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DO_SERROTE_JAPONÊS",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO",
+    "cargo": "ELETRICISTA",
+    "atividade": "PROTEÇÃO_EM_REDE_PRIMÁRIA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO",
+    "cargo": "ELETRICISTA",
+    "atividade": "PROTEÇÃO_EM_REDE_SECUNDÁRIA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO",
+    "cargo": "ELETRICISTA",
+    "atividade": "CINCO_RO",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DE_MOTOPODA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DE_MOTOSERRA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DO_SERROTE_JAPONÊS",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_DESENERGIZADA_A_DISTANCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "PROTEÇÃO_EM_REDE_PRIMÁRIA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_DESENERGIZADA_A_DISTANCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "PROTEÇÃO_EM_REDE_SECUNDÁRIA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_DESENERGIZADA_A_DISTANCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "CINCO_RO",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_DESENERGIZADA_A_DISTANCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DE_MOTOPODA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_DESENERGIZADA_A_DISTANCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DE_MOTOSERRA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_DESENERGIZADA_A_DISTANCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "USO_DO_SERROTE_JAPONÊS",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_DESENERGIZADA_A_DISTANCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_DE_CHAVE_FACA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_DESENERGIZADA_A_DISTANCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANOBRA_DE_CHAVE_FUSIVEL",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_DESENERGIZADA_A_DISTANCIA",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ELETRICISTAS",
+    "cargo": "ELETRICISTA",
+    "atividade": "NORMAS_E_PROCEDIMENTOS_DE_OPERAÇÃO_E_EXECUÇÃO_ITS",
+    "valorBaremo": "1",
+    "it": "IT 003 / IT 102 / IT 228",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ELETRICISTAS",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FACA_FUSÍVEL_EM_QUALQUER_ESTRUTURA",
+    "valorBaremo": "2",
+    "it": "IT 003 / IT 102 / IT 228",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ELETRICISTAS",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIR_ISOLADOR_DE_DISCO_EM_ESTRUTURAS_TIPO_N3,_N4,_B3_E_OU_B4",
+    "valorBaremo": "1",
+    "it": "IT 003 / IT 102 / IT 228",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ELETRICISTAS",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIR_CRUZETAS_EM_ESTRUTURAS_TIPO_N1_N2_N3_N4",
+    "valorBaremo": "2",
+    "it": "IT 003 / IT 102 / IT 228",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ELETRICISTAS",
+    "cargo": "ELETRICISTA",
+    "atividade": "MODIFICAR_ESTRUTURAS_N1_PARA_N4_E_INSTALAR_CHAVE_FACA",
+    "valorBaremo": "4",
+    "it": "IT 003 / IT 102 / IT 228",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ELETRICISTAS",
+    "cargo": "ELETRICISTA",
+    "atividade": "EMENDAR_E_REPARAR_CONDUTORES",
+    "valorBaremo": "1",
+    "it": "IT 003 / IT 102 / IT 228",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ELETRICISTAS",
+    "cargo": "ELETRICISTA",
+    "atividade": "ABRIR_E_FECHAR_JUMPER_EM_ESTRUTURAS_N4_B4",
+    "valorBaremo": "1",
+    "it": "IT 003 / IT 102 / IT 228",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ELETRICISTAS",
+    "cargo": "ELETRICISTA",
+    "atividade": "SUBSTITUIR_POSTE_COM_ESTRUTURAS_N1,_N2_OU_B2",
+    "valorBaremo": "4",
+    "it": "IT 003 / IT 102 / IT 228",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ELETRICISTAS",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 003 / IT 102 / IT 228",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ENCARREGADOS",
+    "cargo": "ENCARREGADO",
+    "atividade": "CONHECIMENTOS_TÉCNICOS",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126 / IT 131",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ENCARREGADOS",
+    "cargo": "ENCARREGADO",
+    "atividade": "COMANDO_CONDUÇÃO",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126 / IT 131",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ENCARREGADOS",
+    "cargo": "ENCARREGADO",
+    "atividade": "PERCEPÇÃO_DE_RISCO",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126 / IT 131",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ENCARREGADOS",
+    "cargo": "ENCARREGADO",
+    "atividade": "PROCEDIMENTO_PASSO_A_PASSO",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126 / IT 131",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_DE_LINHA_VIVA_34.5_KV_–_ENCARREGADOS",
+    "cargo": "ENCARREGADO",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 102 / IT 126 / IT 131",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_BT",
+    "cargo": "ELETRICISTA",
+    "atividade": "CONEXÃO_NO_PONTO_DE_ANCORAGEM_DO_CLIENTE",
+    "valorBaremo": "1",
+    "it": "IT 001 / IT 005",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_BT",
+    "cargo": "ELETRICISTA",
+    "atividade": "CONEXÃO",
+    "valorBaremo": "1",
+    "it": "IT 001 / IT 005",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_BT",
+    "cargo": "ELETRICISTA",
+    "atividade": "DETECÇÃO_DE_DEFEITO",
+    "valorBaremo": "1",
+    "it": "IT 001 / IT 005",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_BT",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 001 / IT 005",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERAÇÃO_EM_SUBESTAÇÃO_GESTORES",
+    "cargo": "GESTORES",
+    "atividade": "INSPEÇÃO_VISUAL_S.E",
+    "valorBaremo": "2",
+    "it": "-",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERAÇÃO_EM_SUBESTAÇÃO_GESTORES",
+    "cargo": "GESTORES",
+    "atividade": "OPERAÇÃO_DISJUNTOR",
+    "valorBaremo": "2",
+    "it": "-",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERAÇÃO_EM_SUBESTAÇÃO_GESTORES",
+    "cargo": "GESTORES",
+    "atividade": "MANOBRA_CHAVE_SECCIONADORA",
+    "valorBaremo": "2",
+    "it": "-",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERAÇÃO_EM_SUBESTAÇÃO_GESTORES",
+    "cargo": "GESTORES",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "-",
+    "unicos": ""
+  },
+  {
+    "processo": "COMPORTAMENTAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "FUNÇÕES_EXECUTIVAS",
+    "valorBaremo": "2",
+    "it": "-",
+    "unicos": ""
+  },
+  {
+    "processo": "COMPORTAMENTAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "POTENCIAL_INTELECTUAL",
+    "valorBaremo": "2",
+    "it": "-",
+    "unicos": ""
+  },
+  {
+    "processo": "COMPORTAMENTAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "COORDENAÇÃO_VISUOMOTORA",
+    "valorBaremo": "2",
+    "it": "-",
+    "unicos": ""
+  },
+  {
+    "processo": "COMPORTAMENTAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "PERCEPÇÃO_DE_RISCO_",
+    "valorBaremo": "2",
+    "it": "-",
+    "unicos": ""
+  },
+  {
+    "processo": "COMPORTAMENTAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "-",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CRUZETAS_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_PINO_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_SUSPENSÃO_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CONEXÃO_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL_RELIGADORA_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_PARA_RAIOS_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_TIPO_FACA_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_SECCIONADOR_MONOFÁSICO_FUSISAVE_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_BRAÇO_TIPO_J_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CE3_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INTERLIGAÇÃO_DE_CIRCUITO_R_.CONVENCIONAL_E_COMPACTA_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_RELIGADORES_ELETRÔNICOS_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_REGULADORES_DE_TENSÃO_ELETRÔNICOS_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TENSIONAMENTO_DA_REDE_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INTERLIGAÇÃO_DE_CHAVE_TELECOMANDADA_COM_RGDAT_À_REDE_AT_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "LIGAÇÃO_DO_TP_À_REDE_M.T_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "BYPASS_DO_SECCIONADOR_AUTOMÁTICO_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "BYPASS_DO_RELIGADOR_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "BLOQUEIO_DA_CHAVE_FUSÍVEL_RELIGADORA_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA_ALTERNATIVA_INST",
+    "valorBaremo": "2",
+    "it": "IT 1023 / IT 0115",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_BT_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CONEXÃO_NO_PONTO_DE_ANCORAGEM_DO_CLIENTE_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_BT_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CONEXÃO_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_BT_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "DETECÇÃO_DE_DEFEITO_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_BT_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA_ALTERNATIVA_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_CHAVES_FACA_INST",
+    "valorBaremo": "2",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_CHAVES_FUSÍVEIS_INST",
+    "valorBaremo": "2",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_ELO_FUSÍVEL_INST",
+    "valorBaremo": "2",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "APOIO_À_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA_ALTERNATIVA_INST",
+    "valorBaremo": "2",
+    "it": "IT 116 / EDGO 0322",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "REGRAS_DE_IMPEDIMENTO_DE_REDE_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CRUZETAS_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_PINO_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_SUSPENSÃO_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CONEXÃO_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_ELO_FUSÍVEL_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL_RELIGADORA_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_PARA_RAIOS_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_TIPO_FACA_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_SECCIONADOR_MONOFÁSICO_FUSISAVE_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_TRANSFORMADOR_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAIS_DE_LIGAÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDORES_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TESTE_EM_TRANSFORMADOR_A_VAZIO_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_TRANSFORMADORES_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_CHAVES_FUSÍVEIS_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_CHAVES_FACA_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_CHAVE_SECCIONADORA_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_RELIGADORES_ELETRÔNICOS_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_REGULADORES_DE_TENSÃO_ELETRÔNICOS_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAL_TRIFÁSICO_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAL_DE_B.T_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "ATENDIMENTO_DE_EMERGÊNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA_ALTERNATIVA_INST",
+    "valorBaremo": "2",
+    "it": "IT 0014 / EDCE 0065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "LIGAÇÃO_DE_MEDIDOR_MONOFÁSICO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDOR_TRIFÁSICO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "LIGAÇÃO_DE_RAMAL_DE_LIGAÇÃO_MONOFÁSICO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAL_TRIFÁSICO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DA_CAIXA_DE_DERIVAÇÕES_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO_DE_MACROMEDIÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TESTES_DE_FUNCIONAMENTO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CORTE_RELIGAÇÃO_DE_FORNECIMENTO_NO_BORNE_DO_MEDIDOR_MONOFÁSICO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CORTE_RELIGAÇÃO_DE_FORNECIMENTO_NO_BORNE_DO_MEDIDOR_TRIFÁSICO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CORTE_RELIGAÇÃO_NO_RAMAL_DE_LIGAÇÃO_TRIFÁSICO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CORTE_RELIGAÇÃO_DE_FORNECIMENTO_NA_CAIXA_DE_DISTRIBUIÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CORTE_RELIGAÇÃO_DE_FORNECIMENTO_NA_CAIXA_DE_DERIVAÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CORTE_RELIGAÇÃO_DE_FORNECIMENTO_NA_REDE_DE_DISTRIBUIÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CORTE_RELIGAÇÃO_COM_RETIRADA_INSTALAÇÃO_DO_RAMAL_DE_LIGAÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDORES_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_RAMAIS_DE_LIGAÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "COMERCIAL_LIGAÇÃO_NOVA_CORTE_E_RELIGAÇÃO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA_ALTERNATIVA_INST",
+    "valorBaremo": "2",
+    "it": "EDRJ 0083 / IT 065",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "REGRAS_DE_IMPEDIMENTO_DE_REDE_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CRUZETAS_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_PINO_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_ISOLADOR_DE_SUSPENSÃO_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CONEXÃO_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_ELO_FUSÍVEL_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_FUSÍVEL_RELIGADORA_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_PARA_RAIOS_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CHAVE_TIPO_FACA_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_SECCIONADOR_MONOFÁSICO_FUSISAVER_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_BRAÇO_TIPO_J_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CE2_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_TRANSFORMADOR_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TESTE_EM_TRANSFORMADOR_A_VAZIO_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INTERLIGAÇÃO_DE_CIRCUITO_R_.CONVENCIONAL_E_COMPACTA_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_RELIGADORES_ELETRÔNICOS_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA_EM_PAINÉIS_DE_REGULADORES_DE_TENSÃO_ELETRÔNICOS_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TENSIONAMENTO_DA_REDE_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INTERLIGAÇÃO_DE_CHAVE_TELECOMANDADA_COM_RGDAT_À_REDE_AT_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "CONSTRUÇÃO_E_MANUTENÇÃO_OBRA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA_ALTERNATIVA_INST",
+    "valorBaremo": "2",
+    "it": "IT 068 / IT 082 / IT 083",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "ABERTURA_E_FECHAMENTO_DE_CHAVES_FUSÍVEL_E_FACA_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "AFERIÇÃO_EM_MEDIDOR_TRIFÁSICO_ADR4000_E_TESTES_MANUAIS_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CÁLCULOS_DE_CONSTANTES_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSPEÇÃO_EM_MEDIDOR_TRIFÁSICO_ADR4000_E_TESTES_MANUAIS_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSPEÇÃO_TÉCNICA_DE_IRREGULARIDADES_CABINES_ABRIGADAS_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSPEÇÃO_TÉCNICA_DE_IRREGULARIDADES_CONJUNTO_DE_MEDIÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "LEITURA_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_MEDIDOR_COM_SE_ENERGIZADA_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "VERIFICAÇÃO_DIAGRAMA_FASORIAL_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "VERIFICAÇÃO_PARAMETRIZAÇÃO_DO_MEDIDOR_E_CONSTANTES_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_COMERCIAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA_ALTERNATIVA_INST",
+    "valorBaremo": "2",
+    "it": "IT 0102 /",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO_DE_CRUZETA_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO_ESTRIBO_E_GLV_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO_E_RETIRADA_DE_CONJUNTO_DE_MEDIÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO_DE_CHAVE_FACA_E_FUSÍVEL_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "LANÇAMENTO_DE_CABOS_E_CONEXÕES_EM_TC_E_TP_NO_SECUNDÁRIO_DOS_TIS_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO_E_ALIMENTAÇÃO_CA_E_CC_DO_PAINEL_DE_8_POSIÇÕES_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO_DO_MEDIDOR_SL7000_PARAMETRIZAÇÃO_COMISSIONAMENTO_E_COMUNICAÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO_E_ALIMENTAÇÃO_CA_DO_PAINEL_DE_2_POSIÇÕES_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO_DE_NOBREAK_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO_DO_MEDIDOR_ION_8650_PARAMETRIZAÇÃO_COMISSIONAMENTO_E_COMUNICAÇÃO_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "ABERTURA_E_FECHAMENTO_DE_CHAVES_FUSÍVEL_E_FACA_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "PREENCHIMENTO_DE_RELATÓRIO_DE_COMISSIONAMENTO_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_MK6_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA_ALTERNATIVA_INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "LIMPEZA_DE_REDE",
+    "cargo": "ELETRICISTA",
+    "atividade": "IÇAMENTO_DE_MATERIAIS",
+    "valorBaremo": "1",
+    "it": "IT 0831",
+    "unicos": ""
+  },
+  {
+    "processo": "LIMPEZA_DE_REDE",
+    "cargo": "ELETRICISTA",
+    "atividade": "RETIRADA_DE_RAMAL_TRIFÁSICO_DE_RAMAL",
+    "valorBaremo": "1",
+    "it": "IT 0831",
+    "unicos": ""
+  },
+  {
+    "processo": "LIMPEZA_DE_REDE",
+    "cargo": "ELETRICISTA",
+    "atividade": "RETIRADA_DE_MEDIDOR_TRIFÁSICO",
+    "valorBaremo": "1",
+    "it": "IT 0831",
+    "unicos": ""
+  },
+  {
+    "processo": "LIMPEZA_DE_REDE",
+    "cargo": "ELETRICISTA",
+    "atividade": "TRABALHOS_COM_ESCADAS",
+    "valorBaremo": "1",
+    "it": "IT 0831",
+    "unicos": ""
+  },
+  {
+    "processo": "LIMPEZA_DE_REDE",
+    "cargo": "ELETRICISTA",
+    "atividade": "IDENTIFICAÇÃO_DE_DISTÂNCIAS_DE_SEGURANÇA_DA_REDE_ENERGIZADA",
+    "valorBaremo": "1",
+    "it": "IT 0831",
+    "unicos": ""
+  },
+  {
+    "processo": "LIMPEZA_DE_REDE",
+    "cargo": "ELETRICISTA",
+    "atividade": "TAREFA_ALTERNATIVA",
+    "valorBaremo": "1",
+    "it": "IT 0831",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSPEÇÃO VISUAL INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSPEÇÃO TÉCNICA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "PREEENCHIMENTO DO TOI INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO DE RAMAL INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO DE MEDIDOR INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_TRADICIONAL_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TESTE DE FUNCIONAMENTO INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSPEÇÃO VISUAL INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSPEÇÃO TÉCNICA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "PREEENCHIMENTO DO TOI INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO DE RAMAL INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CORTE MEDIÇÃO TRIFÁSICA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_B_ELETRÔNICO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TESTE DE FUNCIONAMENTO INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "PROTEÇÃO EM REDE PRIMÁRIA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "USO DA MOTOSSERRA ELÉTRICA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "USO DE SERROTE JAPONÊS INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_LINHA_VIVA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA ALTERNATIVA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_A_DISTÂNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "5RO INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_A_DISTÂNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "PROTEÇÃO EM REDE SECUNDÁRIA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_A_DISTÂNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "USO DE MOTOPODA HIDRAÚLICA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_A_DISTÂNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "USO DE SERROTE JAPONÊS INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_A_DISTÂNCIA_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA ALTERNATIVA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "PROTEÇÃO EM REDE PRIMÁRIA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "PROTEÇÃO EM REDE SECUNDÁRIA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "USO DA MOTOPODA HIDRAÚLICA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "USO DE SERROTE JAPONÊS INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "PODA_EM_REDE_ENERGIZADA_AO_CONTATO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA ALTERNATIVA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TESTE NA VÁLVULA DE SEGURANÇA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "ENGASTAMENTO DE POSTE/MOVIMENTAÇÃO DE CARGA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO DO TRANSFORMADOR INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSTALAÇÃO DE POSTE INTERMEDIÁRIO COM LINHA VIVA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA ALTERNATIVA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA EM CHAVE FACA INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANOBRA EM CHAVE FUSÍVEL INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "SUBSTITUIÇÃO DO ELO FUSÍVEL INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "INSPEÇÃO TÉCNICA DE IRREGULARIDADE CONJUNTO DE MEDIÇÃO INST",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "INSPEÇÃO_E_NORMALIZAÇÃO_GRUPO_A_PERDAS_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA ALTERNATIVA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "POSICIONAMENTO E MOVIMENTAÇÃO DO USO DO CESTO AÉREO INST",
+    "valorBaremo": "1",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "MANUSEIO E ACONDICIONAMENTO DOS CABOS NO CAMINHÃO INST",
+    "valorBaremo": "1",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "CORTE/REMOÇÃO DE CABOS DE COMUNICAÇÃO INST",
+    "valorBaremo": "1",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "IDENTIFICAÇÃO DO TIPO DE REDE E ESTRUTURAS DO SEP INST",
+    "valorBaremo": "1",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP_INSTRUTORES",
+    "cargo": "INSTRUTORES",
+    "atividade": "TAREFA ALTERNATIVA INST",
+    "valorBaremo": "1",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP",
+    "cargo": "ELETRICISTA",
+    "atividade": "POSICIONAMENTO E MOVIMENTAÇÃO DO USO DO CESTO AÉREO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP",
+    "cargo": "ELETRICISTA",
+    "atividade": "MANUSEIO E ACONDICIONAMENTO DOS CABOS NO CAMINHÃO.",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP",
+    "cargo": "ELETRICISTA",
+    "atividade": "CORTE/REMOÇÃO DE CABOS DE COMUNICAÇÃO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REMOÇÃO_DE_CABOS_DE_COMUNICAÇÃO_EM_POSTES_DO_SEP",
+    "cargo": "ELETRICISTA",
+    "atividade": "IDENTIFICAÇÃO DO TIPO DE REDE E ESTRUTURAS DO SEP",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_CORRETIVA_E_PREVENTINA_EM_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "ATERRAMENTO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_CORRETIVA_E_PREVENTINA_EM_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "BYPASS REGULADOR DE TENSÃO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_CORRETIVA_E_PREVENTINA_EM_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "BYPASS DISJUNTOR",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_CORRETIVA_E_PREVENTINA_EM_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "MANOBRA DE IMPEDIMENTO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_CORRETIVA_E_PREVENTINA_EM_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "5RO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_CORRETIVA_E_PREVENTINA_EM_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA ALTERNATIVA_MCEPESED138KV",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_DE_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "ENCARREGADO",
+    "atividade": "CONHECIMENTO TÉCNICO_ESED",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_DE_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "ENCARREGADO",
+    "atividade": "PROCEDIMENTO PASSO A PASSO_ESED",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_DE_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "ENCARREGADO",
+    "atividade": "COMANDO E CONDUÇÃO_ESED",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_DE_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "ENCARREGADO",
+    "atividade": "PERCEPÇÃO DE RISCO_ESED",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_DE_SE_DESENERGIZADA_EM_ATÉ_138_KV",
+    "cargo": "ENCARREGADO",
+    "atividade": "TAREFA ALTERNATIVA_ESED",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO_EM_AT",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SINALIZAÇÃO DA ÁREA DE SEGURANÇA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO_EM_AT",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TESTE NA VÁLVULA DE SEGURANÇA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO_EM_AT",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "MOVIMENTAÇÃO DA CARGA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO_EM_AT",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "AMARRAÇÃO DA CARGA NA CARROCERIA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_DE_GUINDAUTO_EM_AT",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA ALTERNATIVA_OGAT",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REVITALIZAÇÃO_DOS_DISJUNTORES",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "5RO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REVITALIZAÇÃO_DOS_DISJUNTORES",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "MANOBRA DE IMPEDIMENTO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REVITALIZAÇÃO_DOS_DISJUNTORES",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "DESMONTAGEM E MONTAGEM DE DISJUNTOR",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "REVITALIZAÇÃO_DOS_DISJUNTORES",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA ALTERNATIVA_RDISJ",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_LT_DESENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INSTALAÇÃO DE ATERRAMENTO TEMPORÁRIO_MLTD",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_LT_DESENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "RETIRADA DE PONTO QUENTE_MLTD",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_LT_DESENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "ESCALADA DE ESTRUTURA RESGATE_MLTD",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_LT_DESENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO DE ISOLADOR_MLTD",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_LT_DESENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA ALTERNATIVA_MLTD",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_LT_DESENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "DESCIDA DE CABO CONDUTOR COM CADEIA DE ISOLADORES E RECOLOCAÇÃO_MLTD",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_LT_DESENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO E RECOLOCAÇÃO DE PEÇAS DANIFICADAS_MLTD",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_LT_DESENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "DESMONTE E REMONTAGEM DE ESTRUTURA DA TORRE E ESCALAMENTO DE FERRAGEM_MLTD",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_LT_DESENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "MONTAGEM DE CAVALETE PARA LANÇAMENTO DE CABO CONDUTOR E PILOTO_MLTD",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "EMENDAS_E_TERMINAIS_DE_MT",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "EMENDA RETA MT",
+    "valorBaremo": "3",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "EMENDAS_E_TERMINAIS_DE_MT",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "EMENDA RETA BT",
+    "valorBaremo": "3",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "EMENDAS_E_TERMINAIS_DE_MT",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "CONEXÕES",
+    "valorBaremo": "3",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "EMENDAS_E_TERMINAIS_DE_MT",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "EMENDA TERMINAL CONTRÁTIL A FRIO",
+    "valorBaremo": "3",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "RETIRADA DE PONTO DE SOBREAQUECIMENTO NO BARRAMENTO DE INTERLIGAÇÃO DO DISJUNTOR",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO DE CONEXÃO MECÂNICA EM BARRAMENTO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO DE ISOLADOR DE ANCORAGEM",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "MANUTENÇÃO NOS TERMINAIS DE Tls (TCs E TPs),BUCHAS DE TRAFO E FLANGES",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA ALTERNATIVA_MSUBME",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "LIMPEZA E TESTE DE BASTÕES E ROUPA DE LINHA VIVA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "RETIRADA DE PONTO QUENTE DO BARRAMENTO DE 138/KV",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "COLOCAÇÃO DE ESCADA PARA ACESSAR BARRAMENTO E TESTE",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "ESCALADA E RESGATE – IÇAMENTO E DESCIDA DE MATERIAIS/EQUIPAMENTOS",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "ESCALADA E RESGATE",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "SUBSTITUIÇÃO DE PARA-RAIO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "ABERTURA E FECHAMENTO DE JUMPER",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "IÇAMENTO E DESCIDA DE MATERIAIS/EQUIPAMENTO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA ALTERNATIVA_MLTE",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TROCA DE ISOLADOR TIPO ANCORAGEM",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TROCA DE ISOLADOR TIPO SUSPENSÃO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "COLOCAÇÃO DE AMORTECEDORES NO CABO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "LIMPEZA E TESTE DE BASTÕES E ROUPA DE LINHA VIVA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "CONHECIMENTOS TÉCNICOS",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "COMANDO E CONDUÇÃO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "PERCEPÇÃO DE RISCO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_MANUTENÇÃO_EM_LINHA_DE_TRANSMISSÃO_ENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "PROCEDIMENTO PASSO A PASSO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "CONHECIMENTOS TÉCNICOS",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "COMANDO E CONDUÇÃO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "PERCEPÇÃO DE RISCO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_MANUTENÇÃO_EM_SUBESTAÇÃO_MÉTODO_ENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "PROCEDIMENTO PASSO A PASSO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "PROCEDIMENTO INICIAL ACESSO/LIBERAÇÃO - AVALIAÇÃO DE CARTA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "AJUSTE DE PARAMETROS",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "DESCARREGAMENTO DE AJUSTES NO RELÉ",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TÉRMINO DA IMPLEMENTAÇÃO E BACK UP PARA E-MAIL",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "PROCEDIMENTO INICIAL - BLOQUEAR O BF PELO FRONTAL- ABRIR LINKS E COMANDOS",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "REALIZAÇÃO DE BACK UP CURTO-CIRCUITO O TC DESLIGAR O RELÉ",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TROCA E CARREGAMENTO DO BACK UP NO RELÉ",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "MEDIR CONTATOS VERIFICAR CARGA DO RELÉ ENVIAR E-MAIL",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "PROCEDIMENTO INICIAL - ABRIR LINKS/BLOQUEIO DE BF FECHAMENTO DO TC COLOCAR MALA NO RELÉ",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "CONFIGURAR SAIDA UTILIZAR A CARTA DE AJUSTE COLOCAR VALORES NA PLANILHA",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "DESFAZER CIRCUITO DE CORRENTE RETIRAR SAIDA DE DISPARO",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "CONFERIR CARREGAMENTO E ENVIAR E-MAIL BACK UP POR E-MAIL",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "PROCEDIMENTOS INICIAIS",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "PEGAR E SALVAR EVENTOS",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "PEGAR E SALVAR OSCILOGRAFIAS",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "VERIFICAR OS REGISTROS NO RELÉ E ENVIAR E-MAIL",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "MANUTENCAO_ESPECIALIZADA",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA ALTERNATIVA_MESP",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_SE",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "CINCO RO’S_OPSE",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_SE",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "DISTINGUIR E NOMEAR EQUIPAMENTOS",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_SE",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "INTERPRETAÇÃO DIAGRAMA UNIFILAR",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "OPERADOR_SE",
+    "cargo": "TÉCNICO / ELETRICISTA",
+    "atividade": "TAREFA ALTERNATIVA_OPSE",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_LT_DESENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "CONHECIMENTOS_TÉCNICOS_LT",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_LT_DESENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "COMANDO_CONDUÇÃO_LT",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_LT_DESENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "PERCEPÇÃO_DE_RISCO_LT",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_LT_DESENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "PROCEDIMENTO_PASSO_A_PASSO_LT",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  },
+  {
+    "processo": "ENCARREGADO_LT_DESENERGIZADA",
+    "cargo": "ENCARREGADO",
+    "atividade": "TAREFA_ALTERNATIVA_ELTD",
+    "valorBaremo": "2",
+    "it": "",
+    "unicos": ""
+  }
+]
