@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
       <body style={{ margin: 0, fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif', background: '#f5f5f0' }}>
         {children}
         <script dangerouslySetInnerHTML={{__html:`
-          if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{});});}
+          if('serviceWorker'in navigator&&!sessionStorage.getItem('sw-cleared')){sessionStorage.setItem('sw-cleared','1');navigator.serviceWorker.getRegistrations().then(r=>{if(r.length){r.forEach(s=>s.unregister());caches.keys().then(k=>Promise.all(k.map(x=>caches.delete(x)))).then(()=>location.reload());}});}
         `}}/>
       </body>
     </html>
