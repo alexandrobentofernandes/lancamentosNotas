@@ -1149,14 +1149,15 @@ function Users({user,toast_}){
   </div>);
 }
 
-const CAD_ICON={pedidos:'📋',empresas:'🏢',processos:'⚙️',bases:'📍',avaliadores:'👤',motivos:'📌'};
+const CAD_ICON={pedidos:'📋',empresas:'🏢',processos:'⚙️',bases:'📍',avaliadores:'👤',motivos:'📌',candidatos:'🧑'};
 const CAD_COLS={
   pedidos:[{k:'nome',l:'Pedido'}],
   empresas:[{k:'nome',l:'Empresa'},{k:'valor',l:'Valor R$'},{k:'email',l:'Email'},{k:'dataInicio',l:'Início'},{k:'dataFim',l:'Fim'}],
   processos:[{k:'processo',l:'Processo'},{k:'cargo',l:'Cargo'},{k:'atividades',l:'Atividades'}],
   bases:[{k:'base',l:'Base'},{k:'uo',l:'UO'},{k:'regiao',l:'Região'}],
   avaliadores:[{k:'nome',l:'Avaliador'}],
-  motivos:[{k:'nome',l:'Motivo'}]
+  motivos:[{k:'nome',l:'Motivo'}],
+  candidatos:[{k:'foto',l:'Foto'},{k:'nome',l:'Nome Completo'},{k:'cpf',l:'CPF/Matrícula'},{k:'email',l:'E-mail'},{k:'estado',l:'Estado'},{k:'cidade',l:'Cidade'}]
 };
 const CAD_FORMS={
   pedidos:[{k:'nome',l:'Nome do Pedido',req:true}],
@@ -1164,7 +1165,8 @@ const CAD_FORMS={
   processos:[{k:'processo',l:'Nome do Processo',req:true},{k:'cargo',l:'Cargo'}],
   bases:[{k:'base',l:'Base',req:true},{k:'uo',l:'Unidade Operacional'},{k:'regiao',l:'Região'}],
   avaliadores:[{k:'nome',l:'Nome do Avaliador',req:true}],
-  motivos:[{k:'nome',l:'Motivo',req:true}]
+  motivos:[{k:'nome',l:'Motivo',req:true}],
+  candidatos:[{k:'nome',l:'Nome Completo',req:true},{k:'cpf',l:'CPF/Matrícula',req:true},{k:'email',l:'E-mail',req:true,type:'email'},{k:'estado',l:'Estado',req:true},{k:'cidade',l:'Cidade',req:true}]
 };
 
 function Cadastros({mobile,toast_,cw}){
@@ -1176,6 +1178,7 @@ function Cadastros({mobile,toast_,cw}){
   const [confirmDel,setConfirmDel]=useState(null);
   const [saving,setSaving]=useState(false);
   const importRef=useRef(null);
+  const photoRef=useRef(null);
   const tipos=Object.keys(CAD_ICON);
   const importCad=async f=>{
     try{
@@ -1203,15 +1206,30 @@ function Cadastros({mobile,toast_,cw}){
   useEffect(()=>{load(tipo);},[tipo]);
 
   const [form,setForm]=useState({});
+  const photoCad=e=>{
+    const f=e.target.files[0];if(!f)return;
+    const img=new Image();const url=URL.createObjectURL(f);
+    img.onload=()=>{
+      const max=600;let w=img.width,h=img.height;
+      if(w>max||h>max){const r=Math.min(max/w,max/h);w*=r;h*=r;}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);
+      setForm(p=>({...p,foto:c.toDataURL('image/jpeg',.7)}));
+      URL.revokeObjectURL(url);
+    };
+    img.src=url;
+  };
   const openForm=(item)=>{
     if(item){
       const f={};
       CAD_FORMS[tipo].forEach(c=>{f[c.k]=item[c.k]||'';});
+      if(tipo==='candidatos')f.foto=item.foto||'';
       f._id=item.id;
       setEditItem(item);
       setForm(f);
     }else{
       const f={};CAD_FORMS[tipo].forEach(c=>{f[c.k]='';});
+      if(tipo==='candidatos')f.foto='';
       setEditItem(null);
       setForm(f);
     }
@@ -1219,7 +1237,9 @@ function Cadastros({mobile,toast_,cw}){
   };
 
   const save=async()=>{
-    if(!form.nome&&tipo!=='empresas'&&tipo!=='processos'&&tipo!=='bases')return toast_('Preencha o nome','error');
+    if(tipo==='candidatos'){
+      if(!form.nome||!form.cpf||!form.email||!form.estado||!form.cidade)return toast_('Preencha todos os campos obrigatórios','error');
+    }else if(!form.nome&&tipo!=='empresas'&&tipo!=='processos'&&tipo!=='bases')return toast_('Preencha o nome','error');
     setSaving(true);
     const body=editItem?{id:editItem.id,...form}:{tipo,...form};
     const method=editItem?'PUT':'POST';
@@ -1243,6 +1263,7 @@ function Cadastros({mobile,toast_,cw}){
     if(col.k==='valor')return item.valor?`R$ ${parseFloat(item.valor).toFixed(2)}`:'—';
     if(col.k==='associado')return item.associado==='SIM'||item.associado===true?'SIM':'NÃO';
     if(col.k==='atividades')return Array.isArray(item.atividades)?`${item.atividades.length} atividades`:'—';
+    if(col.k==='foto')return item.foto?<img src={item.foto} style={{width:32,height:32,borderRadius:'50%',objectFit:'cover'}}/>:'—';
     return item[col.k]||'—';
   };
 
@@ -1264,6 +1285,7 @@ function Cadastros({mobile,toast_,cw}){
         </p>
         <div style={{display:'flex',gap:6}}>
           {cw&&<><input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
+          <input ref={photoRef} type="file" accept="image/*" style={{display:'none'}} onChange={photoCad}/>
           <button className="btn sm amber-btn" onClick={()=>importRef.current?.click()}>{ICON.up}Importar</button></>}
           {cw&&<button className="btn primary sm" onClick={()=>openForm(null)}>{ICON.plus}Adicionar</button>}
         </div>
@@ -1272,17 +1294,17 @@ function Cadastros({mobile,toast_,cw}){
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:500}}>
           <thead><tr>
             {CAD_COLS[tipo].map(c=>{
-              const w=c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'?{minWidth:200}:c.k==='valor'?{width:120}:c.k==='atividades'?{width:120}:{};
+              const w=c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'?{minWidth:200}:c.k==='valor'?{width:120}:c.k==='atividades'?{width:120}:c.k==='foto'?{width:60}:{};
               return <th key={c.k} className="th" style={w}>{c.l}</th>;
             })}
             <th className="th" style={{width:80,textAlign:'right'}}>Ações</th>
           </tr></thead>
           <tbody>
             {loading[tipo]?[1,2,3].map(i=><tr key={i}>
-              {CAD_COLS[tipo].map(c=><td key={c.k} className="td"><Skeleton h={14} w={c.k==='valor'?'60px':'140px'} r="4" m="0"/></td>)}
+              {CAD_COLS[tipo].map(c=><td key={c.k} className="td"><Skeleton h={14} w={c.k==='valor'?'60px':c.k==='foto'?'32px':'140px'} r={c.k==='foto'?'50%':'4'} m="0"/></td>)}
               <td className="td"><Skeleton h={14} w="60px" r="4" m="0"/></td>
             </tr>):data[tipo]?.length?data[tipo].map(item=><tr key={item.id}>
-              {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'?600:400,fontSize:13}}>{formatVal(item,c)}</td>)}
+              {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'?600:400,fontSize:13,textAlign:c.k==='foto'?'center':'left'}}>{formatVal(item,c)}</td>)}
               <td className="td" style={{textAlign:'right'}}>
                 <div style={{display:'flex',gap:4,justifyContent:'flex-end'}}>
                   {cw&&<button className="btn sm icon" onClick={()=>openForm(item)}>{ICON.edit}</button>}
@@ -1313,9 +1335,19 @@ function Cadastros({mobile,toast_,cw}){
               </select>
             </div>:<div key={c.k}>
               <label className="label">{c.l}{c.req&&<span className="req">*</span>}</label>
-              <input className="field" type={c.type||'text'} value={form[c.k]||''} onChange={e=>setForm(p=>({...p,[c.k]:e.target.value}))} placeholder={c.l}/>
+              <input className="field" type={c.type||'text'} value={form[c.k]||''} onChange={e=>{const v=e.target.value;setForm(p=>({...p,[c.k]:c.k==='cpf'?v.replace(/\D/g,''):v}))}} placeholder={c.l}/>
             </div>
           ))}
+          {tipo==='candidatos'&&<div>
+            <label className="label">Foto <span style={{fontSize:11,color:'var(--text3)',fontWeight:400}}>(opcional)</span></label>
+            <div style={{display:'flex',alignItems:'center',gap:12}}>
+              {form.foto?<img src={form.foto} style={{width:56,height:56,borderRadius:'50%',objectFit:'cover',border:'2px solid var(--primary)'}}/>:<div style={{width:56,height:56,borderRadius:'50%',background:'var(--surface2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,color:'var(--text3)'}}>📷</div>}
+              <div>
+                <button className="btn sm" onClick={()=>photoRef.current.click()}>{ICON.cam}Selecionar Foto</button>
+                {form.foto&&<button className="btn ghost sm" style={{color:'var(--danger)',fontSize:12}} onClick={()=>setForm(p=>({...p,foto:''}))}>Remover</button>}
+              </div>
+            </div>
+          </div>}
           <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:8}}>
             <button className="btn" onClick={()=>setShowModal(false)} disabled={saving}>Cancelar</button>
             <button className="btn primary" onClick={save} disabled={saving}>{saving?<><Spin/>Salvando...</>:<>{ICON.save}Salvar</>}</button>
