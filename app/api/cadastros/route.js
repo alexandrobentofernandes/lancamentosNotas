@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { requireAuth, canWrite } from '../../../lib/auth';
 import { getCadastros, createCadastro, updateCadastro, deleteCadastro, getCadastro, addAudit } from '../../../lib/db';
 
-const TIPOS_VALIDOS = ['pedidos','empresas','processos','bases','avaliadores','motivos'];
+const TIPOS_VALIDOS = ['pedidos','empresas','processos','bases','avaliadores','motivos','candidatos'];
 
 export async function GET(req) {
   const user = requireAuth(req);
