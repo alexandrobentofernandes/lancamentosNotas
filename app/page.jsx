@@ -1187,10 +1187,19 @@ function Cadastros({mobile,toast_,cw}){
   const [showModal,setShowModal]=useState(false);
   const [editItem,setEditItem]=useState(null);
   const [confirmDel,setConfirmDel]=useState(null);
+  const [confirmBulkDel,setConfirmBulkDel]=useState(null);
   const [saving,setSaving]=useState(false);
   const [sortKey,setSortKey]=useState(null);const [sortDir,setSortDir]=useState('asc');
   const toggleSort=k=>{if(sortKey===k){setSortDir(d=>d==='asc'?'desc':'asc');}else{setSortKey(k);setSortDir('asc');}};
   const SortIcon=({k})=><span style={{fontSize:10,marginLeft:4,opacity:sortKey===k?1:.2}}>{sortKey===k?(sortDir==='asc'?'▲':'▼'):'▼'}</span>;
+  const [selected,setSelected]=useState(new Set());
+  const bulkDel=async()=>{
+    if(!selected.size)return;
+    setConfirmBulkDel(null);
+    for(const id of selected){await api('cadastros?id='+id,{method:'DELETE'});}
+    toast_(`${selected.size} registro(s) excluído(s)`);
+    setSelected(new Set());load(tipo);
+  };
   const importRef=useRef(null);
   const photoRef=useRef(null);
   const tipos=Object.keys(CAD_ICON);
@@ -1330,6 +1339,7 @@ function Cadastros({mobile,toast_,cw}){
           <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{sortedData.length} registros</span>
         </p>
         <div style={{display:'flex',gap:6}}>
+          {selected.size>0&&<button className="btn sm danger" onClick={()=>setConfirmBulkDel(selected.size)}>{ICON.trash}Excluir {selected.size}</button>}
           {cw&&<><input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
           <input ref={photoRef} type="file" accept="image/*" style={{display:'none'}} onChange={photoCad}/>
           <button className="btn sm amber-btn" onClick={()=>importRef.current?.click()}>{ICON.up}Importar</button></>}
@@ -1339,6 +1349,9 @@ function Cadastros({mobile,toast_,cw}){
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:500}}>
           <thead><tr>
+            {cw&&<th className="th" style={{width:36}}>
+              <input type="checkbox" style={{cursor:'pointer'}} checked={sortedData.length>0&&selected.size===sortedData.length} onChange={e=>setSelected(e.target.checked?new Set(sortedData.map(r=>r.id)):new Set())}/>
+            </th>}
             {CAD_COLS[tipo].map(c=>{
               const w=c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'||c.k==='atividade'?{minWidth:200}:c.k==='valor'?{width:120}:c.k==='valorBaremo'?{width:80}:c.k==='it'?{minWidth:150}:c.k==='unicos'?{minWidth:180}:c.k==='foto'?{width:60}:{};
               return <th key={c.k} className="th" style={{...w,cursor:'pointer'}} onClick={()=>toggleSort(c.k)}>{c.l}<SortIcon k={c.k}/></th>;
@@ -1347,9 +1360,11 @@ function Cadastros({mobile,toast_,cw}){
           </tr></thead>
           <tbody>
             {loading[tipo]?[1,2,3].map(i=><tr key={i}>
+              {cw&&<td className="td"><Skeleton h={14} w="16px" r="4" m="0"/></td>}
               {CAD_COLS[tipo].map(c=><td key={c.k} className="td"><Skeleton h={14} w={c.k==='valor'||c.k==='valorBaremo'?'60px':c.k==='foto'?'32px':'140px'} r={c.k==='foto'?'50%':'4'} m="0"/></td>)}
               <td className="td"><Skeleton h={14} w="60px" r="4" m="0"/></td>
-            </tr>):sortedData.length?sortedData.map(item=><tr key={item.id}>
+            </tr>):sortedData.length?sortedData.map(item=><tr key={item.id} style={{background:selected.has(item.id)?'rgba(89,48,226,.04)':''}}>
+              {cw&&<td className="td" style={{width:36}}><input type="checkbox" checked={selected.has(item.id)} onChange={e=>{const s=new Set(selected);e.target.checked?s.add(item.id):s.delete(item.id);setSelected(s);}}/></td>}
               {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='atividade'||c.k==='base'?600:400,fontSize:13,textAlign:c.k==='foto'||c.k==='valorBaremo'?'center':'left',cursor:cw&&c.k!=='foto'?'pointer':'default'}} onClick={()=>startEdit(item,c)}>
                 {editCell?.id===item.id&&editCell?.field===c.k
                   ?(CAD_FORMS[tipo]?.find(f=>f.k===c.k)?.opts
@@ -1365,7 +1380,7 @@ function Cadastros({mobile,toast_,cw}){
                   {cw&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(item)}>{ICON.trash}</button>}
                 </div>
               </td>
-            </tr>):<tr><td colSpan={CAD_COLS[tipo].length+1} style={{textAlign:'center',padding:'3rem'}}>
+            </tr>):<tr><td colSpan={CAD_COLS[tipo].length+1+(cw?1:0)} style={{textAlign:'center',padding:'3rem'}}>
               <EmptyState title="Nenhum registro" desc={`Nenhum cadastro de ${tipo} encontrado.`}/>
             </td></tr>}
           </tbody>
@@ -1373,6 +1388,7 @@ function Cadastros({mobile,toast_,cw}){
       </div>
     </div>
     <ConfirmModal show={confirmDel} title="Excluir Cadastro" msg={`Excluir "${confirmDel?.nome||confirmDel?.processo||confirmDel?.base||confirmDel?.[Object.keys(confirmDel||{})[0]]||'?'}"?`} onConfirm={del} onCancel={()=>setConfirmDel(null)}/>
+    <ConfirmModal show={confirmBulkDel} title="Excluir Cadastros" msg={`Excluir ${confirmBulkDel} registro(s) permanentemente?`} onConfirm={bulkDel} onCancel={()=>setConfirmBulkDel(null)}/>
     {showModal&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setShowModal(false)}>
       <div className="modal">
         <div className="modal-hd">
