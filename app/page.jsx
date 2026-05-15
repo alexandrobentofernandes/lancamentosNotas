@@ -15,7 +15,10 @@ const ROLES={SYSTEM:{label:'SYSTEM',bg:'rgba(139,92,246,.15)',color:'#A78BFA'},A
 function api(path,opts={}){
   const token=typeof window!=='undefined'?localStorage.getItem('token'):null;
   return fetch('/api/'+path,{headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})}, ...opts})
-    .then(r=>r.json());
+    .then(r=>{
+      if(r.status===401&&typeof window!=='undefined'){window.dispatchEvent(new CustomEvent('session-expired'));return{error:'Sessão expirada'};}
+      return r.json();
+    });
 }
 function safeApi(path,opts={}){
   return api(path,opts).catch(()=>null);
@@ -253,6 +256,11 @@ export default function App(){
   useEffect(()=>{if(user){document.documentElement.setAttribute('data-theme',theme);localStorage.setItem('theme',theme);}},[theme]);
   useEffect(()=>{const u=localStorage.getItem('user'),t=localStorage.getItem('token');if(u&&t){setUser(JSON.parse(u));setView('dashboard');}},[]);
   useEffect(()=>{
+    const h=()=>{localStorage.removeItem('user');localStorage.removeItem('token');setUser(null);setView('login');};
+    window.addEventListener('session-expired',h);
+    return()=>window.removeEventListener('session-expired',h);
+  },[]);
+  useEffect(()=>{
     if(!user)return;
     const h=e=>{
       if(e.ctrlKey&&e.key==='n'&&cw()){e.preventDefault();setEditRec(null);setView('form');}
@@ -368,7 +376,7 @@ export default function App(){
         {view==='admin-dash'&&<AdminDash mobile={mobile} user={user} toast_={toast_}/>}
         {view==='records'&&<RecList cw={cw()} ia={ia()} mobile={mobile} user={user} onEdit={r=>{setEditRec(r);setView('form');}} onNew={()=>{setEditRec(null);setView('form');}} toast_={toast_}/>}
         {view==='form'&&<RecForm rec={editRec} user={user} cw={cw()} mobile={mobile} onSave={()=>{toast_('Avaliação salva com sucesso!');setView('records');}} onCancel={()=>setView('records')} toast_={toast_}/>}
-        {view==='cadastros'&&<Cadastros mobile={mobile} toast_={toast_}/>}
+        {view==='cadastros'&&<Cadastros mobile={mobile} toast_={toast_} cw={cw()}/>}
         {view==='reports'&&<Reports mobile={mobile}/>}
         {view==='users'&&ia()&&<Users user={user} toast_={toast_}/>}
         {view==='clientes'&&user.role==='SYSTEM'&&<Clientes user={user} toast_={toast_}/>}
@@ -1158,7 +1166,7 @@ const CAD_FORMS={
   motivos:[{k:'nome',l:'Motivo',req:true}]
 };
 
-function Cadastros({mobile,toast_}){
+function Cadastros({mobile,toast_,cw}){
   const [tab,setTab]=useState(0);
   const [data,setData]=useState({});
   const [loading,setLoading]=useState({});
@@ -1254,9 +1262,9 @@ function Cadastros({mobile,toast_}){
           <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{data[tipo]?.length||0} registros</span>
         </p>
         <div style={{display:'flex',gap:6}}>
-          <input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
-          <button className="btn sm amber-btn" onClick={()=>importRef.current?.click()}>{ICON.up}Importar</button>
-          <button className="btn primary sm" onClick={()=>openForm(null)}>{ICON.plus}Adicionar</button>
+          {cw&&<><input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
+          <button className="btn sm amber-btn" onClick={()=>importRef.current?.click()}>{ICON.up}Importar</button></>}
+          {cw&&<button className="btn primary sm" onClick={()=>openForm(null)}>{ICON.plus}Adicionar</button>}
         </div>
       </div>
       <div style={{overflowX:'auto'}}>
@@ -1276,8 +1284,8 @@ function Cadastros({mobile,toast_}){
               {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'?600:400,fontSize:13}}>{formatVal(item,c)}</td>)}
               <td className="td" style={{textAlign:'right'}}>
                 <div style={{display:'flex',gap:4,justifyContent:'flex-end'}}>
-                  <button className="btn sm icon" onClick={()=>openForm(item)}>{ICON.edit}</button>
-                  <button className="btn sm icon danger" onClick={()=>setConfirmDel(item)}>{ICON.trash}</button>
+                  {cw&&<button className="btn sm icon" onClick={()=>openForm(item)}>{ICON.edit}</button>}
+                  {cw&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(item)}>{ICON.trash}</button>}
                 </div>
               </td>
             </tr>):<tr><td colSpan={CAD_COLS[tipo].length+1} style={{textAlign:'center',padding:'3rem'}}>

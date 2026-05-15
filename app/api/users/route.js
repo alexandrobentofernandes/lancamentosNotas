@@ -57,8 +57,13 @@ export async function POST(req) {
     }
   }
 
-  const existing = (await getAllUsers()).find(u => u.username === body.username);
-  if (existing) return NextResponse.json({ error: 'Usuário já existe' }, { status: 409 });
+  let existing = (await getAllUsers()).find(u => u.username === body.username);
+  if (existing) {
+    if (user.tipo === 'admin_cliente' && existing.clienteId !== user.clienteId) {
+      return NextResponse.json({ error: 'Nome de usuário indisponível' }, { status: 409 });
+    }
+    return NextResponse.json({ error: 'Usuário já existe' }, { status: 409 });
+  }
 
   const newUser = await createUser({
     ...body,
