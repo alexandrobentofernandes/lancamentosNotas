@@ -305,7 +305,6 @@ export default function App(){
     ]:user.tipo==='admin_cliente'?[
       {k:'admin-dash',i:'chart',l:'Meu Painel'},
       {k:'records',i:'list',l:'Avaliações'},
-      ...(cw()?[{k:'form',i:'plus',l:'Nova'}]:[]),
       {k:'cadastros',i:'list',l:'Cadastros'},
       {k:'reports',i:'chart',l:'Relatórios'},
       {k:'users',i:'users',l:'Usuários'},
@@ -313,7 +312,6 @@ export default function App(){
     ]:[
       {k:'dashboard',i:'home',l:'Dashboard'},
       {k:'records',i:'list',l:'Avaliações'},
-      ...(cw()?[{k:'form',i:'plus',l:'Nova'}]:[]),
       {k:'cadastros',i:'list',l:'Cadastros'},
       {k:'reports',i:'chart',l:'Relatórios'},
     ]
