@@ -614,6 +614,17 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
   const [selected,setSelected]=useState(new Set());
   const PER=20;const fileRef=useRef(null);const searchTimer=useRef(null);
   const load=useCallback(()=>{setLoading(true);setError(null);api('records?'+new URLSearchParams({q,base,resultado:res})).then(r=>{if(Array.isArray(r))setData(r);else setError('Erro ao carregar');setLoading(false);}).catch(()=>{setError('Erro de conexão');setLoading(false);});},[q,base,res]);
+  const imp=async f=>{
+    try{
+      const txt=await f.text();
+      const arr=JSON.parse(txt);
+      if(!Array.isArray(arr))return toast_('Arquivo deve conter uma lista','error');
+      const r=await api('records',{method:'POST',body:JSON.stringify(arr)});
+      if(r.error)return toast_(r.error,'error');
+      toast_(`${r.imported||arr.length} registros importados!`);
+      load();
+    }catch(e){toast_('Erro ao importar: '+e,'error');}
+  };
   const setQDebounced=v=>{
     setQ(v);setPage(0);
     if(searchTimer.current)clearTimeout(searchTimer.current);
