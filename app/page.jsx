@@ -1086,9 +1086,9 @@ function Users({user,toast_}){
     const r=await api('users',{method:editU?'PUT':'POST',body:JSON.stringify(editU?{id:editU.id,...form}:form)});
     setSaving(false);
     if(r.error)return setErr(r.error);
-    if(editU)setUsers(us=>us.map(x=>x.id===editU.id?{...x,...r}:x));
-    else if(r.id)setUsers(us=>[...us,r]);
-    setShow(false);toast_(editU?'Usuário atualizado!':'Usuário criado!');
+    toast_(editU?'Usuário atualizado!':'Usuário criado!');
+    setShow(false);
+    if(!editU)window.location.reload();
   };
   const toggle=async u=>{await api('users',{method:'PUT',body:JSON.stringify({id:u.id,active:!u.active})});setUsers(us=>us.map(x=>x.id===u.id?{...x,active:!x.active}:x));};
   return(<div>
