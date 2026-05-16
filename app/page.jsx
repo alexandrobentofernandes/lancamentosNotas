@@ -693,8 +693,13 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
         <button className="btn success" onClick={()=>window.location.href='/api/export-excel?'+new URLSearchParams({q,base,resultado:res}).toString()}>{ICON.down}Excel</button>
         {selected.size>0&&<button className="btn danger" onClick={bulkDel}>{ICON.trash}Excluir {selected.size}</button>}
         {cw&&<><input ref={fileRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])imp(e.target.files[0]);e.target.value='';}}/>
-        <button className="btn amber-btn" onClick={()=>fileRef.current.click()}>{ICON.up}Importar JSON</button>
-        <button className="btn primary" onClick={onNew}>{ICON.plus}Nova Avaliação</button></>}
+        <button className="btn amber-btn" onClick={()=>fileRef.current.click()}>{ICON.up}Importar JSON</button></>}
+        {ia&&<button className="btn ghost" onClick={()=>{
+          const s={nomes:'Nome Completo',cpf:'00000000000',matricula:'123',pedido:'1ª AVALIAÇÃO',empresa:EMPRESAS_NOMES[0],base:BASES[0],processo:PROCESSOS[0],dataRealizacao:new Date().toISOString().slice(0,10),turma:'T01-2026',avaliador:AVALIADORES[0],localAvaliacao:'Cabo Frio'};
+          const blob=new Blob([JSON.stringify([s],null,2)],{type:'application/json'});
+          const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='template_avaliacao.json';a.click();URL.revokeObjectURL(a.href);
+        }}>{ICON.down}Template</button>}
+        {cw&&<button className="btn primary" onClick={onNew}>{ICON.plus}Nova Avaliação</button>}
       </div>
     </div>
     <div className="card fu1" style={{padding:'1rem 1.25rem',marginBottom:16,display:'flex',gap:12,flexWrap:'wrap',alignItems:'center'}}>
@@ -1191,6 +1196,7 @@ function Cadastros({mobile,toast_,cw,canDel}){
   const [confirmBulkDel,setConfirmBulkDel]=useState(null);
   const [saving,setSaving]=useState(false);
   const [sortKey,setSortKey]=useState(null);const [sortDir,setSortDir]=useState('asc');
+  const [page,setPage]=useState(0);const PER=20;
   const toggleSort=k=>{if(sortKey===k){setSortDir(d=>d==='asc'?'desc':'asc');}else{setSortKey(k);setSortDir('asc');}};
   const SortIcon=({k})=><span style={{fontSize:10,marginLeft:4,opacity:sortKey===k?1:.2}}>{sortKey===k?(sortDir==='asc'?'▲':'▼'):'▼'}</span>;
   const [selected,setSelected]=useState(new Set());
@@ -1246,7 +1252,7 @@ function Cadastros({mobile,toast_,cw,canDel}){
     setLoading(p=>({...p,[t]:false}));
   },[]);
 
-  useEffect(()=>{load(tipo);},[tipo]);
+  useEffect(()=>{load(tipo);setPage(0);},[tipo]);
 
   const [form,setForm]=useState({});
   const photoCad=e=>{
@@ -1343,6 +1349,8 @@ function Cadastros({mobile,toast_,cw,canDel}){
       return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
     });
   },[data[tipo],sortKey,sortDir]);
+  const pages=Math.ceil(sortedData.length/PER);
+  const pagedData=sortedData.slice(page*PER,(page+1)*PER);
   return(<div>
     <div className="fu" style={{marginBottom:24}}>
       <h1 style={{fontSize:24,fontWeight:700}}>Cadastros</h1>
@@ -1361,7 +1369,7 @@ function Cadastros({mobile,toast_,cw,canDel}){
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}>
         <p style={{fontSize:13,fontWeight:600,color:'var(--text2)'}}>
           {CAD_ICON[tipo]} {tipo.charAt(0).toUpperCase()+tipo.slice(1)}
-          <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{sortedData.length} registros</span>
+          <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{sortedData.length?`${page*PER+1}-${Math.min((page+1)*PER,sortedData.length)} de `:''}{sortedData.length} registros</span>
         </p>
         <div style={{display:'flex',gap:6}}>
           {cw&&<>{selected.size>0&&canDel&&<button className="btn sm danger" onClick={()=>setConfirmBulkDel(selected.size)}>{ICON.trash}Excluir {selected.size}</button>}
@@ -1376,7 +1384,7 @@ function Cadastros({mobile,toast_,cw,canDel}){
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:500}}>
           <thead><tr>
             {canDel&&<th className="th" style={{width:36}}>
-              <input type="checkbox" style={{cursor:'pointer'}} checked={sortedData.length>0&&selected.size===sortedData.length} onChange={e=>setSelected(e.target.checked?new Set(sortedData.map(r=>r.id)):new Set())}/>
+              <input type="checkbox" style={{cursor:'pointer'}} checked={pagedData.length>0&&selected.size===pagedData.length} onChange={e=>setSelected(e.target.checked?new Set(pagedData.map(r=>r.id)):new Set())}/>
             </th>}
             {CAD_COLS[tipo].map(c=>{
               const w=c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'||c.k==='atividade'?{minWidth:200}:c.k==='valor'?{width:120}:c.k==='valorBaremo'?{width:80}:c.k==='it'?{minWidth:150}:c.k==='unicos'?{minWidth:180}:c.k==='foto'?{width:60}:{};
@@ -1389,7 +1397,7 @@ function Cadastros({mobile,toast_,cw,canDel}){
               {canDel&&<td className="td"><Skeleton h={14} w="16px" r="4" m="0"/></td>}
               {CAD_COLS[tipo].map(c=><td key={c.k} className="td"><Skeleton h={14} w={c.k==='valor'||c.k==='valorBaremo'?'60px':c.k==='foto'?'32px':'140px'} r={c.k==='foto'?'50%':'4'} m="0"/></td>)}
               <td className="td"><Skeleton h={14} w="60px" r="4" m="0"/></td>
-            </tr>):sortedData.length?sortedData.map(item=><tr key={item.id} style={{background:selected.has(item.id)?'rgba(89,48,226,.04)':''}}>
+            </tr>):sortedData.length?pagedData.map(item=><tr key={item.id} style={{background:selected.has(item.id)?'rgba(89,48,226,.04)':''}}>
               {canDel&&<td className="td" style={{width:36}}><input type="checkbox" checked={selected.has(item.id)} onChange={e=>{const s=new Set(selected);e.target.checked?s.add(item.id):s.delete(item.id);setSelected(s);}}/></td>}
               {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='atividade'||c.k==='base'?600:400,fontSize:13,textAlign:c.k==='foto'||c.k==='valorBaremo'?'center':'left',cursor:cw&&c.k!=='foto'?'pointer':'default'}} onClick={()=>startEdit(item,c)}>
                 {editCell?.id===item.id&&editCell?.field===c.k
@@ -1413,6 +1421,11 @@ function Cadastros({mobile,toast_,cw,canDel}){
         </table>
       </div>
     </div>
+    {pages>1&&<div className="fu3" style={{display:'flex',justifyContent:'center',alignItems:'center',gap:10,marginTop:16}}>
+      <button className="btn sm" disabled={page===0} onClick={()=>setPage(p=>p-1)}>‹ Anterior</button>
+      <span style={{fontSize:13,color:'var(--text3)',fontFamily:'var(--mono)'}}>Página {page+1} de {pages}</span>
+      <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(p=>p+1)}>Próxima ›</button>
+    </div>}
     <ConfirmModal show={confirmDel} title="Excluir Cadastro" msg={`Excluir "${confirmDel?.nome||confirmDel?.processo||confirmDel?.base||confirmDel?.[Object.keys(confirmDel||{})[0]]||'?'}"?`} onConfirm={del} onCancel={()=>setConfirmDel(null)}/>
     <ConfirmModal show={confirmBulkDel} title="Excluir Cadastros" msg={`Excluir ${confirmBulkDel} registro(s) permanentemente?`} onConfirm={bulkDel} onCancel={()=>setConfirmBulkDel(null)}/>
     {showModal&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setShowModal(false)}>
