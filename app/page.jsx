@@ -308,7 +308,11 @@ export default function App(){
     return()=>clearInterval(t);
   },[user]);
   const toast_=(msg,type='success')=>{const id=Date.now();setToasts(p=>[...p,{id,msg,type}]);setTimeout(()=>setToasts(p=>p.filter(t=>t.id!==id)),4000);};
-  const logout=()=>{localStorage.clear();setUser(null);setView('login');};
+  const logout=()=>{
+    localStorage.clear();sessionStorage.clear();
+    if('caches' in window)caches.keys().then(n=>n.forEach(k=>caches.delete(k)));
+    setUser(null);setView('login');
+  };
   const cw=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente'||(user.role==='COLABORADOR'&&user.permissions==='Leitura + Escrita'));
   const canDel=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN');
   const ia=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente');
