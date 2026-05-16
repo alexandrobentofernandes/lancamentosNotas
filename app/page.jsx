@@ -1174,7 +1174,7 @@ const CAD_COLS={
   bases:[{k:'base',l:'Base'},{k:'uo',l:'UO'},{k:'regiao',l:'Região'}],
   avaliadores:[{k:'nome',l:'Avaliador'}],
   motivos:[{k:'nome',l:'Motivo'}],
-  candidatos:[{k:'foto',l:'Foto'},{k:'nome',l:'Nome Completo'},{k:'cpf',l:'CPF/Matrícula'},{k:'email',l:'E-mail'},{k:'estado',l:'Estado'},{k:'cidade',l:'Cidade'}]
+  candidatos:[{k:'foto',l:'Foto'},{k:'nome',l:'Nome'},{k:'cpf',l:'CPF'},{k:'email',l:'E-mail'},{k:'estado',l:'UF'},{k:'cidade',l:'Cidade'}]
 };
 const CAD_FORMS={
   pedidos:[{k:'nome',l:'Nome do Pedido',req:true}],
@@ -1320,27 +1320,7 @@ function Cadastros({mobile,toast_,cw,canDel}){
     return item[col.k]||'—';
   };
 
-  const [editCell,setEditCell]=useState(null);
-  const [editVal,setEditVal]=useState('');
-  const editRef=useRef(null);
-  const startEdit=(item,col)=>{
-    if(col.k==='foto'||!cw)return;
-    setEditCell({id:item.id,field:col.k});
-    setEditVal(item[col.k]||'');
-    setTimeout(()=>editRef.current?.focus(),50);
-  };
-  const saveEdit=async()=>{
-    if(!editCell)return;
-    const c=editCell;setEditCell(null);
-    if(String(editVal)===String(data[tipo]?.find(i=>i.id===c.id)?.[c.field]||''))return;
-    const body={id:c.id,[c.field]:editVal};
-    const r=await api('cadastros',{method:'PUT',body:JSON.stringify(body)});
-    if(r.error)return toast_(r.error,'error');
-    toast_('Campo atualizado!');
-    load(tipo);
-  };
-  const cancelEdit=()=>setEditCell(null);
-  const editKeyDown=e=>{if(e.key==='Enter')saveEdit();if(e.key==='Escape')cancelEdit();};
+  const [q,setQ]=useState('');
   const sortedData=useMemo(()=>{
     const arr=data[tipo]||[];
     if(!sortKey)return arr;
@@ -1349,8 +1329,13 @@ function Cadastros({mobile,toast_,cw,canDel}){
       return sortDir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
     });
   },[data[tipo],sortKey,sortDir]);
-  const pages=Math.ceil(sortedData.length/PER);
-  const pagedData=sortedData.slice(page*PER,(page+1)*PER);
+  const filteredData=useMemo(()=>{
+    if(!q)return sortedData;
+    const lq=q.toLowerCase();
+    return sortedData.filter(item=>CAD_COLS[tipo].some(c=>(item[c.k]||'').toString().toLowerCase().includes(lq)));
+  },[sortedData,q,tipo]);
+  const pages=Math.ceil(filteredData.length/PER);
+  const pagedData=filteredData.slice(page*PER,(page+1)*PER);
   return(<div>
     <div className="fu" style={{marginBottom:24}}>
       <h1 style={{fontSize:24,fontWeight:700}}>Cadastros</h1>
@@ -1369,8 +1354,13 @@ function Cadastros({mobile,toast_,cw,canDel}){
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}>
         <p style={{fontSize:13,fontWeight:600,color:'var(--text2)'}}>
           {CAD_ICON[tipo]} {tipo.charAt(0).toUpperCase()+tipo.slice(1)}
-          <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{sortedData.length?`${page*PER+1}-${Math.min((page+1)*PER,sortedData.length)} de `:''}{sortedData.length} registros</span>
+          <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{filteredData.length?`${page*PER+1}-${Math.min((page+1)*PER,filteredData.length)} de `:''}{filteredData.length} registros</span>
         </p>
+        <div style={{position:'relative',flex:1,maxWidth:260,minWidth:140,margin:'0 12px'}}>
+          <div style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',color:'var(--text3)',pointerEvents:'none',fontSize:13}}>{ICON.search}</div>
+          <input className="field" style={{paddingLeft:30,fontSize:13,height:34}} placeholder="Buscar..." value={q} onChange={e=>{setQ(e.target.value);setPage(0);}}/>
+          {q&&<button className="btn ghost icon" style={{position:'absolute',right:4,top:'50%',transform:'translateY(-50%)',padding:2}} onClick={()=>{setQ('');setPage(0);}}>{ICON.x}</button>}
+        </div>
         <div style={{display:'flex',gap:6}}>
           {cw&&<>{selected.size>0&&canDel&&<button className="btn sm danger" onClick={()=>setConfirmBulkDel(selected.size)}>{ICON.trash}Excluir {selected.size}</button>}
           <input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
@@ -1381,14 +1371,14 @@ function Cadastros({mobile,toast_,cw,canDel}){
         </div>
       </div>
       <div style={{overflowX:'auto'}}>
-        <table style={{width:'100%',borderCollapse:'collapse',minWidth:500}}>
+        <table style={{width:'100%',borderCollapse:'collapse'}}>
           <thead><tr>
             {canDel&&<th className="th" style={{width:36}}>
-              <input type="checkbox" style={{cursor:'pointer'}} checked={pagedData.length>0&&selected.size===pagedData.length} onChange={e=>setSelected(e.target.checked?new Set(pagedData.map(r=>r.id)):new Set())}/>
+              <input type="checkbox" style={{cursor:'pointer'}} checked={pagedData.length>0&&selected.size===pagedData.length&&selected.size===filteredData.length} onChange={e=>setSelected(e.target.checked?new Set(filteredData.map(r=>r.id)):new Set())}/>
             </th>}
             {CAD_COLS[tipo].map(c=>{
-              const w=c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'||c.k==='atividade'?{minWidth:200}:c.k==='valor'?{width:120}:c.k==='valorBaremo'?{width:80}:c.k==='it'?{minWidth:150}:c.k==='unicos'?{minWidth:180}:c.k==='foto'?{width:60}:{};
-              return <th key={c.k} className="th" style={{...w,cursor:'pointer'}} onClick={()=>toggleSort(c.k)}>{c.l}<SortIcon k={c.k}/></th>;
+              const w=c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'||c.k==='atividade'?{minWidth:120}:c.k==='valor'?{width:90}:c.k==='valorBaremo'?{width:70}:c.k==='it'?{minWidth:100}:c.k==='unicos'?{minWidth:120}:c.k==='foto'?{width:50}:c.k==='cpf'?{minWidth:100}:c.k==='email'?{minWidth:140}:c.k==='estado'?{width:40}:{};
+              return <th key={c.k} className="th" style={{...w,cursor:'pointer',fontSize:12}} onClick={()=>toggleSort(c.k)}>{c.l}<SortIcon k={c.k}/></th>;
             })}
             <th className="th" style={{width:80,textAlign:'right'}}>Ações</th>
           </tr></thead>
@@ -1397,17 +1387,9 @@ function Cadastros({mobile,toast_,cw,canDel}){
               {canDel&&<td className="td"><Skeleton h={14} w="16px" r="4" m="0"/></td>}
               {CAD_COLS[tipo].map(c=><td key={c.k} className="td"><Skeleton h={14} w={c.k==='valor'||c.k==='valorBaremo'?'60px':c.k==='foto'?'32px':'140px'} r={c.k==='foto'?'50%':'4'} m="0"/></td>)}
               <td className="td"><Skeleton h={14} w="60px" r="4" m="0"/></td>
-            </tr>):sortedData.length?pagedData.map(item=><tr key={item.id} style={{background:selected.has(item.id)?'rgba(89,48,226,.04)':''}}>
+            </tr>):filteredData.length?pagedData.map(item=><tr key={item.id} style={{background:selected.has(item.id)?'rgba(89,48,226,.04)':''}}>
               {canDel&&<td className="td" style={{width:36}}><input type="checkbox" checked={selected.has(item.id)} onChange={e=>{const s=new Set(selected);e.target.checked?s.add(item.id):s.delete(item.id);setSelected(s);}}/></td>}
-              {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='atividade'||c.k==='base'?600:400,fontSize:13,textAlign:c.k==='foto'||c.k==='valorBaremo'?'center':'left',cursor:cw&&c.k!=='foto'?'pointer':'default'}} onClick={()=>startEdit(item,c)}>
-                {editCell?.id===item.id&&editCell?.field===c.k
-                  ?(CAD_FORMS[tipo]?.find(f=>f.k===c.k)?.opts
-                    ?<select className="field" style={{padding:'2px 4px',fontSize:12,minHeight:0,height:26}} value={editVal} onChange={e=>{setEditVal(e.target.value);setEditCell(null);api('cadastros',{method:'PUT',body:JSON.stringify({id:item.id,[c.k]:e.target.value})}).then(r=>{if(!r.error){toast_('Campo atualizado!');load(tipo);}});}} ref={editRef} autoFocus onClick={e=>e.stopPropagation()}>
-                      {(CAD_FORMS[tipo].find(f=>f.k===c.k)?.opts||[]).map(o=><option key={o} value={o}>{o}</option>)}
-                    </select>
-                    :<input className="field" style={{padding:'2px 4px',fontSize:12,minHeight:0,height:26}} type={CAD_FORMS[tipo]?.find(f=>f.k===c.k)?.type==='number'?'number':'text'} value={editVal} onChange={e=>setEditVal(e.target.value)} onBlur={saveEdit} onKeyDown={editKeyDown} ref={editRef} autoFocus onClick={e=>e.stopPropagation()}/>)
-                  :formatVal(item,c)}
-              </td>)}
+              {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='atividade'||c.k==='base'?600:400,fontSize:12,textAlign:c.k==='foto'||c.k==='valorBaremo'?'center':'left',maxWidth:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='base'||c.k==='atividade'?160:c.k==='it'?120:c.k==='unicos'?140:void 0,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{formatVal(item,c)}</td>)}
               <td className="td" style={{textAlign:'right'}}>
                 <div style={{display:'flex',gap:4,justifyContent:'flex-end'}}>
                   {cw&&<button className="btn sm icon" onClick={()=>openForm(item)}>{ICON.edit}</button>}
@@ -1422,9 +1404,11 @@ function Cadastros({mobile,toast_,cw,canDel}){
       </div>
     </div>
     {pages>1&&<div className="fu3" style={{display:'flex',justifyContent:'center',alignItems:'center',gap:10,marginTop:16}}>
+      <button className="btn sm" disabled={page===0} onClick={()=>setPage(0)}>««</button>
       <button className="btn sm" disabled={page===0} onClick={()=>setPage(p=>p-1)}>‹ Anterior</button>
-      <span style={{fontSize:13,color:'var(--text3)',fontFamily:'var(--mono)'}}>Página {page+1} de {pages}</span>
+      <span style={{fontSize:13,color:'var(--text3)',fontFamily:'var(--mono)',margin:'0 4px'}}>Página {page+1} de {pages}</span>
       <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(p=>p+1)}>Próxima ›</button>
+      <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(pages-1)}>»»</button>
     </div>}
     <ConfirmModal show={confirmDel} title="Excluir Cadastro" msg={`Excluir "${confirmDel?.nome||confirmDel?.processo||confirmDel?.base||confirmDel?.[Object.keys(confirmDel||{})[0]]||'?'}"?`} onConfirm={del} onCancel={()=>setConfirmDel(null)}/>
     <ConfirmModal show={confirmBulkDel} title="Excluir Cadastros" msg={`Excluir ${confirmBulkDel} registro(s) permanentemente?`} onConfirm={bulkDel} onCancel={()=>setConfirmBulkDel(null)}/>
