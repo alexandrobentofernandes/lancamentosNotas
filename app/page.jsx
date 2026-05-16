@@ -812,6 +812,17 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
   const [avaliadoresOpts,setAvaliadoresOpts]=useState([]);
   const [pedidosOpts,setPedidosOpts]=useState([]);
   const [motivosOpts,setMotivosOpts]=useState([]);
+  const [candidatosList,setCandidatosList]=useState([]);
+  const [candSearch,setCandSearch]=useState('');
+  const selecionarCandidato=id=>{
+    const c=candidatosList.find(x=>x.id===id);
+    if(!c)return;
+    upd('nomes',c.nome||'');
+    upd('cpf',(c.cpf||'').replace(/\D/g,''));
+    upd('emailEmpresa',c.email||'');
+    if(c.foto)upd('fotoCandidato',c.foto);
+    setCandSearch(c.nome||'');
+  };
   useEffect(()=>{
     api('cadastros?tipo=processos').then(r=>{if(Array.isArray(r)&&r.length){setProcessosOpts(r.map(p=>p.processo));}}).catch(()=>{});
     api('cadastros?tipo=empresas').then(r=>{if(Array.isArray(r)&&r.length){setEmpresasOpts(r.map(p=>p.nome));}}).catch(()=>{});
@@ -819,6 +830,7 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
     api('cadastros?tipo=avaliadores').then(r=>{if(Array.isArray(r)&&r.length){setAvaliadoresOpts(r.map(p=>p.nome));}}).catch(()=>{});
     api('cadastros?tipo=pedidos').then(r=>{if(Array.isArray(r)&&r.length){setPedidosOpts(r.map(p=>p.nome));}}).catch(()=>{});
     api('cadastros?tipo=motivos').then(r=>{if(Array.isArray(r)&&r.length){setMotivosOpts(r.map(p=>p.nome));}}).catch(()=>{});
+    api('cadastros?tipo=candidatos').then(r=>{if(Array.isArray(r)&&r.length)setCandidatosList(r);}).catch(()=>{});
   },[]);
   const photoRef=useRef(null);
   const draftTimer=useRef(null);
@@ -930,6 +942,17 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
     </div>
     <div className="card fu2" style={{padding:'1.5rem'}}>
       {tab===0&&<div style={{display:'flex',flexDirection:'column',gap:16}}>
+        {!rec&&candidatosList.length>0&&<div style={{display:'flex',gap:12,alignItems:'flex-end',flexWrap:'wrap',padding:'12px 16px',background:'var(--surface2)',borderRadius:'var(--r-sm)'}}>
+          <div style={{flex:1,minWidth:200,position:'relative'}}>
+            <label className="label">Selecionar Candidato</label>
+            <input className="field" list="cand-list" value={candSearch} onChange={e=>setCandSearch(e.target.value)} placeholder="Digite nome ou CPF..." style={{fontSize:13}}/>
+            <datalist id="cand-list">{candidatosList.filter(c=>!candSearch||(c.nome||'').toLowerCase().includes(candSearch.toLowerCase())||(c.cpf||'').includes(candSearch)).slice(0,30).map(c=><option key={c.id} value={c.nome||''} label={`${c.nome} (${c.cpf||'---'})`}>{c.nome}</option>)}</datalist>
+          </div>
+          <button className="btn sm primary" onClick={()=>{
+            const match=candidatosList.find(c=>(c.nome||'').toLowerCase()===candSearch.toLowerCase()||(c.cpf||'')===candSearch.replace(/\D/g,''));
+            if(match)selecionarCandidato(match.id);else toast_('Candidato não encontrado','error');
+          }}>{ICON.search}Carregar</button>
+        </div>}
         <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
           <div style={{textAlign:'center',flexShrink:0}}>
             {form.fotoCandidato?<img src={form.fotoCandidato} style={{width:80,height:80,borderRadius:'50%',objectFit:'cover',border:'3px solid var(--primary)',boxShadow:'0 0 0 4px var(--primary-glow)'}}/>
