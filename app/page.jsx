@@ -1219,10 +1219,17 @@ function Cadastros({mobile,toast_,cw,canDel}){
       for(const item of arr){
         const r=await api('cadastros',{method:'POST',body:JSON.stringify({tipo,...item})});
         if(!r.error)ok++;
+        else console.warn('Import error:',r.error,item);
       }
       toast_(`${ok} registros importados!`);
       load(tipo);
     }catch(e){toast_('Erro ao importar: '+e,'error');}
+  };
+  const downloadTemplate=()=>{
+    const sample={};
+    CAD_FORMS[tipo]?.forEach(c=>{sample[c.k]=c.type==='number'?0:c.opts?c.opts[0]:'exemplo';});
+    const blob=new Blob([JSON.stringify([sample],null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`template_${tipo}.json`;a.click();URL.revokeObjectURL(a.href);
   };
   const tipo=tipos[tab];
 
@@ -1350,7 +1357,8 @@ function Cadastros({mobile,toast_,cw,canDel}){
           {cw&&<>{selected.size>0&&canDel&&<button className="btn sm danger" onClick={()=>setConfirmBulkDel(selected.size)}>{ICON.trash}Excluir {selected.size}</button>}
           <input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
           <input ref={photoRef} type="file" accept="image/*" style={{display:'none'}} onChange={photoCad}/>
-          <button className="btn sm amber-btn" onClick={()=>importRef.current?.click()}>{ICON.up}Importar</button></>}
+          <button className="btn sm amber-btn" onClick={()=>importRef.current?.click()}>{ICON.up}Importar</button>
+          <button className="btn sm ghost" onClick={downloadTemplate}>{ICON.down}Template</button></>}
           {cw&&<button className="btn primary sm" onClick={()=>openForm(null)}>{ICON.plus}Adicionar</button>}
         </div>
       </div>
