@@ -1336,6 +1336,17 @@ function Cadastros({mobile,toast_,cw,canDel}){
   },[sortedData,q,tipo]);
   const pages=Math.ceil(filteredData.length/PER);
   const pagedData=filteredData.slice(page*PER,(page+1)*PER);
+  const [paginaInput,setPaginaInput]=useState('');
+  const goToPage=v=>{const p=Math.max(0,Math.min(pages-1,(parseInt(v)||1)-1));setPage(p);setPaginaInput('');};
+  const paginacao=<div className="fu3" style={{display:'flex',justifyContent:'center',alignItems:'center',gap:6,margin:'8px 0'}}>
+    <button className="btn sm" disabled={page===0} onClick={()=>setPage(0)}>««</button>
+    <button className="btn sm" disabled={page===0} onClick={()=>setPage(p=>p-1)}>‹ Anterior</button>
+    <span style={{fontSize:13,color:'var(--text3)',fontFamily:'var(--mono)',display:'flex',alignItems:'center',gap:4}}>
+      Página <input className="field" style={{width:44,textAlign:'center',padding:'2px 4px',fontSize:12,minHeight:0,height:24,fontFamily:'var(--mono)'}} value={paginaInput} onChange={e=>setPaginaInput(e.target.value.replace(/\D/g,''))} onKeyDown={e=>{if(e.key==='Enter')goToPage(paginaInput);if(e.key==='Escape')setPaginaInput('');}} onBlur={()=>paginaInput&&goToPage(paginaInput)} placeholder={page+1}/> de {pages}
+    </span>
+    <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(p=>p+1)}>Próxima ›</button>
+    <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(pages-1)}>»»</button>
+  </div>;
   return(<div>
     <div className="fu" style={{marginBottom:24}}>
       <h1 style={{fontSize:24,fontWeight:700}}>Cadastros</h1>
@@ -1370,6 +1381,7 @@ function Cadastros({mobile,toast_,cw,canDel}){
           {cw&&<button className="btn primary sm" onClick={()=>openForm(null)}>{ICON.plus}Adicionar</button>}
         </div>
       </div>
+      {pages>1&&paginacao}
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse'}}>
           <thead><tr>
@@ -1403,13 +1415,7 @@ function Cadastros({mobile,toast_,cw,canDel}){
         </table>
       </div>
     </div>
-    {pages>1&&<div className="fu3" style={{display:'flex',justifyContent:'center',alignItems:'center',gap:10,marginTop:16}}>
-      <button className="btn sm" disabled={page===0} onClick={()=>setPage(0)}>««</button>
-      <button className="btn sm" disabled={page===0} onClick={()=>setPage(p=>p-1)}>‹ Anterior</button>
-      <span style={{fontSize:13,color:'var(--text3)',fontFamily:'var(--mono)',margin:'0 4px'}}>Página {page+1} de {pages}</span>
-      <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(p=>p+1)}>Próxima ›</button>
-      <button className="btn sm" disabled={page>=pages-1} onClick={()=>setPage(pages-1)}>»»</button>
-    </div>}
+    {pages>1&&paginacao}
     <ConfirmModal show={confirmDel} title="Excluir Cadastro" msg={`Excluir "${confirmDel?.nome||confirmDel?.processo||confirmDel?.base||confirmDel?.[Object.keys(confirmDel||{})[0]]||'?'}"?`} onConfirm={del} onCancel={()=>setConfirmDel(null)}/>
     <ConfirmModal show={confirmBulkDel} title="Excluir Cadastros" msg={`Excluir ${confirmBulkDel} registro(s) permanentemente?`} onConfirm={bulkDel} onCancel={()=>setConfirmBulkDel(null)}/>
     {showModal&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setShowModal(false)}>
