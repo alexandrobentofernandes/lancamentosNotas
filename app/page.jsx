@@ -1215,19 +1215,21 @@ function Cadastros({mobile,toast_,cw,canDel}){
       const txt=await f.text();
       const arr=JSON.parse(txt);
       if(!Array.isArray(arr))return toast_('Arquivo deve conter uma lista','error');
-      let ok=0;
+      let ok=0,fail=0;
       for(const item of arr){
-        const r=await api('cadastros',{method:'POST',body:JSON.stringify({tipo,...item})});
-        if(!r.error)ok++;
-        else console.warn('Import error:',r.error,item);
+        try{
+          const r=await api('cadastros',{method:'POST',body:JSON.stringify({tipo,...item})});
+          if(!r.error)ok++;else{fail++;console.warn('Import error:',r.error,item);}
+        }catch(e){fail++;console.warn('Import exception:',e,item);}
       }
-      toast_(`${ok} registros importados!`);
+      if(fail)toast_(`${ok} importado(s), ${fail} falha(s). Verifique o console (F12)`,'error');
+      else toast_(`${ok} registros importados!`);
       load(tipo);
     }catch(e){toast_('Erro ao importar: '+e,'error');}
   };
   const downloadTemplate=()=>{
     const sample={};
-    CAD_FORMS[tipo]?.forEach(c=>{sample[c.k]=c.type==='number'?0:c.opts?c.opts[0]:'exemplo';});
+    CAD_FORMS[tipo]?.forEach(c=>{sample[c.k]=c.type==='number'?'0':c.opts?c.opts[0]:'exemplo';});
     const blob=new Blob([JSON.stringify([sample],null,2)],{type:'application/json'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`template_${tipo}.json`;a.click();URL.revokeObjectURL(a.href);
   };
@@ -1300,11 +1302,11 @@ function Cadastros({mobile,toast_,cw,canDel}){
   };
 
   const formatVal=(item,col)=>{
-    if(col.k==='valor')return item.valor?`R$ ${parseFloat(item.valor).toFixed(2)}`:'—';
+    if(col.k==='valor')return item.valor!==undefined&&item.valor!==''?`R$ ${parseFloat(item.valor).toFixed(2)}`:'—';
     if(col.k==='associado')return item.associado==='SIM'||item.associado===true?'SIM':'NÃO';
     if(col.k==='atividades')return Array.isArray(item.atividades)?`${item.atividades.length} atividades`:'—';
     if(col.k==='foto')return item.foto?<img src={item.foto} style={{width:32,height:32,borderRadius:'50%',objectFit:'cover'}}/>:'—';
-    if(col.k==='valorBaremo')return item.valorBaremo?parseFloat(item.valorBaremo).toFixed(2):'—';
+    if(col.k==='valorBaremo')return item.valorBaremo!==undefined&&item.valorBaremo!==''?parseFloat(item.valorBaremo).toFixed(2):'—';
     return item[col.k]||'—';
   };
 
