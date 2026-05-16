@@ -1209,23 +1209,27 @@ function Cadastros({mobile,toast_,cw,canDel}){
   };
   const importRef=useRef(null);
   const photoRef=useRef(null);
+  const [importProg,setImportProg]=useState(null);
   const tipos=Object.keys(CAD_ICON);
   const importCad=async f=>{
     try{
       const txt=await f.text();
       const arr=JSON.parse(txt);
       if(!Array.isArray(arr))return toast_('Arquivo deve conter uma lista','error');
+      const total=arr.length;setImportProg({current:0,total});
       let ok=0,fail=0;
       for(const item of arr){
         try{
           const r=await api('cadastros',{method:'POST',body:JSON.stringify({tipo,...item})});
           if(!r.error)ok++;else{fail++;console.warn('Import error:',r.error,item);}
         }catch(e){fail++;console.warn('Import exception:',e,item);}
+        setImportProg(p=>({...p,current:p.current+1}));
       }
+      setImportProg(null);
       if(fail)toast_(`${ok} importado(s), ${fail} falha(s). Verifique o console (F12)`,'error');
       else toast_(`${ok} registros importados!`);
       load(tipo);
-    }catch(e){toast_('Erro ao importar: '+e,'error');}
+    }catch(e){toast_('Erro ao importar: '+e,'error');setImportProg(null);}
   };
   const downloadTemplate=()=>{
     const sample={};
@@ -1349,6 +1353,10 @@ function Cadastros({mobile,toast_,cw,canDel}){
         <span style={{marginRight:6}}>{CAD_ICON[t]}</span>{t.charAt(0).toUpperCase()+t.slice(1)}
       </button>)}
     </div>
+    {importProg&&<div className="fu2" style={{padding:'12px 16px',background:'var(--surface)',border:'1px solid var(--border)',borderRadius:'var(--r)',marginBottom:16,display:'flex',alignItems:'center',gap:12}}>
+      <div className="progress" style={{flex:1,height:8}}><div className="progress-fill" style={{width:Math.round(importProg.current/importProg.total*100)+'%',background:'linear-gradient(90deg,#5930E2,#9B7FFF)',transition:'width .3s ease'}}/></div>
+      <span style={{fontSize:12,fontWeight:600,color:'var(--text2)',whiteSpace:'nowrap',fontFamily:'var(--mono)'}}>{importProg.current}/{importProg.total}</span>
+    </div>}
     <div className="card fu2" style={{padding:0,overflow:'hidden'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}>
         <p style={{fontSize:13,fontWeight:600,color:'var(--text2)'}}>
