@@ -942,16 +942,10 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
     </div>
     <div className="card fu2" style={{padding:'1.5rem'}}>
       {tab===0&&<div style={{display:'flex',flexDirection:'column',gap:16}}>
-        {!rec&&candidatosList.length>0&&<div style={{display:'flex',gap:12,alignItems:'flex-end',flexWrap:'wrap',padding:'12px 16px',background:'var(--surface2)',borderRadius:'var(--r-sm)'}}>
-          <div style={{flex:1,minWidth:200,position:'relative'}}>
-            <label className="label">Selecionar Candidato</label>
-            <input className="field" list="cand-list" value={candSearch} onChange={e=>setCandSearch(e.target.value)} placeholder="Digite nome ou CPF..." style={{fontSize:13}}/>
-            <datalist id="cand-list">{candidatosList.filter(c=>!candSearch||(c.nome||'').toLowerCase().includes(candSearch.toLowerCase())||(c.cpf||'').includes(candSearch)).slice(0,30).map(c=><option key={c.id} value={c.nome||''} label={`${c.nome} (${c.cpf||'---'})`}>{c.nome}</option>)}</datalist>
-          </div>
-          <button className="btn sm primary" onClick={()=>{
-            const match=candidatosList.find(c=>(c.nome||'').toLowerCase()===candSearch.toLowerCase()||(c.cpf||'')===candSearch.replace(/\D/g,''));
-            if(match)selecionarCandidato(match.id);else toast_('Candidato não encontrado','error');
-          }}>{ICON.search}Carregar</button>
+        {!rec&&candidatosList.length>0&&<div style={{padding:'12px 16px',background:'linear-gradient(135deg,rgba(89,48,226,.06),rgba(124,92,255,.04))',borderRadius:'var(--r-sm)',border:'1px solid rgba(89,48,226,.12)',position:'relative'}}>
+          <label className="label" style={{color:'var(--primary)',fontSize:12}}>Buscar Candidato <span style={{fontWeight:400,color:'var(--text3)'}}>(digite nome ou CPF para preencher automaticamente)</span></label>
+          <input className="field" list="cand-list" value={candSearch} onChange={e=>{const v=e.target.value;setCandSearch(v);const match=candidatosList.find(c=>c.nome===v||c.cpf===v.replace(/\D/g,''));if(match)selecionarCandidato(match.id);}} placeholder="Ex: João Silva ou 000.000.000-00" style={{fontSize:13,marginTop:4}}/>
+          <datalist id="cand-list">{candidatosList.filter(c=>!candSearch||(c.nome||'').toLowerCase().includes(candSearch.toLowerCase())||(c.cpf||'').includes(candSearch.replace(/\D/g,''))).slice(0,30).map(c=><option key={c.id} value={c.nome||''} label={`${c.cpf||'---'} · ${c.email||''}`}/>)}</datalist>
         </div>}
         <div style={{display:'flex',gap:20,alignItems:'flex-start',flexWrap:'wrap'}}>
           <div style={{textAlign:'center',flexShrink:0}}>
