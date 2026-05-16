@@ -230,7 +230,7 @@ function Badge({v}){
 
 function Spin({c='#fff'}){return <span style={{width:14,height:14,border:`2px solid ${c}33`,borderTopColor:c,borderRadius:'50%',display:'inline-block',animation:'spin .6s linear infinite'}}/>}
 
-const LABELS={dashboard:'Dashboard','admin-dash':'Meu Painel',records:'Avaliações',form:'Nova Avaliação',cadastros:'Cadastros',reports:'Relatórios',users:'Usuários',clientes:'Clientes',licencas:'Licenças','gestao-licencas':'Gestão Licenças'};
+const LABELS={dashboard:'Dashboard','admin-dash':'Meu Painel',records:'Avaliações',form:'Nova Avaliação',cadastros:'Cadastros',reports:'Relatórios',users:'Usuários',clientes:'Clientes',licencas:'Minhas Licenças','gestao-licencas':'Gestão de Licenças'};
 
 const ICON = {
   home:<svg width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>,
@@ -317,7 +317,7 @@ export default function App(){
       {k:'dashboard',i:'home',l:'Dashboard Comercial'},
       {k:'users',i:'users',l:'Usuários'},
       {k:'clientes',i:'shield',l:'Clientes'},
-      {k:'gestao-licencas',i:'shield',l:'Gestão Lic.'},
+      {k:'gestao-licencas',i:'shield',l:'Gestão de Licenças'},
       {k:'audit',i:'list',l:'Auditoria'},
     ]:user.tipo==='admin_cliente'?[
       {k:'admin-dash',i:'chart',l:'Meu Painel'},
@@ -397,7 +397,7 @@ export default function App(){
         {view==='clientes'&&user.role==='SYSTEM'&&<Clientes user={user} toast_={toast_}/>}
         {view==='licencas'&&user.tipo==='admin_cliente'&&<Licencas user={user} toast_={toast_}/>}
         {view==='audit'&&ia()&&<AuditLog toast_={toast_}/>}
-        {view==='gestao-licencas'&&user.role==='SYSTEM'&&<GestaoLicencas user={user} toast_={toast_}/>}
+        {view==='gestao-licencas'&&user.role==='SYSTEM'&&<GestaoLicencas user={user} mobile={mobile} toast_={toast_}/>}
         </div>
       </main>
       {mobile&&<nav className="bottom-nav">{nav.slice(0,5).map(x=><div key={x.k} className={`bn-item${view===x.k?' active':''}`} onClick={()=>setView(x.k)} style={{position:'relative'}}>
@@ -1851,47 +1851,51 @@ function Licencas({user,toast_}){
   const slotsLivres=(cliente?.slotsTotal||0)-(cliente?.slotsUsados||0);
 
   const solicitar=async()=>{
+    if(!qtdSolicitar||qtdSolicitar<1)return toast_('Informe a quantidade','error');
     const r=await api('licencas',{method:'POST',body:JSON.stringify({quantidade:qtdSolicitar,motivo:motivoSolicitar})});
     if(r.error)return toast_(r.error,'error');
     toast_('Solicitação enviada!');setShowSolicitar(false);setQtdSolicitar(1);setMotivoSolicitar('');load();
   };
 
   return(<div>
-    <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Licenças</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>Gerencie suas licenças e solicitações</p></div>
+    <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Minhas Licenças</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>Gerencie suas licenças e solicitações</p></div>
     <div className="fu1" style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:13,marginBottom:20}}>
-      <div style={{background:'linear-gradient(135deg,#5930E2,#7C5CFF)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(89,48,226,.3)'}}>
+      <div style={{background:'linear-gradient(135deg,#6C3BF5,#8B5CF6)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(108,59,245,.3)'}}>
         <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{cliente?.slotsTotal||0}</div>
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)'}}>Total de Licenças</div>
       </div>
-      <div style={{background:'linear-gradient(135deg,#059669,#2EAA5C)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)'}}>
+      <div style={{background:'linear-gradient(135deg,#059669,#34D399)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)'}}>
         <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{cliente?.slotsUsados||0}</div>
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)'}}>Em Uso</div>
       </div>
-      <div style={{background:slotsLivres<=3?'linear-gradient(135deg,#D97706,#F59E0B)':'linear-gradient(135deg,#059669,#2EAA5C)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(217,119,6,.3)'}}>
+      <div style={{background:slotsLivres<=3?'linear-gradient(135deg,#F59E0B,#FBBF24)':'linear-gradient(135deg,#059669,#34D399)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(245,158,11,.3)'}}>
         <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{slotsLivres}</div>
         <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)'}}>Disponíveis</div>
       </div>
     </div>
-    <div style={{display:'flex',justifyContent:'flex-end',marginBottom:16}}>
-      <button className="btn primary" onClick={()=>setShowSolicitar(true)}>{ICON.plus}Solicitar Licenças</button>
+    <div className="fu2" style={{display:'flex',justifyContent:'flex-end',marginBottom:16,gap:8}}>
+      <button className="btn primary" onClick={()=>setShowSolicitar(true)} disabled={slotsLivres>=cliente?.slotsTotal}>{ICON.plus}Solicitar Mais Licenças</button>
     </div>
-    <div className="card fu2" style={{padding:0,overflow:'hidden'}}>
+    <div className="card fu3" style={{padding:0,overflow:'hidden'}}>
       <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0}}>Histórico de Solicitações</p></div>
-      {loading?<div style={{padding:'1rem'}}><Skeleton h={14} w="100%" r="4" m="0 0 8px 0"/><Skeleton h={14} w="80%" r="4" m="0"/></div>:requests.map((r,i)=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 1.25rem',borderBottom:i<requests.length-1?'1px solid var(--border)':'none'}}>
+      {loading?<div style={{padding:'1rem'}}><Skeleton h={14} w="100%" r="4" m="0 0 8px 0"/><Skeleton h={14} w="80%" r="4" m="0"/></div>:requests.length?requests.map((r,i)=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 1.25rem',borderBottom:i<requests.length-1?'1px solid var(--border)':'none'}}>
         <div><p style={{fontSize:14,fontWeight:600}}>+{r.quantidade} licenças</p><p style={{fontSize:12,color:'var(--text3)'}}>{new Date(r.createdAt).toLocaleDateString('pt-BR')} · {r.motivo||'—'}</p></div>
         <span className={`badge dot ${r.status==='APROVADO'?'green':r.status==='NEGADO'?'red':'amber'}`}>{r.status}</span>
-      </div>)}
+      </div>):<div style={{padding:'1.5rem',textAlign:'center',color:'var(--text3)',fontSize:13}}>Nenhuma solicitação ainda.</div>}
     </div>
     {showSolicitar&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setShowSolicitar(false)}>
-      <div className="modal" style={{maxWidth:420}}>
-        <div className="modal-hd"><h3 style={{fontSize:16,fontWeight:700}}>Solicitar Licenças</h3><button className="btn ghost icon" onClick={()=>setShowSolicitar(false)}>{ICON.x}</button></div>
+      <div className="modal" style={{maxWidth:440}}>
+        <div className="modal-hd"><h3 style={{fontSize:16,fontWeight:700}}>Solicitar Mais Licenças</h3><button className="btn ghost icon" onClick={()=>setShowSolicitar(false)}>{ICON.x}</button></div>
         <div className="modal-bd">
-          <p style={{fontSize:13,color:'var(--text2)',marginBottom:8}}>Slots disponíveis: <strong>{slotsLivres}</strong> de <strong>{cliente?.slotsTotal||0}</strong></p>
-          <div><label className="label">Quantidade</label><input className="field" type="number" min="1" value={qtdSolicitar} onChange={e=>setQtdSolicitar(Math.max(1,parseInt(e.target.value)||1))}/></div>
-          <div><label className="label">Motivo</label><textarea className="field" rows={3} value={motivoSolicitar} onChange={e=>setMotivoSolicitar(e.target.value)} placeholder="Descreva o motivo..." style={{resize:'vertical'}}/></div>
-          <div style={{display:'flex',gap:8,justifyContent:'flex-end'}}>
+          <p style={{fontSize:13,color:'var(--text2)',marginBottom:4}}>Situação atual: <strong>{slotsLivres}</strong> slots disponíveis de <strong>{cliente?.slotsTotal||0}</strong> contratados · <strong>{cliente?.slotsUsados||0}</strong> em uso.</p>
+          <div style={{height:6,background:'var(--surface2)',borderRadius:10,marginBottom:12,overflow:'hidden'}}>
+            <div style={{height:'100%',width:cliente?.slotsTotal?Math.min(100,(cliente?.slotsUsados||0)/cliente?.slotsTotal*100)+'%':'0%',background:'linear-gradient(90deg,#6C3BF5,#8B5CF6)',borderRadius:10,transition:'width .5s'}}/>
+          </div>
+          <div><label className="label">Quantidade desejada *</label><input className="field" type="number" min="1" value={qtdSolicitar} onChange={e=>setQtdSolicitar(Math.max(1,parseInt(e.target.value)||1))}/></div>
+          <div><label className="label">Motivo da solicitação *</label><textarea className="field" rows={3} value={motivoSolicitar} onChange={e=>setMotivoSolicitar(e.target.value)} placeholder="Descreva o motivo..." style={{resize:'vertical'}}/></div>
+          <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:4}}>
             <button className="btn" onClick={()=>setShowSolicitar(false)}>Cancelar</button>
-            <button className="btn primary" onClick={solicitar}>{ICON.save}Enviar</button>
+            <button className="btn primary" onClick={solicitar}>{ICON.save}Enviar Solicitação</button>
           </div>
         </div>
       </div>
@@ -1901,8 +1905,11 @@ function Licencas({user,toast_}){
 
 function GestaoLicencas({user,toast_}){
   const [requests,setRequests]=useState([]);const [loading,setLoading]=useState(true);
+  const [clientes,setClientes]=useState([]);
   const [actionId,setActionId]=useState(null);
-  const load=()=>{setLoading(true);api('licencas').then(r=>{if(Array.isArray(r))setRequests(r);setLoading(false);});};
+  const [editarQtd,setEditarQtd]=useState(null);
+  const [novaQtd,setNovaQtd]=useState(1);
+  const load=()=>{setLoading(true);Promise.all([api('licencas'),api('clientes')]).then(([r,c])=>{if(Array.isArray(r))setRequests(r);if(Array.isArray(c))setClientes(c);setLoading(false);});};
   useEffect(()=>{load();},[]);
   const aprovar=async id=>{
     setActionId(id);
@@ -1910,6 +1917,14 @@ function GestaoLicencas({user,toast_}){
     setActionId(null);
     if(r.error)return toast_(r.error,'error');
     toast_('Solicitação aprovada!');load();
+  };
+  const aprovarComQtd=async()=>{
+    if(!editarQtd||novaQtd<1)return;
+    setActionId('edit');
+    const r=await api('licencas',{method:'PUT',body:JSON.stringify({id:editarQtd.id,status:'APROVADO',quantidade:novaQtd,observacao:`Aprovado por ${user.nome} (qtd ajustada: ${novaQtd})`})});
+    setActionId(null);setEditarQtd(null);
+    if(r.error)return toast_(r.error,'error');
+    toast_(`Aprovado com ${novaQtd} licenças!`);load();
   };
   const negar=async id=>{
     const obs=prompt('Motivo da recusa:');
@@ -1923,39 +1938,92 @@ function GestaoLicencas({user,toast_}){
   if(loading)return <div className="fu"><Skeleton h={14} w="200px" m="0 0 12px 0"/>{[1,2,3].map(i=><Skeleton key={i} h={50} w="100%" r="8" m="0 0 8px 0"/>)}</div>;
   const pendentes=requests.filter(r=>r.status==='PENDENTE');
   const historico=requests.filter(r=>r.status!=='PENDENTE');
+  const slotsTotal=clientes.reduce((s,c)=>s+(c.slotsTotal||0),0);
+  const slotsUsados=clientes.reduce((s,c)=>s+(c.slotsUsados||0),0);
   return(<div>
-    <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Gestão de Licenças</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:4}}>{pendentes.length} solicitações pendentes</p></div>
-    {pendentes.length>0&&<div className="card fu1" style={{padding:0,overflow:'hidden',marginBottom:20}}>
-      <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0,color:'var(--warning)'}}>Pendentes</p></div>
-      {pendentes.map(r=><div key={r.id} style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:12}}>
-          <div style={{flex:1}}>
-            <p style={{fontSize:14,fontWeight:600}}>{r.clienteNome||'—'}</p>
-            <p style={{fontSize:13,color:'var(--text2)',marginTop:4}}>
-              <strong>+{r.quantidade}</strong> licenças solicitadas
-              {r.motivo?` · Motivo: ${r.motivo}`:''}
-            </p>
-            <p style={{fontSize:11.5,color:'var(--text3)',marginTop:4}}>
-              Solicitante: {r.solicitadoPor||'—'} ({r.solicitadoPorEmail||'—'}) · {new Date(r.createdAt).toLocaleString('pt-BR')}
-            </p>
+    <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Gestão de Licenças</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>{clientes.length} clientes · {slotsTotal} slots contratados · {pendentes.length} pendentes</p></div>
+    <div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
+      <div style={{background:'linear-gradient(135deg,#6C3BF5,#8B5CF6)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(108,59,245,.3)',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.08)',borderRadius:'50%'}}/>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{clientes.length}</div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:3,fontWeight:500}}>Clientes</div>
+      </div>
+      <div style={{background:'linear-gradient(135deg,#059669,#34D399)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.08)',borderRadius:'50%'}}/>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{slotsTotal}</div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:3,fontWeight:500}}>Slots Contratados</div>
+      </div>
+      <div style={{background:'linear-gradient(135deg,#7C3AED,#A78BFA)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(124,58,237,.3)',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.08)',borderRadius:'50%'}}/>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{slotsUsados}<span style={{fontSize:16}}>/{slotsTotal}</span></div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:3,fontWeight:500}}>Slots Consumidos</div>
+        {slotsTotal>0&&<div className="progress" style={{marginTop:6,height:4,background:'rgba(255,255,255,.15)'}}><div className="progress-fill" style={{width:Math.round(slotsUsados/slotsTotal*100)+'%',background:'rgba(255,255,255,.5)'}}/></div>}
+      </div>
+      <div style={{background:'linear-gradient(135deg,#F59E0B,#FBBF24)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(245,158,11,.3)',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.08)',borderRadius:'50%'}}/>
+        <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{pendentes.length}</div>
+        <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:3,fontWeight:500}}>Solicitações Pendentes</div>
+      </div>
+    </div>
+    <div className="fu2" style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:16,marginBottom:20}}>
+      <div className="card" style={{padding:0,overflow:'hidden'}}>
+        <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0}}>Clientes · Slots</p></div>
+        <div style={{overflowX:'auto'}}>
+          <table style={{width:'100%',borderCollapse:'collapse'}}>
+            <thead><tr><th className="th">Cliente</th><th className="th" style={{textAlign:'center'}}>Slots</th><th className="th" style={{textAlign:'center'}}>Usados</th><th className="th" style={{textAlign:'center'}}>Disponíveis</th><th className="th" style={{textAlign:'right'}}>Receita</th></tr></thead>
+            <tbody>{clientes.map(c=><tr key={c.id}>
+              <td className="td" style={{fontWeight:600}}>{c.nome}</td>
+              <td className="td" style={{textAlign:'center',fontWeight:700}}>{c.slotsTotal||0}</td>
+              <td className="td" style={{textAlign:'center'}}>
+                <span style={{color:c.slotsUsados>=(c.slotsTotal||1)*0.9?'var(--danger)':'var(--text2)',fontWeight:600}}>{c.slotsUsados||0}</span>
+                {c.slotsTotal>0&&<div className="progress" style={{marginTop:3,height:4,maxWidth:60,marginLeft:'auto',marginRight:'auto'}}><div className="progress-fill" style={{width:Math.min(100,((c.slotsUsados||0)/(c.slotsTotal||1)*100))+'%',background:'linear-gradient(90deg,#6C3BF5,#A78BFA)'}}/></div>}
+              </td>
+              <td className="td" style={{textAlign:'center',fontWeight:600,color:(c.slotsTotal||0)-(c.slotsUsados||0)<=3?'var(--warning)':'var(--success)'}}>{(c.slotsTotal||0)-(c.slotsUsados||0)}</td>
+              <td className="td" style={{textAlign:'right',fontWeight:700,color:'var(--success)'}}>R$ {((c.slotsTotal||0)*(c.valorSlot||0)).toFixed(2)}</td>
+            </tr>)}</tbody>
+          </table>
+        </div>
+      </div>
+      <div className="card" style={{padding:0,overflow:'hidden'}}>
+        <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <p className="sec-h" style={{marginBottom:0}}>Solicitações Pendentes</p>
+          <span className="badge amber">{pendentes.length}</span>
+        </div>
+        {pendentes.length?pendentes.map(r=><div key={r.id} style={{padding:'12px 1.25rem',borderBottom:'1px solid var(--border)'}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:8}}>
+            <div style={{flex:1,minWidth:180}}>
+              <p style={{fontSize:13.5,fontWeight:600}}>{r.clienteNome||'—'}</p>
+              <p style={{fontSize:12.5,color:'var(--text2)',marginTop:2}}><strong>+{r.quantidade}</strong> licenças{r.motivo?` · ${r.motivo}`:''}</p>
+              <p style={{fontSize:11,color:'var(--text3)',marginTop:2}}>{r.solicitadoPor||'—'} · {new Date(r.createdAt).toLocaleDateString('pt-BR')}</p>
+            </div>
+            <div style={{display:'flex',gap:4,flexShrink:0,alignItems:'center'}}>
+              <button className="btn sm ghost" style={{fontSize:11}} onClick={()=>{setEditarQtd(r);setNovaQtd(parseInt(r.quantidade)||1);}} disabled={actionId!==null}>{ICON.edit}{r.quantidade}</button>
+              <button className="btn success sm" onClick={()=>aprovar(r.id)} disabled={actionId!==null}>{actionId===r.id?<Spin c="#fff"/>:ICON.check}Aprovar</button>
+              <button className="btn danger sm" onClick={()=>negar(r.id)} disabled={actionId!==null}>{ICON.x}</button>
+            </div>
           </div>
-          <div style={{display:'flex',gap:6,flexShrink:0}}>
-            <button className="btn success sm" onClick={()=>aprovar(r.id)} disabled={actionId===r.id}>
-              {actionId===r.id?<Spin/>:ICON.check}Aprovar
-            </button>
-            <button className="btn danger sm" onClick={()=>negar(r.id)} disabled={actionId===r.id}>
-              {ICON.x}Negar
-            </button>
+        </div>):<div style={{padding:'2rem',textAlign:'center',color:'var(--text3)',fontSize:13}}>Nenhuma solicitação pendente.</div>}
+      </div>
+    </div>
+    {editarQtd&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setEditarQtd(null)}>
+      <div className="modal" style={{maxWidth:380}}>
+        <div className="modal-hd"><h3 style={{fontSize:16,fontWeight:700}}>Aprovar com Ajuste</h3><button className="btn ghost icon" onClick={()=>setEditarQtd(null)}>{ICON.x}</button></div>
+        <div className="modal-bd">
+          <p style={{fontSize:13,color:'var(--text2)'}}>Cliente: <strong>{editarQtd.clienteNome}</strong> solicitou <strong>{editarQtd.quantidade}</strong> licenças.</p>
+          <div><label className="label">Aprovar quantidade</label><input className="field" type="number" min="1" value={novaQtd} onChange={e=>setNovaQtd(Math.max(1,parseInt(e.target.value)||1))}/></div>
+          <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:4}}>
+            <button className="btn" onClick={()=>setEditarQtd(null)}>Cancelar</button>
+            <button className="btn primary" onClick={aprovarComQtd} disabled={actionId!==null}>{actionId==='edit'?<Spin/>:ICON.check}Aprovar {novaQtd} licenças</button>
           </div>
         </div>
-      </div>)}
+      </div>
     </div>}
-    {historico.length>0&&<div className="card fu2" style={{padding:0,overflow:'hidden'}}>
-      <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0}}>Histórico</p></div>
-      {historico.slice(0,20).map(r=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 1.25rem',borderBottom:'1px solid var(--border)'}}>
+    {historico.length>0&&<div className="card fu3" style={{padding:0,overflow:'hidden'}}>
+      <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)'}}><p className="sec-h" style={{marginBottom:0}}>Histórico Completo</p></div>
+      {historico.slice(0,30).map(r=><div key={r.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 1.25rem',borderBottom:'1px solid var(--border)'}}>
         <div style={{flex:1}}>
-          <p style={{fontSize:13.5,fontWeight:600}}>{r.clienteNome||'—'} · +{r.quantidade} licenças</p>
-          <p style={{fontSize:12,color:'var(--text3)'}}>{new Date(r.createdAt).toLocaleDateString('pt-BR')} · {r.observacao||r.analisadoPor||''}</p>
+          <p style={{fontSize:13,fontWeight:600}}>{r.clienteNome||'—'} · +{r.quantidade} licenças</p>
+          <p style={{fontSize:11.5,color:'var(--text3)'}}>{new Date(r.createdAt).toLocaleDateString('pt-BR')} · {r.observacao||r.analisadoPor||''}</p>
         </div>
         <span className={`badge dot ${r.status==='APROVADO'?'green':r.status==='NEGADO'?'red':'amber'}`}>{r.status}</span>
       </div>)}

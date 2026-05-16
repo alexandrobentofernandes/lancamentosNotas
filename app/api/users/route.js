@@ -15,13 +15,11 @@ export async function GET(req) {
     users = users.filter(u => u.clienteId === user.clienteId);
   }
 
-  // SYSTEM vê todos, mas vamos retornar o nome do cliente junto
-  if (user.role === 'SYSTEM') {
-    const clientes = await getClientes();
-    const mapCli = {};
-    clientes.forEach(c => { mapCli[c.id] = c.nome; });
-    users = users.map(u => ({ ...u, clienteNome: mapCli[u.clienteId] || '' }));
-  }
+  // Incluir nome do cliente para todos
+  const clientes = await getClientes();
+  const mapCli = {};
+  clientes.forEach(c => { mapCli[c.id] = c.nome; });
+  users = users.map(u => ({ ...u, clienteNome: mapCli[u.clienteId] || '' }));
 
   return NextResponse.json(users);
 }
