@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAuth, canWrite } from '../../../lib/auth';
-import { getAllRecords, createRecord, bulkImportRecords } from '../../../lib/db';
+import { getAllRecords, createRecord, bulkImportRecords, getRecord } from '../../../lib/db';
 import { applyBusinessRules } from '../../../lib/business';
 import { addAudit } from '../../../lib/db';
 
@@ -41,6 +41,11 @@ export async function POST(req) {
 
   // Single record
   const data = applyBusinessRules(body);
+  if (data.nomes && data.cpf) {
+    const all = await getAllRecords({});
+    const dup = all.find(r => r.nomes===data.nomes && r.cpf===data.cpf);
+    if (dup) return NextResponse.json({ error: `Avaliação duplicada: "${data.nomes}" já existe (CPF: ${data.cpf})` }, { status: 409 });
+  }
   data.createdBy = user.nome;
   if (user.clienteId) data.clienteId = user.clienteId;
   const record = await createRecord(data);

@@ -4,6 +4,17 @@ import { getCadastros, createCadastro, updateCadastro, deleteCadastro, getCadast
 
 const TIPOS_VALIDOS = ['pedidos','empresas','processos','bases','avaliadores','motivos','candidatos'];
 
+async function checkDuplicata(tipo, data, ignoreId) {
+  const itens = await getCadastros(tipo);
+  return itens.some(item => {
+    if (ignoreId && item.id === ignoreId) return false;
+    if (tipo === 'candidatos') return (item.nome||'')===(data.nome||'') && (item.cpf||'')===(data.cpf||'');
+    if (tipo === 'processos') return (item.processo||'')===(data.processo||'') && (item.atividade||'')===(data.atividade||'');
+    if (tipo === 'bases') return (item.base||'')===(data.base||'');
+    return (item.nome||'')===(data.nome||'');
+  });
+}
+
 export async function GET(req) {
   const user = requireAuth(req);
   if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
@@ -52,6 +63,9 @@ export async function POST(req) {
   if (!tipo || !TIPOS_VALIDOS.includes(tipo))
     return NextResponse.json({ error: 'Tipo inválido' }, { status: 400 });
 
+  if (await checkDuplicata(tipo, data))
+    return NextResponse.json({ error: 'Já existe um registro com os mesmos dados' }, { status: 409 });
+
   const item = await createCadastro(tipo, { ...data, createdBy: user.nome });
   await addAudit(user.username, 'CADASTRO_CREATE', item.id, `${tipo}: ${data.nome || data[Object.keys(data)[0]]}`);
   return NextResponse.json(item, { status: 201 });
@@ -62,11 +76,16 @@ export async function PUT(req) {
   if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
   if (!canWrite(user)) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 });
 
-  const { id, ...data } = await req.json();
+  const { id, tipo:updTipo, ...data } = await req.json();
   if (!id) return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
 
+  const existing = await getCadastro(id);
+  if (!existing) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
+
+  if (await checkDuplicata(existing.tipo, data, id))
+    return NextResponse.json({ error: 'Já existe outro registro com os mesmos dados' }, { status: 409 });
+
   const updated = await updateCadastro(id, { ...data, updatedBy: user.nome });
-  if (!updated) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
   await addAudit(user.username, 'CADASTRO_UPDATE', id, `${updated.tipo}: ${data.nome || data[Object.keys(data)[0]] || id}`);
   return NextResponse.json(updated);
 }

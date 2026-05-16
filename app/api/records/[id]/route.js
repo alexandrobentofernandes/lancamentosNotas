@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAuth, canWrite } from '../../../../lib/auth';
-import { getRecord, updateRecord, deleteRecord, addAudit } from '../../../../lib/db';
+import { getRecord, updateRecord, deleteRecord, addAudit, getAllRecords } from '../../../../lib/db';
 import { applyBusinessRules } from '../../../../lib/business';
 
 export async function GET(req, { params }) {
@@ -17,6 +17,11 @@ export async function PUT(req, { params }) {
   if (!canWrite(user)) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 });
   const body = await req.json();
   const data = applyBusinessRules(body);
+  if (data.nomes && data.cpf) {
+    const all = await getAllRecords({});
+    const dup = all.find(r => r.nomes===data.nomes && r.cpf===data.cpf && r.id!==params.id);
+    if (dup) return NextResponse.json({ error: `Avaliação duplicada: "${data.nomes}" já existe (CPF: ${data.cpf})` }, { status: 409 });
+  }
   data.updatedBy = user.nome;
   if (user.clienteId) data.clienteId = user.clienteId;
   const record = await updateRecord(params.id, data);
