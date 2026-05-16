@@ -1229,7 +1229,7 @@ function Users({user,toast_}){
             <td className="td" style={{fontWeight:600}}>{u.nome}</td>
             <td className="td" style={{fontFamily:'var(--mono)',fontSize:12.5,color:'var(--text2)'}}>{u.username}</td>
             <td className="td"><span className="badge" style={{background:ROLES[u.role]?.bg,color:ROLES[u.role]?.color}}>{ROLES[u.role]?.label}</span></td>
-            <td className="td" style={{fontSize:13,color:'var(--text2)'}}>{u.clienteNome||u.clienteId?'—':'—'}</td>
+            <td className="td" style={{fontSize:13,color:'var(--text2)'}}>{u.clienteNome||'—'}</td>
             <td className="td"><span className={`badge dot ${u.active?'green':'gray'}`}>{u.active?'Ativo':'Inativo'}</span></td>
             <td className="td" style={{textAlign:'right'}}>
               <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
