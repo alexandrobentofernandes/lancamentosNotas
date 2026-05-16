@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { requireAuth, PERMISSOES } from '../../../lib/auth';
-import { getAllUsers, createUser, updateUser, getCliente, recalcularSlots, addAudit } from '../../../lib/db';
+import { getAllUsers, createUser, updateUser, deleteUser, getCliente, getClientes, recalcularSlots, addAudit } from '../../../lib/db';
 
 export async function GET(req) {
   const user = requireAuth(req);
@@ -17,7 +17,7 @@ export async function GET(req) {
 
   // SYSTEM vê todos, mas vamos retornar o nome do cliente junto
   if (user.role === 'SYSTEM') {
-    const clientes = await (await import('../../../lib/db')).getClientes();
+    const clientes = await getClientes();
     const mapCli = {};
     clientes.forEach(c => { mapCli[c.id] = c.nome; });
     users = users.map(u => ({ ...u, clienteNome: mapCli[u.clienteId] || '' }));
@@ -108,4 +108,20 @@ export async function PUT(req) {
 
   await addAudit(user.username, 'USER_UPDATE', id, updated.nome);
   return NextResponse.json(updated);
+}
+
+export async function DELETE(req) {
+  const user = requireAuth(req);
+  if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+  if (user.role !== 'SYSTEM') return NextResponse.json({ error: 'Apenas SYSTEM pode excluir' }, { status: 403 });
+
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get('id');
+  if (!id) return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
+
+  const removed = await deleteUser(id);
+  if (!removed) return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 });
+
+  await addAudit(user.username, 'USER_DELETE', id, removed.nome);
+  return NextResponse.json({ ok: true });
 }

@@ -1177,15 +1177,31 @@ function Reports({mobile}){
 }
 
 function Users({user,toast_}){
-  const [users,setUsers]=useState([]);const [loading,setLoading]=useState(true);const [show,setShow]=useState(false);const [editU,setEditU]=useState(null);
-  const [form,setForm]=useState({username:'',password:'',nome:'',role:'COLABORADOR',permissions:'Somente Leitura'});const [err,setErr]=useState('');const [saving,setSaving]=useState(false);
-  useEffect(()=>{api('users').then(r=>{if(Array.isArray(r))setUsers(r);setLoading(false);});},[]);
-  const open=u=>{setForm(u?{...u,password:''}:{username:'',password:'',nome:'',role:'COLABORADOR',permissions:'Somente Leitura'});setEditU(u||null);setErr('');setShow(true);};
+  const [users,setUsers]=useState([]);const [loading,setLoading]=useState(true);
+  const [show,setShow]=useState(false);const [editU,setEditU]=useState(null);
+  const [form,setForm]=useState({username:'',password:'',nome:'',role:'COLABORADOR',tipo:'colaborador',permissions:'Leitura + Escrita'});
+  const [clientesList,setClientesList]=useState([]);
+  const [err,setErr]=useState('');const [saving,setSaving]=useState(false);
+  const [confirmDel,setConfirmDel]=useState(null);
+  const slotsInfo=form.clienteId?clientesList.find(c=>c.id===form.clienteId):null;
+  const slotsRestantes=slotsInfo?(slotsInfo.slotsTotal||0)-(slotsInfo.slotsUsados||0):0;
+  useEffect(()=>{Promise.all([api('users'),(user.role==='SYSTEM'?api('clientes'):Promise.resolve([]))]).then(([u,c])=>{if(Array.isArray(u))setUsers(u);if(Array.isArray(c))setClientesList(c);setLoading(false);});},[]);
+  const open=u=>{
+    if(u){setForm({...u,password:''});setEditU(u);}
+    else{
+      const base=user.tipo==='admin_cliente'?{role:'COLABORADOR',tipo:'colaborador',clienteId:user.clienteId}:{role:'admin_cliente',tipo:'admin_cliente'};
+      setForm({username:'',password:'',nome:'',permissions:'Leitura + Escrita',...base});
+      setEditU(null);
+    }
+    setErr('');setShow(true);
+  };
   const save=async()=>{
     if(!form.username||!form.nome)return setErr('Usuário e nome obrigatórios');
     if(!editU&&!form.password)return setErr('Senha obrigatória');
     setSaving(true);
-    const r=await api('users',{method:editU?'PUT':'POST',body:JSON.stringify(editU?{id:editU.id,...form}:form)});
+    const payload={...form};
+    if(user.role==='SYSTEM'&&form.role==='admin_cliente'){payload.tipo='admin_cliente';payload.role='ADMIN';}
+    const r=await api('users',{method:editU?'PUT':'POST',body:JSON.stringify(editU?{id:editU.id,...payload}:payload)});
     setSaving(false);
     if(r.error)return setErr(r.error);
     toast_(editU?'Usuário atualizado!':'Usuário criado!');
@@ -1193,6 +1209,12 @@ function Users({user,toast_}){
     if(!editU)window.location.reload();
   };
   const toggle=async u=>{await api('users',{method:'PUT',body:JSON.stringify({id:u.id,active:!u.active})});setUsers(us=>us.map(x=>x.id===u.id?{...x,active:!x.active}:x));};
+  const del=async()=>{
+    if(!confirmDel)return;
+    const r=await api('users?id='+confirmDel.id,{method:'DELETE'});
+    if(r.error)return toast_(r.error,'error');
+    toast_('Usuário excluído');setConfirmDel(null);setUsers(us=>us.filter(x=>x.id!==confirmDel.id));
+  };
   return(<div>
     <div className="fu" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:24}}>
       <div><h1 style={{fontSize:24,fontWeight:700}}>Usuários</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>{users.length} usuários cadastrados</p></div>
@@ -1201,24 +1223,26 @@ function Users({user,toast_}){
     <div className="card fu1" style={{padding:0,overflow:'hidden',marginTop:6}}>
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:600}}>
-          <thead><tr><th className="th" style={{width:48}}></th><th className="th">Nome</th><th className="th">Usuário</th><th className="th">Perfil</th><th className="th">Permissão</th><th className="th">Status</th><th className="th" style={{textAlign:'right'}}>Ações</th></tr></thead>
+          <thead><tr><th className="th" style={{width:48}}></th><th className="th">Nome</th><th className="th">Usuário</th><th className="th">Perfil</th><th className="th">Empresa</th><th className="th">Status</th><th className="th" style={{textAlign:'right'}}>Ações</th></tr></thead>
           <tbody>{loading?[1,2,3].map(i=><tr key={i}>{[0,1,2,3,4,5,6].map(j=><td key={j} className="td"><Skeleton h={14} w={j===0?'32px':j===6?'80px':'120px'} r="4" m="0"/></td>)}</tr>):users.length?users.map(u=><tr key={u.id}>
             <td className="td"><Avatar name={u.nome} size={32}/></td>
             <td className="td" style={{fontWeight:600}}>{u.nome}</td>
             <td className="td" style={{fontFamily:'var(--mono)',fontSize:12.5,color:'var(--text2)'}}>{u.username}</td>
             <td className="td"><span className="badge" style={{background:ROLES[u.role]?.bg,color:ROLES[u.role]?.color}}>{ROLES[u.role]?.label}</span></td>
-            <td className="td" style={{fontSize:13,color:'var(--text3)'}}>{u.role==='COLABORADOR'?u.permissions:'— Total —'}</td>
+            <td className="td" style={{fontSize:13,color:'var(--text2)'}}>{u.clienteNome||u.clienteId?'—':'—'}</td>
             <td className="td"><span className={`badge dot ${u.active?'green':'gray'}`}>{u.active?'Ativo':'Inativo'}</span></td>
             <td className="td" style={{textAlign:'right'}}>
               <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
                 <button className="btn sm icon" onClick={()=>open(u)}>{ICON.edit}</button>
                 {u.id!==user.id&&u.role!=='SYSTEM'&&<button className={`btn sm ${u.active?'danger':'success'}`} style={{fontSize:12,padding:'4px 10px'}} onClick={()=>toggle(u)}>{u.active?'Inativar':'Ativar'}</button>}
+                {user.role==='SYSTEM'&&u.role!=='SYSTEM'&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(u)}>{ICON.trash}</button>}
               </div>
             </td>
           </tr>):<tr><td colSpan={7} style={{textAlign:'center',padding:'3rem',color:'var(--text3)'}}><EmptyState title="Nenhum usuário" desc="Nenhum usuário cadastrado ainda."/></td></tr>}</tbody>
         </table>
       </div>
     </div>
+    <ConfirmModal show={confirmDel} title="Excluir Usuário" msg={`Excluir "${confirmDel?.nome}" permanentemente?`} onConfirm={del} onCancel={()=>setConfirmDel(null)}/>
     {show&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setShow(false)}>
       <div className="modal">
         <div className="modal-hd">
@@ -1229,14 +1253,23 @@ function Users({user,toast_}){
           <div><label className="label">Nome Completo *</label><input className="field" value={form.nome||''} onChange={e=>setForm(f=>({...f,nome:e.target.value}))} placeholder="Nome completo"/></div>
           <div><label className="label">Usuário (login) *</label><input className="field" value={form.username||''} onChange={e=>setForm(f=>({...f,username:e.target.value}))} placeholder="nome.sobrenome"/></div>
           <div><label className="label">Senha {editU&&<span style={{fontSize:11,color:'var(--text3)',fontWeight:400}}>(em branco = manter)</span>}</label><input className="field" type="password" value={form.password||''} onChange={e=>setForm(f=>({...f,password:e.target.value}))} placeholder="••••••••"/></div>
-          <div><label className="label">Perfil</label>
-            <select className="field" value={form.role||'COLABORADOR'} onChange={e=>setForm(f=>({...f,role:e.target.value}))} disabled={editU?.role==='SYSTEM'}>
-              {user.role==='SYSTEM'&&<option value="SYSTEM">SYSTEM (Master)</option>}
-              <option value="ADMIN">Administrador</option><option value="COLABORADOR">Colaborador</option>
+          {user.role==='SYSTEM'&&!editU&&<div><label className="label">Tipo de Usuário</label>
+            <select className="field" value={form.role||'admin_cliente'} onChange={e=>setForm(f=>({...f,role:e.target.value,clienteId:e.target.value==='admin_cliente'?f.clienteId:''}))}>
+              <option value="admin_cliente">Administrador (vinculado a empresa)</option>
             </select>
-          </div>
+          </div>}
+          {user.tipo==='admin_cliente'&&<div style={{padding:'8px 10px',background:'var(--info-bg)',borderRadius:'var(--r-sm)',fontSize:12,color:'var(--text2)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+            <span>Empresa: <strong>{clientesList.find(c=>c.id===user.clienteId)?.nome||'—'}</strong></span>
+            <span>Slots: <strong>{slotsRestantes}</strong> disponíveis</span>
+          </div>}
+          {user.role==='SYSTEM'&&form.role==='admin_cliente'&&<div><label className="label">Vincular à Empresa *</label>
+            <select className="field" value={form.clienteId||''} onChange={e=>setForm(f=>({...f,clienteId:e.target.value}))}>
+              <option value="">Selecionar empresa...</option>
+              {clientesList.map(c=><option key={c.id} value={c.id}>{c.nome} · Slots: {c.slotsUsados||0}/{c.slotsTotal||0}</option>)}
+            </select>
+          </div>}
           {form.role==='COLABORADOR'&&<div><label className="label">Permissão</label>
-            <select className="field" value={form.permissions||'Somente Leitura'} onChange={e=>setForm(f=>({...f,permissions:e.target.value}))}>
+            <select className="field" value={form.permissions||'Leitura + Escrita'} onChange={e=>setForm(f=>({...f,permissions:e.target.value}))}>
               <option value="Somente Leitura">Somente Leitura</option><option value="Leitura + Escrita">Leitura + Escrita</option>
             </select>
           </div>}
