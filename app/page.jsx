@@ -613,6 +613,9 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
   const [confirmDel,setConfirmDel]=useState(null);
   const   [sortKey,setSortKey]=useState(null);const [sortDir,setSortDir]=useState('asc');
   const [selected,setSelected]=useState(new Set());
+  const [basesOpts,setBasesOpts]=useState(BASES);
+  useEffect(()=>{api('cadastros?tipo=bases').then(r=>{if(Array.isArray(r)&&r.length)setBasesOpts(r.map(p=>p.base));}).catch(()=>{});api('cadastros?tipo=empresas').then(r=>{if(Array.isArray(r)&&r.length)setEmpresasFiltro(r.map(p=>p.nome));}).catch(()=>{});},[]);
+  const [empresasFiltro,setEmpresasFiltro]=useState(EMPRESAS_NOMES);
   const PER=20;const fileRef=useRef(null);const searchTimer=useRef(null);
   const load=useCallback(()=>{setLoading(true);setError(null);api('records?'+new URLSearchParams({q,base,resultado:res})).then(r=>{if(Array.isArray(r))setData(r);else setError('Erro ao carregar');setLoading(false);}).catch(()=>{setError('Erro de conexão');setLoading(false);});},[q,base,res]);
   const imp=async f=>{
@@ -709,7 +712,7 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
         <datalist id="rec-suggest">{data.slice(0,20).flatMap(r=>[r.nomes,r.empresa].filter(Boolean)).filter((v,i,a)=>a.indexOf(v)===i).map(s=><option key={s} value={s}/>)}</datalist>
       </div>
       <select className="field" style={{flex:1,minWidth:140}} value={base} onChange={e=>{setBase(e.target.value);setPage(0);}}>
-        <option value="">Todas as Bases</option>{BASES.map(b=><option key={b}>{b}</option>)}
+        <option value="">Todas as Bases</option>{basesOpts.map(b=><option key={b}>{b}</option>)}
       </select>
       <select className="field" style={{flex:1,minWidth:140}} value={res} onChange={e=>{setRes(e.target.value);setPage(0);}}>
         <option value="">Todos Resultados</option>
@@ -999,11 +1002,15 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
 
 function Reports({mobile}){
   const [data,setData]=useState([]);const [loading,setLoading]=useState(false);
-  const [dtIni,setDtIni]=useState('');const [dtFim,setDtFim]=useState('');const [fb,setFb]=useState('');
+  const [dtIni,setDtIni]=useState('');const [dtFim,setDtFim]=useState('');const [fb,setFb]=useState('');const [fProc,setFProc]=useState('');const [fEmp,setFEmp]=useState('');
   const [filtrosAplicados,setFiltrosAplicados]=useState(false);
+  const [basesRpt,setBasesRpt]=useState(BASES);
+  const [procsRpt,setProcsRpt]=useState(PROCESSOS);
+  const [empsRpt,setEmpsRpt]=useState(EMPRESAS_NOMES);
+  useEffect(()=>{api('cadastros?tipo=bases').then(r=>{if(Array.isArray(r)&&r.length)setBasesRpt(r.map(p=>p.base));}).catch(()=>{});api('cadastros?tipo=processos').then(r=>{if(Array.isArray(r)&&r.length)setProcsRpt(r.map(p=>p.processo));}).catch(()=>{});api('cadastros?tipo=empresas').then(r=>{if(Array.isArray(r)&&r.length)setEmpsRpt(r.map(p=>p.nome));}).catch(()=>{});},[]);
   const aplicarFiltros=()=>{
     setLoading(true);setFiltrosAplicados(true);
-    api('records?'+new URLSearchParams({dtIni,dtFim,base:fb})).then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});
+    api('records?'+new URLSearchParams({dtIni,dtFim,base:fb,empresa:fProc,q:fEmp})).then(r=>{if(Array.isArray(r))setData(r);setLoading(false);});
   };
   useEffect(()=>{aplicarFiltros();},[]);
   const total=data.length,aprov=data.filter(r=>r.resultadoFinal==='APROVADO'||r.resultadoFinal==='APROVADO 2').length,reprov=data.filter(r=>r.resultadoFinal==='REPROVADO').length,ausente=data.filter(r=>r.resultadoFinal==='AUSENTE').length,pend=total-aprov-reprov-ausente,tx=total?Math.round(aprov/total*100):0;
@@ -1011,17 +1018,28 @@ function Reports({mobile}){
   const topB=Object.entries(byBase).sort((a,b)=>b[1]-a[1]).slice(0,7);
   const byP={};data.forEach(r=>{if(r.processo){const k=r.processo.replace(/_/g,' ').slice(0,26);byP[k]=(byP[k]||0)+1;}});
   const topP=Object.entries(byP).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const byEmp={};data.forEach(r=>{if(r.empresa)byEmp[r.empresa]=(byEmp[r.empresa]||0)+1;});
+  const topE=Object.entries(byEmp).sort((a,b)=>b[1]-a[1]).slice(0,6);
   const pieData=[{name:'Aprovados',value:aprov,fill:'#059669'},{name:'Reprovados',value:reprov,fill:'#DC2626'},{name:'Ausentes',value:ausente,fill:'#D97706'},{name:'Pendentes',value:pend,fill:'#94A3B8'}].filter(d=>d.value>0);
+  const exportCSV=()=>{
+    const h=['Nome','CPF','Pedido','Empresa','Base','Processo','Data','Resultado'];
+    const rows=data.map(r=>[r.nomes||'',r.cpf||'',r.pedido||'',r.empresa||'',r.base||'',r.processo||'',r.dataRealizacao||'',r.resultadoFinal||'']);
+    const csv=[h.join(';'),...rows.map(r=>r.map(v=>'"'+v.replace(/"/g,'""')+'"').join(';'))].join('\n');
+    const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='relatorio_avaliacoes.csv';a.click();URL.revokeObjectURL(a.href);
+  };
   return(<div>
     <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Relatórios</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>Análise por período e filtros</p></div>
     <div className="card fu1" style={{padding:'1.25rem',marginBottom:20}}>
       <p className="sec-h">Filtros</p>
-      <div style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr 1fr auto auto',gap:12,alignItems:'end'}}>
+      <div style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'1fr 1fr 1fr 1fr 1fr auto',gap:12,alignItems:'end'}}>
         <div><label className="label">Data Início</label><input className="field" type="date" value={dtIni} onChange={e=>setDtIni(e.target.value)} onKeyDown={e=>e.key==='Enter'&&aplicarFiltros()}/></div>
         <div><label className="label">Data Fim</label><input className="field" type="date" value={dtFim} onChange={e=>setDtFim(e.target.value)} onKeyDown={e=>e.key==='Enter'&&aplicarFiltros()}/></div>
-        <div><label className="label">Base</label><select className="field" value={fb} onChange={e=>setFb(e.target.value)}><option value="">Todas</option>{BASES.map(b=><option key={b}>{b}</option>)}</select></div>
+        <div><label className="label">Base</label><select className="field" value={fb} onChange={e=>setFb(e.target.value)}><option value="">Todas</option>{basesRpt.map(b=><option key={b}>{b}</option>)}</select></div>
+        <div><label className="label">Processo</label><select className="field" value={fProc} onChange={e=>setFProc(e.target.value)}><option value="">Todos</option>{procsRpt.map(p=><option key={p}>{p}</option>)}</select></div>
+        <div><label className="label">Empresa</label><select className="field" value={fEmp} onChange={e=>setFEmp(e.target.value)}><option value="">Todas</option>{empsRpt.map(e=><option key={e}>{e}</option>)}</select></div>
         <button className="btn primary" onClick={aplicarFiltros} style={{marginBottom:1}}>{ICON.search}Filtrar</button>
-        {filtrosAplicados&&<button className="btn ghost sm" onClick={()=>{setDtIni('');setDtFim('');setFb('');setTimeout(()=>aplicarFiltros(),0);}}>{ICON.x}Limpar</button>}
+        {filtrosAplicados&&<button className="btn ghost sm" onClick={()=>{setDtIni('');setDtFim('');setFb('');setFProc('');setFEmp('');setTimeout(()=>aplicarFiltros(),0);}}>{ICON.x}Limpar</button>}
       </div>
       {!mobile&&<div style={{display:'flex',gap:6,marginTop:8,flexWrap:'wrap'}}>
         {[['7d','7 dias'],['30d','30 dias'],['90d','90 dias'],['ano','Este ano']].map(([k,l])=><button key={k} className={`btn sm ${(dtIni||dtFim)?'ghost':'ghost'}`} style={{fontSize:11.5,padding:'4px 10px',background:k==='7d'&&!dtIni&&!dtFim?'var(--primary)':'',color:k==='7d'&&!dtIni&&!dtFim?'#fff':''}} onClick={()=>{
@@ -1091,6 +1109,19 @@ function Reports({mobile}){
           </ResponsiveContainer>
         </div>
       </div>
+      <div className="card" style={{padding:'1.25rem'}}>
+        <p className="sec-h">Por Empresa</p>
+        <div style={{height:Math.max(180,topE.length*30)}}>
+          {topE.length?<ResponsiveContainer width="100%" height="100%">
+            <BarChart data={topE.map(([e,n])=>({name:e.length>18?e.slice(0,18)+'…':e,total:n}))} layout="vertical" margin={{left:10,right:10,top:5,bottom:5}}>
+              <XAxis type="number" hide/>
+              <YAxis type="category" dataKey="name" tick={{fontSize:10,fill:'var(--text2)'}} width={100}/>
+              <Tooltip contentStyle={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:8,fontSize:12}}/>
+              <Bar dataKey="total" fill="#7C3AED" radius={[0,4,4,0]} maxBarSize={16}/>
+            </BarChart>
+          </ResponsiveContainer>:<p style={{fontSize:13,color:'var(--text3)',textAlign:'center',paddingTop:40}}>Sem dados</p>}
+        </div>
+      </div>
       <div className="card" style={{padding:'1.25rem',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
         <p className="sec-h" style={{alignSelf:'flex-start',width:'100%'}}>Taxa de Aprovação</p>
         <div style={{textAlign:'center',marginTop:12}}>
@@ -1099,6 +1130,9 @@ function Reports({mobile}){
           <p style={{fontSize:13,color:'var(--text3)'}}>{aprov} aprovados de {total}</p>
         </div>
       </div>
+    </div>}
+    {total>0&&<div className="fu3" style={{display:'flex',justifyContent:'flex-end',marginTop:12}}>
+      <button className="btn ghost" onClick={exportCSV}>{ICON.down}Exportar CSV</button>
     </div>}
   </div>);
 }
@@ -1224,6 +1258,38 @@ function Cadastros({mobile,toast_,cw,canDel}){
   const importRef=useRef(null);
   const photoRef=useRef(null);
   const [importProg,setImportProg]=useState(null);
+  const [duplicatas,setDuplicatas]=useState(null);
+  const acharDuplicatas=()=>{
+    const itens=data[tipo]||[];
+    const grupos={};
+    itens.forEach(item=>{
+      if(tipo==='candidatos'){
+        const chave=(item.nome||'')+'|'+(item.cpf||'');
+        if(!grupos[chave])grupos[chave]=[];
+        grupos[chave].push(item);
+      }else if(tipo==='processos'){
+        const chave=(item.processo||'')+'|'+(item.atividade||'');
+        if(!grupos[chave])grupos[chave]=[];
+        grupos[chave].push(item);
+      }else{
+        const chave=tipo==='bases'?item.base||'':tipo==='empresas'?item.nome||'':item.nome||'';
+        if(!grupos[chave])grupos[chave]=[];
+        grupos[chave].push(item);
+      }
+    });
+    const dups=Object.values(grupos).filter(g=>g.length>1);
+    if(!dups.length)return toast_('Nenhuma duplicata encontrada');
+    setDuplicatas(dups);
+  };
+  const excluirDuplicatas=async()=>{
+    if(!duplicatas)return;
+    const ids=duplicatas.flat().map(i=>i.id);
+    setDuplicatas(null);
+    const r=await api('cadastros',{method:'POST',body:JSON.stringify({_bulkDelete:ids})});
+    if(r.ok)toast_(`${r.ok} duplicata(s) excluída(s)`);
+    if(r.err)toast_(`${r.err} erro(s)`,'error');
+    load(tipo);
+  };
   const tipos=Object.keys(CAD_ICON);
   const importCad=async f=>{
     try{
@@ -1385,7 +1451,9 @@ function Cadastros({mobile,toast_,cw,canDel}){
           <input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
           <input ref={photoRef} type="file" accept="image/*" style={{display:'none'}} onChange={photoCad}/>
           <button className="btn sm amber-btn" onClick={()=>importRef.current?.click()}>{ICON.up}Importar</button>
-          <button className="btn sm ghost" onClick={downloadTemplate}>{ICON.down}Template</button></>}
+          <button className="btn sm ghost" onClick={downloadTemplate}>{ICON.down}Template</button>
+          {sortedData.length>0&&<button className="btn sm ghost" onClick={()=>{const blob=new Blob([JSON.stringify(sortedData,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`export_${tipo}.json`;a.click();URL.revokeObjectURL(a.href);}}>{ICON.down}Exportar</button>}
+          {canDel&&sortedData.length>0&&<button className="btn sm ghost" style={{color:'var(--warning)'}} onClick={acharDuplicatas}>{ICON.search}Duplicatas</button>}</>}
           {cw&&<button className="btn primary sm" onClick={()=>openForm(null)}>{ICON.plus}Adicionar</button>}
         </div>
       </div>
@@ -1424,6 +1492,22 @@ function Cadastros({mobile,toast_,cw,canDel}){
       </div>
     </div>
     {pages>1&&paginacao}
+    {duplicatas&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setDuplicatas(null)}>
+      <div className="modal" style={{maxWidth:600}}>
+        <div className="modal-hd"><h3 style={{fontSize:16,fontWeight:700}}>Duplicatas Encontradas</h3><button className="btn ghost icon" onClick={()=>setDuplicatas(null)}>{ICON.x}</button></div>
+        <div className="modal-bd" style={{maxHeight:400,overflowY:'auto'}}>
+          <p style={{fontSize:13,color:'var(--text2)',marginBottom:12}}>{duplicatas.length} grupo(s) com {duplicatas.flat().length} registros duplicados no total.</p>
+          {duplicatas.map((g,i)=><div key={i} style={{padding:'8px 12px',marginBottom:8,background:'var(--surface2)',borderRadius:'var(--r-sm)',border:'1px solid var(--border)'}}>
+            <p style={{fontSize:12,fontWeight:600,color:'var(--warning)',marginBottom:4}}>Grupo {i+1} · {g.length} registros</p>
+            {g.map((item,j)=><p key={j} style={{fontSize:12,color:'var(--text2)',fontFamily:'var(--mono)',paddingLeft:8}}>{item.nome||item.processo||item.base||item.nome||'?'}{item.cpf?` (CPF: ${item.cpf})`:''}{item.atividade?` · ${item.atividade}`:''}</p>)}
+          </div>)}
+        </div>
+        <div className="modal-bd" style={{display:'flex',gap:8,justifyContent:'flex-end',borderTop:'1px solid var(--border)',paddingTop:12}}>
+          <button className="btn" onClick={()=>setDuplicatas(null)}>Cancelar</button>
+          <button className="btn danger" onClick={excluirDuplicatas}>{ICON.trash}Excluir {duplicatas.flat().length} duplicatas</button>
+        </div>
+      </div>
+    </div>}
     <ConfirmModal show={confirmDel} title="Excluir Cadastro" msg={`Excluir "${confirmDel?.nome||confirmDel?.processo||confirmDel?.base||confirmDel?.[Object.keys(confirmDel||{})[0]]||'?'}"?`} onConfirm={del} onCancel={()=>setConfirmDel(null)}/>
     <ConfirmModal show={confirmBulkDel} title="Excluir Cadastros" msg={`Excluir ${confirmBulkDel} registro(s) permanentemente?`} onConfirm={bulkDel} onCancel={()=>setConfirmBulkDel(null)}/>
     {showModal&&<div className="overlay" onClick={e=>e.target===e.currentTarget&&setShowModal(false)}>
