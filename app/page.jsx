@@ -804,7 +804,19 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
   const [tab,setTab]=useState(0);const [errors,setErrors]=useState({});const [saving,setSaving]=useState(false);
   const [draftSaved,setDraftSaved]=useState(false);
   const [processosOpts,setProcessosOpts]=useState(PROCESSOS);
-  useEffect(()=>{api('cadastros?tipo=processos').then(r=>{if(Array.isArray(r)&&r.length){setProcessosOpts(r.map(p=>p.processo));}}).catch(()=>{});},[]);
+  const [empresasOpts,setEmpresasOpts]=useState(EMPRESAS_NOMES);
+  const [basesOpts,setBasesOpts]=useState(BASES);
+  const [avaliadoresOpts,setAvaliadoresOpts]=useState(AVALIADORES);
+  const [pedidosOpts,setPedidosOpts]=useState(PEDIDOS);
+  const [motivosOpts,setMotivosOpts]=useState(MOTIVOS);
+  useEffect(()=>{
+    api('cadastros?tipo=processos').then(r=>{if(Array.isArray(r)&&r.length){setProcessosOpts(r.map(p=>p.processo));}}).catch(()=>{});
+    api('cadastros?tipo=empresas').then(r=>{if(Array.isArray(r)&&r.length){setEmpresasOpts(r.map(p=>p.nome));}}).catch(()=>{});
+    api('cadastros?tipo=bases').then(r=>{if(Array.isArray(r)&&r.length){setBasesOpts(r.map(p=>p.base));}}).catch(()=>{});
+    api('cadastros?tipo=avaliadores').then(r=>{if(Array.isArray(r)&&r.length){setAvaliadoresOpts(r.map(p=>p.nome));}}).catch(()=>{});
+    api('cadastros?tipo=pedidos').then(r=>{if(Array.isArray(r)&&r.length){setPedidosOpts(r.map(p=>p.nome));}}).catch(()=>{});
+    api('cadastros?tipo=motivos').then(r=>{if(Array.isArray(r)&&r.length){setMotivosOpts(r.map(p=>p.nome));}}).catch(()=>{});
+  },[]);
   const photoRef=useRef(null);
   const draftTimer=useRef(null);
   useEffect(()=>{
@@ -888,7 +900,7 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
       <div><label className="label">Status {n}</label><select className="field" value={form['statusProva'+n]||''} onChange={e=>upd('statusProva'+n,e.target.value)}><option value="">—</option>{STATUS_PRATICA.map(s=><option key={s}>{s}</option>)}</select></div>
     </div>
     <div style={{display:'grid',gridTemplateColumns:mobile?'1fr':'1fr 1fr',gap:12,marginBottom:10}}>
-      <div><label className="label">Motivo(s)</label><select className="field" value={form['motivo'+n]||''} onChange={e=>upd('motivo'+n,e.target.value)}><option value="">—</option>{MOTIVOS.map(m=><option key={m}>{m}</option>)}</select></div>
+      <div><label className="label">Motivo(s)</label><select className="field" value={form['motivo'+n]||''} onChange={e=>upd('motivo'+n,e.target.value)}><option value="">—</option>{motivosOpts.map(m=><option key={m}>{m}</option>)}</select></div>
       <F label="IT (auto)" field={`it${n}`} auto/>
     </div>
     <div><label className="label">Detalhamento</label><textarea className="field" rows={2} value={form['detalhe'+n]||''} onChange={e=>upd('detalhe'+n,e.target.value)} style={{resize:'vertical'}}/></div>
@@ -926,7 +938,7 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
           <div style={{flex:1,minWidth:200}}>
             <div style={g3}>
               <F label="Status" field="statusColaborador" opts={['CANDIDATO','ATIVO','DESLIGADO']}/>
-              <F label="Pedido" field="pedido" opts={PEDIDOS} req/>
+              <F label="Pedido" field="pedido" opts={pedidosOpts} req/>
               <F label="Turma" field="turma" ph="Ex: T01-2026"/>
             </div>
           </div>
@@ -940,8 +952,8 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
         </div>
         <div className="divider"/>
         <p className="sec-h">Localização & Avaliação</p>
-        <div style={g3}><F label="Empresa" field="empresa" opts={EMPRESAS_NOMES} req/><F label="Base" field="base" opts={BASES} req/><F label="UO (auto)" field="unidadeOperacional" auto/></div>
-        <div style={g3}><F label="Região (auto)" field="regiao" auto/><F label="Avaliador" field="avaliador" opts={AVALIADORES}/><F label="Local de Avaliação" field="localAvaliacao"/></div>
+        <div style={g3}><F label="Empresa" field="empresa" opts={empresasOpts} req/><F label="Base" field="base" opts={basesOpts} req/><F label="UO (auto)" field="unidadeOperacional" auto/></div>
+        <div style={g3}><F label="Região (auto)" field="regiao" auto/><F label="Avaliador" field="avaliador" opts={avaliadoresOpts}/><F label="Local de Avaliação" field="localAvaliacao"/></div>
         <div style={g2}><F label="Processo" field="processo" opts={processosOpts} req/><F label="Cargo (auto)" field="cargosProcessos" auto/></div>
       </div>}
       {tab===1&&<div style={{display:'flex',flexDirection:'column',gap:16}}>
