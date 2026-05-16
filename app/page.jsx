@@ -294,6 +294,7 @@ export default function App(){
   const toast_=(msg,type='success')=>{const id=Date.now();setToasts(p=>[...p,{id,msg,type}]);setTimeout(()=>setToasts(p=>p.filter(t=>t.id!==id)),4000);};
   const logout=()=>{localStorage.clear();setUser(null);setView('login');};
   const cw=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente'||(user.role==='COLABORADOR'&&user.permissions==='Leitura + Escrita'));
+  const canDel=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN');
   const ia=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente');
   const nav=user?(
     user.role==='SYSTEM'?[
@@ -374,7 +375,7 @@ export default function App(){
         {view==='admin-dash'&&<AdminDash mobile={mobile} user={user} toast_={toast_}/>}
         {view==='records'&&<RecList cw={cw()} ia={ia()} mobile={mobile} user={user} onEdit={r=>{setEditRec(r);setView('form');}} onNew={()=>{setEditRec(null);setView('form');}} toast_={toast_}/>}
         {view==='form'&&<RecForm rec={editRec} user={user} cw={cw()} mobile={mobile} onSave={()=>{toast_('Avaliação salva com sucesso!');setView('records');}} onCancel={()=>setView('records')} toast_={toast_}/>}
-        {view==='cadastros'&&<Cadastros mobile={mobile} toast_={toast_} cw={cw()}/>}
+        {view==='cadastros'&&<Cadastros mobile={mobile} toast_={toast_} cw={cw()} canDel={canDel()}/>}
         {view==='reports'&&<Reports mobile={mobile}/>}
         {view==='users'&&ia()&&<Users user={user} toast_={toast_}/>}
         {view==='clientes'&&user.role==='SYSTEM'&&<Clientes user={user} toast_={toast_}/>}
@@ -741,7 +742,7 @@ function RecList({cw,ia,mobile,onEdit,onNew,toast_,user}){
                 <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
                   <button className="btn sm icon" onClick={()=>onEdit(r)} title="Editar">{ICON.edit}</button>
                   <button className="btn sm icon" style={{color:'#E53935'}} onClick={()=>window.open('/api/export-pdf?id='+r.id,'_blank')} title="PDF">{ICON.down}</button>
-                  {user?.role==='SYSTEM'&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(r)} title="Excluir">{ICON.trash}</button>}
+                  {canDel()&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(r)} title="Excluir">{ICON.trash}</button>}
                 </div>
               </td>}
             </tr>)}
@@ -1180,7 +1181,7 @@ const CAD_FORMS={
   candidatos:[{k:'nome',l:'Nome Completo',req:true},{k:'cpf',l:'CPF/Matrícula',req:true},{k:'email',l:'E-mail',req:true,type:'email'},{k:'estado',l:'Estado',req:true},{k:'cidade',l:'Cidade',req:true}]
 };
 
-function Cadastros({mobile,toast_,cw}){
+function Cadastros({mobile,toast_,cw,canDel}){
   const [tab,setTab]=useState(0);
   const [data,setData]=useState({});
   const [loading,setLoading]=useState({});
@@ -1346,7 +1347,7 @@ function Cadastros({mobile,toast_,cw}){
           <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{sortedData.length} registros</span>
         </p>
         <div style={{display:'flex',gap:6}}>
-          {cw&&<>{selected.size>0&&<button className="btn sm danger" onClick={()=>setConfirmBulkDel(selected.size)}>{ICON.trash}Excluir {selected.size}</button>}
+          {cw&&<>{selected.size>0&&canDel&&<button className="btn sm danger" onClick={()=>setConfirmBulkDel(selected.size)}>{ICON.trash}Excluir {selected.size}</button>}
           <input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
           <input ref={photoRef} type="file" accept="image/*" style={{display:'none'}} onChange={photoCad}/>
           <button className="btn sm amber-btn" onClick={()=>importRef.current?.click()}>{ICON.up}Importar</button></>}
@@ -1356,7 +1357,7 @@ function Cadastros({mobile,toast_,cw}){
       <div style={{overflowX:'auto'}}>
         <table style={{width:'100%',borderCollapse:'collapse',minWidth:500}}>
           <thead><tr>
-            {cw&&<th className="th" style={{width:36}}>
+            {canDel&&<th className="th" style={{width:36}}>
               <input type="checkbox" style={{cursor:'pointer'}} checked={sortedData.length>0&&selected.size===sortedData.length} onChange={e=>setSelected(e.target.checked?new Set(sortedData.map(r=>r.id)):new Set())}/>
             </th>}
             {CAD_COLS[tipo].map(c=>{
@@ -1367,11 +1368,11 @@ function Cadastros({mobile,toast_,cw}){
           </tr></thead>
           <tbody>
             {loading[tipo]?[1,2,3].map(i=><tr key={i}>
-              {cw&&<td className="td"><Skeleton h={14} w="16px" r="4" m="0"/></td>}
+              {canDel&&<td className="td"><Skeleton h={14} w="16px" r="4" m="0"/></td>}
               {CAD_COLS[tipo].map(c=><td key={c.k} className="td"><Skeleton h={14} w={c.k==='valor'||c.k==='valorBaremo'?'60px':c.k==='foto'?'32px':'140px'} r={c.k==='foto'?'50%':'4'} m="0"/></td>)}
               <td className="td"><Skeleton h={14} w="60px" r="4" m="0"/></td>
             </tr>):sortedData.length?sortedData.map(item=><tr key={item.id} style={{background:selected.has(item.id)?'rgba(89,48,226,.04)':''}}>
-              {cw&&<td className="td" style={{width:36}}><input type="checkbox" checked={selected.has(item.id)} onChange={e=>{const s=new Set(selected);e.target.checked?s.add(item.id):s.delete(item.id);setSelected(s);}}/></td>}
+              {canDel&&<td className="td" style={{width:36}}><input type="checkbox" checked={selected.has(item.id)} onChange={e=>{const s=new Set(selected);e.target.checked?s.add(item.id):s.delete(item.id);setSelected(s);}}/></td>}
               {CAD_COLS[tipo].map(c=><td key={c.k} className="td" style={{fontWeight:c.k==='nome'||c.k==='empresa'||c.k==='processo'||c.k==='atividade'||c.k==='base'?600:400,fontSize:13,textAlign:c.k==='foto'||c.k==='valorBaremo'?'center':'left',cursor:cw&&c.k!=='foto'?'pointer':'default'}} onClick={()=>startEdit(item,c)}>
                 {editCell?.id===item.id&&editCell?.field===c.k
                   ?(CAD_FORMS[tipo]?.find(f=>f.k===c.k)?.opts
@@ -1384,10 +1385,10 @@ function Cadastros({mobile,toast_,cw}){
               <td className="td" style={{textAlign:'right'}}>
                 <div style={{display:'flex',gap:4,justifyContent:'flex-end'}}>
                   {cw&&<button className="btn sm icon" onClick={()=>openForm(item)}>{ICON.edit}</button>}
-                  {cw&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(item)}>{ICON.trash}</button>}
+                  {canDel&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(item)}>{ICON.trash}</button>}
                 </div>
               </td>
-            </tr>):<tr><td colSpan={CAD_COLS[tipo].length+1+(cw?1:0)} style={{textAlign:'center',padding:'3rem'}}>
+            </tr>):<tr><td colSpan={CAD_COLS[tipo].length+1+(canDel?1:0)} style={{textAlign:'center',padding:'3rem'}}>
               <EmptyState title="Nenhum registro" desc={`Nenhum cadastro de ${tipo} encontrado.`}/>
             </td></tr>}
           </tbody>

@@ -66,9 +66,6 @@ export async function DELETE(req) {
   const item = await getCadastro(id);
   if (!item) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
 
-  if (item.tipo === 'processos' && user.role !== 'SYSTEM')
-    return NextResponse.json({ error: 'Apenas SYSTEM pode excluir processos' }, { status: 403 });
-
   await deleteCadastro(id);
   await addAudit(user.username, 'CADASTRO_DELETE', id, `${item.tipo}: ${item.nome || id}`);
   return NextResponse.json({ ok: true });
