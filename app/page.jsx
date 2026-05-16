@@ -803,12 +803,12 @@ function RecForm({rec,user,cw,mobile,onSave,onCancel,toast_}){
   });
   const [tab,setTab]=useState(0);const [errors,setErrors]=useState({});const [saving,setSaving]=useState(false);
   const [draftSaved,setDraftSaved]=useState(false);
-  const [processosOpts,setProcessosOpts]=useState(PROCESSOS);
-  const [empresasOpts,setEmpresasOpts]=useState(EMPRESAS_NOMES);
-  const [basesOpts,setBasesOpts]=useState(BASES);
-  const [avaliadoresOpts,setAvaliadoresOpts]=useState(AVALIADORES);
-  const [pedidosOpts,setPedidosOpts]=useState(PEDIDOS);
-  const [motivosOpts,setMotivosOpts]=useState(MOTIVOS);
+  const [processosOpts,setProcessosOpts]=useState([]);
+  const [empresasOpts,setEmpresasOpts]=useState([]);
+  const [basesOpts,setBasesOpts]=useState([]);
+  const [avaliadoresOpts,setAvaliadoresOpts]=useState([]);
+  const [pedidosOpts,setPedidosOpts]=useState([]);
+  const [motivosOpts,setMotivosOpts]=useState([]);
   useEffect(()=>{
     api('cadastros?tipo=processos').then(r=>{if(Array.isArray(r)&&r.length){setProcessosOpts(r.map(p=>p.processo));}}).catch(()=>{});
     api('cadastros?tipo=empresas').then(r=>{if(Array.isArray(r)&&r.length){setEmpresasOpts(r.map(p=>p.nome));}}).catch(()=>{});
