@@ -1194,10 +1194,16 @@ function Cadastros({mobile,toast_,cw}){
   const SortIcon=({k})=><span style={{fontSize:10,marginLeft:4,opacity:sortKey===k?1:.2}}>{sortKey===k?(sortDir==='asc'?'▲':'▼'):'▼'}</span>;
   const [selected,setSelected]=useState(new Set());
   const bulkDel=async()=>{
-    if(!selected.size)return;
+    const ids=[...selected];
+    if(!ids.length)return;
     setConfirmBulkDel(null);
-    for(const id of selected){await api('cadastros?id='+id,{method:'DELETE'});}
-    toast_(`${selected.size} registro(s) excluído(s)`);
+    let ok=0,err=0;
+    for(const id of ids){
+      const r=await api('cadastros?id='+id,{method:'DELETE'});
+      if(r.error)err++;else ok++;
+    }
+    if(ok)toast_(`${ok} registro(s) excluído(s)`);
+    if(err)toast_(`${err} erro(s) ao excluir (sem permissão ou não encontrado)`,'error');
     setSelected(new Set());load(tipo);
   };
   const importRef=useRef(null);
@@ -1278,7 +1284,8 @@ function Cadastros({mobile,toast_,cw}){
 
   const del=async()=>{
     if(!confirmDel)return;
-    await api('cadastros?id='+confirmDel.id,{method:'DELETE'});
+    const r=await api('cadastros?id='+confirmDel.id,{method:'DELETE'});
+    if(r.error)return toast_(r.error,'error');
     toast_('Cadastro excluído');
     setConfirmDel(null);
     load(tipo);
@@ -1339,8 +1346,8 @@ function Cadastros({mobile,toast_,cw}){
           <span style={{fontWeight:400,color:'var(--text3)',marginLeft:8}}>{sortedData.length} registros</span>
         </p>
         <div style={{display:'flex',gap:6}}>
-          {selected.size>0&&<button className="btn sm danger" onClick={()=>setConfirmBulkDel(selected.size)}>{ICON.trash}Excluir {selected.size}</button>}
-          {cw&&<><input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
+          {cw&&<>{selected.size>0&&<button className="btn sm danger" onClick={()=>setConfirmBulkDel(selected.size)}>{ICON.trash}Excluir {selected.size}</button>}
+          <input ref={importRef} type="file" accept=".json" style={{display:'none'}} onChange={e=>{if(e.target.files[0])importCad(e.target.files[0]);e.target.value='';}}/>
           <input ref={photoRef} type="file" accept="image/*" style={{display:'none'}} onChange={photoCad}/>
           <button className="btn sm amber-btn" onClick={()=>importRef.current?.click()}>{ICON.up}Importar</button></>}
           {cw&&<button className="btn primary sm" onClick={()=>openForm(null)}>{ICON.plus}Adicionar</button>}
