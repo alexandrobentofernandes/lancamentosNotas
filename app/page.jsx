@@ -1909,7 +1909,7 @@ function GestaoLicencas({user,toast_}){
   const [actionId,setActionId]=useState(null);
   const [editarQtd,setEditarQtd]=useState(null);
   const [novaQtd,setNovaQtd]=useState(1);
-  const load=()=>{setLoading(true);Promise.all([api('licencas'),api('clientes')]).then(([r,c])=>{if(Array.isArray(r))setRequests(r);if(Array.isArray(c))setClientes(c);setLoading(false);});};
+  const load=()=>{setLoading(true);Promise.all([api('licencas'),api('clientes')]).then(([r,c])=>{if(Array.isArray(r))setRequests(r);if(Array.isArray(c))setClientes(c);setLoading(false);}).catch(()=>{setLoading(false);toast_('Erro ao carregar dados','error');});};
   useEffect(()=>{load();},[]);
   const aprovar=async id=>{
     setActionId(id);

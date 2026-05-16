@@ -56,17 +56,21 @@ export async function PUT(req) {
   if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
   if (!PERMISSOES.LICENCAS_APROVAR(user)) return NextResponse.json({ error: 'Sem permissão' }, { status: 403 });
 
-  const { id, status, observacao } = await req.json();
+  const { id, status, observacao, quantidade } = await req.json();
   if (!id) return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
 
-  const updated = await updateLicencaRequest(id, { status, observacao, analisadoPor: user.nome, analisadoEm: new Date().toISOString() });
+  const updateData = { status, observacao, analisadoPor: user.nome, analisadoEm: new Date().toISOString() };
+  if (quantidade !== undefined) updateData.quantidade = parseInt(quantidade);
+
+  const updated = await updateLicencaRequest(id, updateData);
   if (!updated) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
 
   // Se aprovado, atualizar slots do cliente
-  if (status === 'APROVADO' && updated.clienteId && updated.quantidade) {
+  const qtdFinal = quantidade !== undefined ? parseInt(quantidade) : (updated.quantidade || 0);
+  if (status === 'APROVADO' && updated.clienteId && qtdFinal > 0) {
     const cliente = await getCliente(updated.clienteId);
     if (cliente) {
-      const novosSlots = (cliente.slotsTotal || 0) + parseInt(updated.quantidade);
+      const novosSlots = (cliente.slotsTotal || 0) + qtdFinal;
       await updateCliente(updated.clienteId, { slotsTotal: novosSlots });
     }
   }
