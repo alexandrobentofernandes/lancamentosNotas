@@ -1185,7 +1185,11 @@ function Users({user,toast_}){
   const [confirmDel,setConfirmDel]=useState(null);
   const slotsInfo=form.clienteId?clientesList.find(c=>c.id===form.clienteId):null;
   const slotsRestantes=slotsInfo?(slotsInfo.slotsTotal||0)-(slotsInfo.slotsUsados||0):0;
-  useEffect(()=>{Promise.all([api('users'),(user.role==='SYSTEM'?api('clientes'):Promise.resolve([]))]).then(([u,c])=>{if(Array.isArray(u))setUsers(u);if(Array.isArray(c))setClientesList(c);setLoading(false);});},[]);
+  useEffect(()=>{
+    const p1=api('users');
+    const p2=user.role==='SYSTEM'?api('clientes'):user.clienteId?api('clientes?id='+user.clienteId).then(r=>r&&!r.error?[r]:[]):Promise.resolve([]);
+    Promise.all([p1,p2]).then(([u,c])=>{if(Array.isArray(u))setUsers(u);if(Array.isArray(c))setClientesList(c);setLoading(false);}).catch(()=>setLoading(false));
+  },[]);
   const open=u=>{
     if(u){setForm({...u,password:''});setEditU(u);}
     else{
