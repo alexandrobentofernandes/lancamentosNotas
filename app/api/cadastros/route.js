@@ -30,7 +30,25 @@ export async function POST(req) {
   if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
   if (!canWrite(user)) return NextResponse.json({ error: 'Sem permissão de escrita' }, { status: 403 });
 
-  const { tipo, ...data } = await req.json();
+  const body = await req.json();
+
+  // Bulk delete via POST
+  if (body._bulkDelete) {
+    if (user.role !== 'SYSTEM' && user.role !== 'ADMIN')
+      return NextResponse.json({ error: 'Apenas admins podem excluir' }, { status: 403 });
+    const ids = body._bulkDelete;
+    let ok = 0, err = 0;
+    await Promise.all(ids.map(async id => {
+      const item = await getCadastro(id);
+      if (!item) { err++; return; }
+      await deleteCadastro(id);
+      await addAudit(user.username, 'CADASTRO_DELETE', id, `${item.tipo}: ${item.nome || id}`);
+      ok++;
+    }));
+    return NextResponse.json({ ok, err });
+  }
+
+  const { tipo, ...data } = body;
   if (!tipo || !TIPOS_VALIDOS.includes(tipo))
     return NextResponse.json({ error: 'Tipo inválido' }, { status: 400 });
 
@@ -60,17 +78,13 @@ export async function DELETE(req) {
     return NextResponse.json({ error: 'Apenas admins podem excluir' }, { status: 403 });
 
   const { searchParams } = new URL(req.url);
-  const idsParam = searchParams.get('ids') || searchParams.get('id');
-  if (!idsParam) return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
+  const id = searchParams.get('id');
+  if (!id) return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
 
-  const ids = idsParam.split(',');
-  let ok = 0, err = 0;
-  await Promise.all(ids.map(async id => {
-    const item = await getCadastro(id);
-    if (!item) { err++; return; }
-    await deleteCadastro(id);
-    await addAudit(user.username, 'CADASTRO_DELETE', id, `${item.tipo}: ${item.nome || id}`);
-    ok++;
-  }));
-  return NextResponse.json({ ok, err });
+  const item = await getCadastro(id);
+  if (!item) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
+
+  await deleteCadastro(id);
+  await addAudit(user.username, 'CADASTRO_DELETE', id, `${item.tipo}: ${item.nome || id}`);
+  return NextResponse.json({ ok: true });
 }

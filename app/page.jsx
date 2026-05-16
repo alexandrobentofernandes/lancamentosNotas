@@ -1216,9 +1216,9 @@ function Cadastros({mobile,toast_,cw,canDel}){
     const ids=[...selected];
     if(!ids.length)return;
     setConfirmBulkDel(null);
-    const r=await api('cadastros?ids='+ids.join(','),{method:'DELETE'});
+    const r=await api('cadastros',{method:'POST',body:JSON.stringify({_bulkDelete:ids})});
     if(r.ok)toast_(`${r.ok} registro(s) excluído(s)`);
-    if(r.err)toast_(`${r.err} erro(s) ao excluir (sem permissão ou não encontrado)`,'error');
+    if(r.err)toast_(`${r.err} erro(s) ao excluir`,'error');
     setSelected(new Set());load(tipo);
   };
   const importRef=useRef(null);
@@ -1260,7 +1260,7 @@ function Cadastros({mobile,toast_,cw,canDel}){
     setLoading(p=>({...p,[t]:false}));
   },[]);
 
-  useEffect(()=>{load(tipo);setPage(0);},[tipo]);
+  useEffect(()=>{load(tipo);setPage(0);setSelected(new Set());},[tipo]);
 
   const [form,setForm]=useState({});
   const photoCad=e=>{
