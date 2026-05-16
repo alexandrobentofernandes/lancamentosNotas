@@ -60,13 +60,17 @@ export async function DELETE(req) {
     return NextResponse.json({ error: 'Apenas admins podem excluir' }, { status: 403 });
 
   const { searchParams } = new URL(req.url);
-  const id = searchParams.get('id');
-  if (!id) return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
+  const idsParam = searchParams.get('ids') || searchParams.get('id');
+  if (!idsParam) return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
 
-  const item = await getCadastro(id);
-  if (!item) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
-
-  await deleteCadastro(id);
-  await addAudit(user.username, 'CADASTRO_DELETE', id, `${item.tipo}: ${item.nome || id}`);
-  return NextResponse.json({ ok: true });
+  const ids = idsParam.split(',');
+  let ok = 0, err = 0;
+  await Promise.all(ids.map(async id => {
+    const item = await getCadastro(id);
+    if (!item) { err++; return; }
+    await deleteCadastro(id);
+    await addAudit(user.username, 'CADASTRO_DELETE', id, `${item.tipo}: ${item.nome || id}`);
+    ok++;
+  }));
+  return NextResponse.json({ ok, err });
 }

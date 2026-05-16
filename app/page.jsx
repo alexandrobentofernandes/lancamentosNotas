@@ -1216,13 +1216,9 @@ function Cadastros({mobile,toast_,cw,canDel}){
     const ids=[...selected];
     if(!ids.length)return;
     setConfirmBulkDel(null);
-    let ok=0,err=0;
-    for(const id of ids){
-      const r=await api('cadastros?id='+id,{method:'DELETE'});
-      if(r.error)err++;else ok++;
-    }
-    if(ok)toast_(`${ok} registro(s) excluído(s)`);
-    if(err)toast_(`${err} erro(s) ao excluir (sem permissão ou não encontrado)`,'error');
+    const r=await api('cadastros?ids='+ids.join(','),{method:'DELETE'});
+    if(r.ok)toast_(`${r.ok} registro(s) excluído(s)`);
+    if(r.err)toast_(`${r.err} erro(s) ao excluir (sem permissão ou não encontrado)`,'error');
     setSelected(new Set());load(tipo);
   };
   const importRef=useRef(null);
