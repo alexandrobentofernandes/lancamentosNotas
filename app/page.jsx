@@ -314,9 +314,9 @@ export default function App(){
   const ia=()=>user&&(user.role==='SYSTEM'||user.role==='ADMIN'||user.tipo==='admin_cliente');
   const nav=user?(
     user.role==='SYSTEM'?[
-      {k:'dashboard',i:'home',l:'Dashboard'},
+      {k:'dashboard',i:'home',l:'Dashboard Comercial'},
       {k:'users',i:'users',l:'Usuários'},
-      {k:'clientes',i:'users',l:'Clientes'},
+      {k:'clientes',i:'shield',l:'Clientes'},
       {k:'gestao-licencas',i:'shield',l:'Gestão Lic.'},
       {k:'audit',i:'list',l:'Auditoria'},
     ]:user.tipo==='admin_cliente'?[
@@ -485,38 +485,44 @@ function Dash({mobile,user}){
   const stats=[{n:total,l:'Total',c:'#5930E2',bg:'linear-gradient(135deg,#5930E2,#7C5CFF)',sh:'rgba(89,48,226,.3)'},{n:aprov,l:'Aprovados',c:'#059669',bg:'linear-gradient(135deg,#059669,#2EAA5C)',sh:'rgba(5,150,105,.3)'},{n:reprov,l:'Reprovados',c:'#DC2626',bg:'linear-gradient(135deg,#DC2626,#EF4444)',sh:'rgba(220,38,38,.3)'},{n:pend,l:'Pendentes',c:'#D97706',bg:'linear-gradient(135deg,#D97706,#F59E0B)',sh:'rgba(217,119,6,.3)'}];
   if(error)return <div><div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Dashboard</h1></div><div className="fu1"><ErrorState msg={error} onRetry={load}/></div></div>;
 
-  // SYSTEM Dashboard com overview financeiro
+  // SYSTEM Dashboard Comercial
   if(user?.role==='SYSTEM'){
     const receitaTotal=clientes.reduce((s,c)=>s+((c.slotsTotal||0)*(c.valorSlot||0)),0);
     const slotsTotal=clientes.reduce((s,c)=>s+(c.slotsTotal||0),0);
     const slotsUsados=clientes.reduce((s,c)=>s+(c.slotsUsados||0),0);
+    const slotsDisponiveis=slotsTotal-slotsUsados;
+    const receitaMedia=clientes.length?receitaTotal/clientes.length:0;
+    const clientesAtivos=clientes.filter(c=>c.status==='ATIVO').length;
+    const totalAvaliacoes=data.length;
     return(<div>
-      <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Dashboard</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>Visão geral do sistema · {clientes.length} clientes</p></div>
-      {loading?<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
-        {[1,2,3,4].map(i=><div key={i} style={{background:'var(--surface)',borderRadius:'var(--r)',padding:'1.25rem',border:'1px solid var(--border)'}}><Skeleton h={36} w="60px" m="0 0 8px 0"/><Skeleton h={14} w="80px" m="0"/></div>)}
-      </div>:<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr':'repeat(4,1fr)',gap:13,marginBottom:20}}>
-        <div style={{background:'linear-gradient(135deg,#5930E2,#7C5CFF)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(89,48,226,.3)',position:'relative',overflow:'hidden'}}>
-          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
-          <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{clientes.length}</div>
-          <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>Clientes</div>
+      <div className="fu" style={{marginBottom:24}}><h1 style={{fontSize:24,fontWeight:700}}>Dashboard Comercial</h1><p style={{fontSize:14,color:'var(--text3)',marginTop:3}}>Visão financeira · {clientes.length} clientes · {slotsTotal} slots contratados</p></div>
+      {loading?<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr 1fr':'repeat(6,1fr)',gap:13,marginBottom:20}}>
+        {[1,2,3,4,5,6].map(i=><div key={i} style={{background:'var(--surface)',borderRadius:'var(--r)',padding:'1.25rem',border:'1px solid var(--border)'}}><Skeleton h={36} w="60px" m="0 0 8px 0"/><Skeleton h={14} w="80px" m="0"/></div>)}
+      </div>:<div className="fu1" style={{display:'grid',gridTemplateColumns:mobile?'1fr 1fr 1fr':'repeat(3,1fr)',gap:13,marginBottom:20}}>
+        <div style={{background:'linear-gradient(135deg,#6C3BF5,#8B5CF6)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(108,59,245,.3)',position:'relative',overflow:'hidden'}}>
+          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.08)',borderRadius:'50%'}}/>
+          <div style={{fontSize:20,fontWeight:800,color:'#fff'}}>{clientes.length}</div>
+          <div style={{fontSize:11,color:'rgba(255,255,255,.7)',marginTop:3,fontWeight:500}}>Clientes · {clientesAtivos} ativos</div>
+          <div style={{marginTop:6,display:'flex',gap:8}}>
+            <span className="badge" style={{background:'rgba(255,255,255,.15)',color:'#fff',fontSize:10}}>{totalAvaliacoes} avaliações</span>
+          </div>
         </div>
-        <div style={{background:'linear-gradient(135deg,#059669,#2EAA5C)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)',position:'relative',overflow:'hidden'}}>
-          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
-          <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>R$ {receitaTotal.toFixed(2)}</div>
-          <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>Receita Total</div>
+        <div style={{background:'linear-gradient(135deg,#059669,#34D399)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(5,150,105,.3)',position:'relative',overflow:'hidden'}}>
+          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.08)',borderRadius:'50%'}}/>
+          <div style={{fontSize:20,fontWeight:800,color:'#fff'}}>R$ {receitaTotal.toFixed(2)}</div>
+          <div style={{fontSize:11,color:'rgba(255,255,255,.7)',marginTop:3,fontWeight:500}}>Receita Total</div>
+          <div style={{fontSize:11,color:'rgba(255,255,255,.5)',marginTop:2}}>Média R$ {receitaMedia.toFixed(2)}/cliente</div>
         </div>
-        <div style={{background:'linear-gradient(135deg,#7C3AED,#8B5CF6)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(124,58,237,.3)',position:'relative',overflow:'hidden'}}>
-          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
-          <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{slotsUsados}<span style={{fontSize:16}}>/{slotsTotal}</span></div>
-          <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>Slots Usados</div>
-        </div>
-        <div style={{background:'linear-gradient(135deg,#D97706,#F59E0B)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(217,119,6,.3)',position:'relative',overflow:'hidden'}}>
-          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.1)',borderRadius:'50%'}}/>
-          <div style={{fontSize:28,fontWeight:800,color:'#fff'}}>{licRequests.length}</div>
-          <div style={{fontSize:12.5,color:'rgba(255,255,255,.75)',marginTop:5,fontWeight:500}}>Solicitações Pendentes</div>
+        <div style={{background:'linear-gradient(135deg,#7C3AED,#A78BFA)',borderRadius:'var(--r)',padding:'1.25rem',boxShadow:'0 6px 20px rgba(124,58,237,.3)',position:'relative',overflow:'hidden'}}>
+          <div style={{position:'absolute',right:-10,top:-10,width:66,height:66,background:'rgba(255,255,255,.08)',borderRadius:'50%'}}/>
+          <div style={{fontSize:20,fontWeight:800,color:'#fff'}}>{slotsUsados}<span style={{fontSize:14}}>/{slotsTotal}</span></div>
+          <div style={{fontSize:11,color:'rgba(255,255,255,.7)',marginTop:3,fontWeight:500}}>Slots · {slotsDisponiveis} disponíveis</div>
+          <div className="progress" style={{marginTop:6,height:4,background:'rgba(255,255,255,.15)'}}>
+            <div className="progress-fill" style={{width:slotsTotal?Math.round(slotsUsados/slotsTotal*100)+'%':'0%',background:'rgba(255,255,255,.5)'}}/>
+          </div>
         </div>
       </div>}
-      {licRequests.length>0&&<div className="card fu2" style={{padding:0,overflow:'hidden',marginBottom:20}}>
+      {licRequests.length>0&&<div className="card fu2" style={{padding:0,overflow:'hidden',marginBottom:20,cursor:'pointer'}} onClick={()=>setView('gestao-licencas')}>
         <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
           <p className="sec-h" style={{marginBottom:0}}>Solicitações de Licenças</p>
           <span className="badge amber">{licRequests.length} pendentes</span>

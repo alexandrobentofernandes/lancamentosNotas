@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAuth, PERMISSOES } from '../../../lib/auth';
-import { getLicencaRequests, createLicencaRequest, updateLicencaRequest, getCliente, addAudit } from '../../../lib/db';
+import { getLicencaRequests, createLicencaRequest, updateLicencaRequest, getCliente, updateCliente, addAudit } from '../../../lib/db';
 import { notificarSolicitacaoLicenca } from '../../../lib/email';
 
 export async function GET(req) {
@@ -67,7 +67,6 @@ export async function PUT(req) {
     const cliente = await getCliente(updated.clienteId);
     if (cliente) {
       const novosSlots = (cliente.slotsTotal || 0) + parseInt(updated.quantidade);
-      const { updateCliente } = await import('../../../lib/db');
       await updateCliente(updated.clienteId, { slotsTotal: novosSlots });
     }
   }
