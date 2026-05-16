@@ -111,11 +111,23 @@ export async function PUT(req) {
 export async function DELETE(req) {
   const user = requireAuth(req);
   if (!user) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
-  if (user.role !== 'SYSTEM') return NextResponse.json({ error: 'Apenas SYSTEM pode excluir' }, { status: 403 });
 
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
   if (!id) return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
+
+  // Admins podem excluir colaboradores do seu cliente
+  if (user.tipo === 'admin_cliente') {
+    const all = await getAllUsers();
+    const target = all.find(u => u.id === id);
+    if (!target) return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 });
+    if (target.clienteId !== user.clienteId)
+      return NextResponse.json({ error: 'Sem permissão para excluir este usuário' }, { status: 403 });
+    if (target.role === 'SYSTEM' || target.tipo === 'admin_cliente')
+      return NextResponse.json({ error: 'Não pode excluir administradores' }, { status: 403 });
+  } else if (user.role !== 'SYSTEM') {
+    return NextResponse.json({ error: 'Apenas SYSTEM pode excluir' }, { status: 403 });
+  }
 
   const removed = await deleteUser(id);
   if (!removed) return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 });

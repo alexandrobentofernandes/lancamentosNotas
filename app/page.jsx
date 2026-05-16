@@ -1239,7 +1239,7 @@ function Users({user,toast_}){
               <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
                 <button className="btn sm icon" onClick={()=>open(u)}>{ICON.edit}</button>
                 {u.id!==user.id&&u.role!=='SYSTEM'&&<button className={`btn sm ${u.active?'danger':'success'}`} style={{fontSize:12,padding:'4px 10px'}} onClick={()=>toggle(u)}>{u.active?'Inativar':'Ativar'}</button>}
-                {user.role==='SYSTEM'&&u.role!=='SYSTEM'&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(u)}>{ICON.trash}</button>}
+                {(user.role==='SYSTEM'||user.tipo==='admin_cliente')&&u.role!=='SYSTEM'&&u.tipo!=='admin_cliente'&&<button className="btn sm icon danger" onClick={()=>setConfirmDel(u)}>{ICON.trash}</button>}
               </div>
             </td>
           </tr>):<tr><td colSpan={7} style={{textAlign:'center',padding:'3rem',color:'var(--text3)'}}><EmptyState title="Nenhum usuário" desc="Nenhum usuário cadastrado ainda."/></td></tr>}</tbody>
